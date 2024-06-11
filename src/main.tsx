@@ -1,6 +1,8 @@
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
+import 'antd/dist/reset.css';
+
 import { ReactToastifyProvider, ThemeProvider } from "contexts";
 import { Provider } from "react-redux";
 import { store } from "store";

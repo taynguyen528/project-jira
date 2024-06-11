@@ -1,18 +1,8 @@
 import { combineReducers } from "@reduxjs/toolkit";
-
-const counterReducer = (state = 0, action: any) => {
-    switch (action.type) {
-        case "increment":
-            return state + 1;
-        case "decrement":
-            return state - 1;
-        default:
-            return state;
-    }
-};
+import { quanLyNguoiDungReducer } from "./quanLyNguoiDung/slice";
 
 const rootReducer = combineReducers({
-    counter: counterReducer,
+    quanLyNguoiDung: quanLyNguoiDungReducer,
 });
 
 export default rootReducer;
