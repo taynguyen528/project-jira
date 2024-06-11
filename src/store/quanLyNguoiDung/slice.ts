@@ -44,24 +44,26 @@ export const {
                 }
             )
 
-        // register
-        .addCase(
-            quanLyNguoiDungActionsThunks.registerThunk.pending,
-            (state) => {
-                state.isFetchingRegister = true;
-            }
-        )
-        .addCase(
-            quanLyNguoiDungActionsThunks.registerThunk.fulfilled,
-            (state, { payload }) => {
-                state.isFetchingRegister = false;
-            }
-        )
-        .addCase(
-            quanLyNguoiDungActionsThunks.registerThunk.rejected,
-            (state, action) => {
-                state.isFetchingRegister = false;
-            }
-        )
+            // register
+            .addCase(
+                quanLyNguoiDungActionsThunks.registerThunk.pending,
+                (state) => {
+                    state.isFetchingRegister = true;
+                }
+            )
+            .addCase(
+                quanLyNguoiDungActionsThunks.registerThunk.fulfilled,
+                (state, { payload }) => {
+                    console.log(payload);
+                    state.isFetchingRegister = false;
+                }
+            )
+            .addCase(
+                quanLyNguoiDungActionsThunks.registerThunk.rejected,
+                (state, action) => {
+                    console.log(action);
+                    state.isFetchingRegister = false;
+                }
+            );
     },
 });
