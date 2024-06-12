@@ -1,7 +1,7 @@
 import { Config } from "components";
 import { PATH } from "constant";
 import { AuthLayout, MainLayout } from "layouts";
-import { Login, Register } from "pages";
+import { Login, Project, Register } from "pages";
 import { RouteObject, useRoutes } from "react-router-dom";
 
 const router: RouteObject[] = [
@@ -11,6 +11,10 @@ const router: RouteObject[] = [
             {
                 path: "/",
                 element: <Config />,
+            },
+            {
+                path: "/project",
+                element: <Project />,
             },
         ],
     },
