@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Menu, Dropdown } from "antd";
 import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "store";
@@ -15,6 +15,10 @@ export const Navbar: React.FC = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        dispatch(quanLyNguoiDungAction.fetchUserLogin());
+    }, [dispatch]);
 
     const handleItemClick = (itemKey: string) => {
         if (itemKey === "1") {
@@ -83,33 +87,39 @@ export const Navbar: React.FC = () => {
                     </div>
                 </div>
                 <div className="flex items-center gap-4">
-                    <div className="ml-auto">
-                        <Dropdown
-                            overlay={
-                                <Menu
-                                    items={items.map((item) => ({
-                                        ...item,
-                                        onClick: () =>
-                                            handleItemClick(item.key),
-                                    }))}
-                                />
-                            }
-                        >
-                            <a
-                                className="flex items-center gap-2 text-[20px] text-blue-700 cursor-pointer"
-                                onClick={(e) => e.preventDefault()}
-                            >
-                                <div className="mr-2">
-                                    <img
-                                        src={userLogin.avatar}
-                                        alt="User"
-                                        className="w-10 h-10 rounded-full object-cover"
+                    {userLogin ? (
+                        <div className="ml-auto">
+                            <Dropdown
+                                overlay={
+                                    <Menu
+                                        items={items.map((item) => ({
+                                            ...item,
+                                            onClick: () =>
+                                                handleItemClick(item.key),
+                                        }))}
                                     />
-                                </div>
-                                {userLogin.name}
-                            </a>
-                        </Dropdown>
-                    </div>
+                                }
+                            >
+                                <a
+                                    className="flex items-center gap-2 text-[20px] text-blue-700 cursor-pointer"
+                                    onClick={(e) => e.preventDefault()}
+                                >
+                                    <div className="mr-2">
+                                        <img
+                                            src={userLogin.avatar}
+                                            alt="User"
+                                            className="w-10 h-10 rounded-full object-cover"
+                                        />
+                                    </div>
+                                    {userLogin.name}
+                                </a>
+                            </Dropdown>
+                        </div>
+                    ) : (
+                        <div className="text-[20px] text-blue-700">
+                            Loading...
+                        </div>
+                    )}
                     <div className="md:hidden">
                         <MenuOutlined
                             className="text-2xl cursor-pointer"
