@@ -5,8 +5,13 @@ import { userLocalStorage } from "constant";
 const initialState = {
     isFetchingLogin: false,
     isFetchingRegister: false,
-    userLogin: userLocalStorage.get(),
+    userLogin: fetchUserLoginFromLocalStorage(),
 };
+
+function fetchUserLoginFromLocalStorage() {
+    const user = userLocalStorage.get();
+    return user ? user : null;
+}
 
 export const {
     reducer: quanLyNguoiDungReducer,
@@ -16,12 +21,15 @@ export const {
     initialState,
     reducers: {
         logOut: (state) => {
-            state.userLogin = undefined;
+            state.userLogin = null;
             userLocalStorage.remove();
         },
         updateUser: (state, action) => {
             state.userLogin = action.payload;
             userLocalStorage.set(action.payload);
+        },
+        fetchUserLogin: (state) => {
+            state.userLogin = fetchUserLoginFromLocalStorage();
         },
     },
     extraReducers: (builder) => {

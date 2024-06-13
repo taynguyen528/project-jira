@@ -34,7 +34,7 @@ const router: RouteObject[] = [
                 element: <Register />,
             },
             {
-                path: "*", 
+                path: "*",
                 element: <NotFound />,
             },
         ],
