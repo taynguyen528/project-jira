@@ -1,6 +1,7 @@
 import axios from "axios";
 import qs from "query-string";
 import { BASE_URL, TOKEN_CYBERSOFT } from "./configUrlApi";
+import { userLocalStorage } from "./configLocalStorage";
 
 // privateClient
 export const privateClient = axios.create({
@@ -18,7 +19,7 @@ privateClient.interceptors.request.use(
 
         config.headers.set("TokenCybersoft", TOKEN_CYBERSOFT);
         config.headers.set("Content-Type", "application/json");
-        const token = localStorage.getItem("TOKEN");
+        const token = userLocalStorage.get().accessToken;
         if (token) {
             config.headers.set("Authorization", `Bearer ${token}`);
         }

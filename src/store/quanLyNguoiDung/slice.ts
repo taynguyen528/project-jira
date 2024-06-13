@@ -14,14 +14,17 @@ export const {
 } = createSlice({
     name: "quanLyNguoiDung",
     initialState,
-    // các action đồng bộ
     reducers: {
-        //logOut
+        logOut: (state) => {
+            state.userLogin = undefined;
+            userLocalStorage.remove();
+        },
+        updateUser: (state, action) => {
+            state.userLogin = action.payload;
+            userLocalStorage.set(action.payload);
+        },
     },
-
-    // các action bất động bộ (actionThunk)
     extraReducers: (builder) => {
-        // login
         builder
             .addCase(
                 quanLyNguoiDungActionsThunks.loginThunk.pending,
@@ -43,8 +46,6 @@ export const {
                     state.isFetchingLogin = false;
                 }
             )
-
-            // register
             .addCase(
                 quanLyNguoiDungActionsThunks.registerThunk.pending,
                 (state) => {
@@ -54,14 +55,12 @@ export const {
             .addCase(
                 quanLyNguoiDungActionsThunks.registerThunk.fulfilled,
                 (state, { payload }) => {
-                    console.log(payload);
                     state.isFetchingRegister = false;
                 }
             )
             .addCase(
                 quanLyNguoiDungActionsThunks.registerThunk.rejected,
                 (state, action) => {
-                    console.log(action);
                     state.isFetchingRegister = false;
                 }
             );

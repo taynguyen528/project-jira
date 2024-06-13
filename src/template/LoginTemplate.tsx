@@ -6,7 +6,7 @@ import { RootState, useAppDispatch } from "store";
 import { quanLyNguoiDungActionsThunks } from "store/quanLyNguoiDung";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { LoginType, loginSchema } from "schemas";
 
 export const LoginTemplate = () => {
@@ -21,9 +21,13 @@ export const LoginTemplate = () => {
 
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const { isFetchingLogin } = useSelector(
+    const { isFetchingLogin, userLogin } = useSelector(
         (state: RootState) => state.quanLyNguoiDung
     );
+
+    if (userLogin) {
+        return <Navigate to="/project" />;
+    }
 
     const onSubmit: SubmitHandler<LoginType> = async (data) => {
         try {
