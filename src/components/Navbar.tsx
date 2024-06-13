@@ -1,33 +1,53 @@
 import React, { useState } from "react";
 import { Menu, Dropdown } from "antd";
 import { useSelector } from "react-redux";
-import { RootState } from "store";
+import { RootState, useAppDispatch } from "store";
 import { MenuOutlined } from "@ant-design/icons";
-
-const items = [
-    {
-        key: "1",
-        label: (
-            <span className="text-blue-700 hover:text-blue-900 text-[18px] ">
-                Profile
-            </span>
-        ),
-    },
-    {
-        key: "2",
-        label: (
-            <span className="text-blue-700 hover:text-blue-900 text-[18px] ">
-                Logout
-            </span>
-        ),
-    },
-];
+import { useNavigate } from "react-router-dom";
+import { PATH } from "constant";
+import { quanLyNguoiDungAction } from "store/quanLyNguoiDung/slice";
+import { toast } from "react-toastify";
 
 export const Navbar: React.FC = () => {
     const { userLogin } = useSelector(
         (state: RootState) => state.quanLyNguoiDung
     );
     const [menuOpen, setMenuOpen] = useState(false);
+    const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+
+    const handleItemClick = (itemKey: string) => {
+        if (itemKey === "1") {
+            navigate(PATH.myProfile);
+        } else if (itemKey === "2") {
+            handleLogOut();
+        }
+    };
+
+    const handleLogOut = () => {
+        dispatch(quanLyNguoiDungAction.logOut());
+        toast.success("Đăng xuất thành công!");
+        navigate("/login");
+    };
+
+    const items = [
+        {
+            key: "1",
+            label: (
+                <span className="text-blue-700 hover:text-blue-900 text-[18px]">
+                    Profile
+                </span>
+            ),
+        },
+        {
+            key: "2",
+            label: (
+                <span className="text-blue-700 hover:text-blue-900 text-[18px]">
+                    Logout
+                </span>
+            ),
+        },
+    ];
 
     return (
         <div className="container mx-auto">
@@ -42,6 +62,9 @@ export const Navbar: React.FC = () => {
                         <a
                             key="1"
                             className="text-[20px] text-blue-700 cursor-pointer hover:opacity-70 transition-all duration-300"
+                            onClick={() => {
+                                navigate("/project");
+                            }}
                         >
                             Project
                         </a>
@@ -61,7 +84,17 @@ export const Navbar: React.FC = () => {
                 </div>
                 <div className="flex items-center gap-4">
                     <div className="ml-auto">
-                        <Dropdown overlay={<Menu items={items} />}>
+                        <Dropdown
+                            overlay={
+                                <Menu
+                                    items={items.map((item) => ({
+                                        ...item,
+                                        onClick: () =>
+                                            handleItemClick(item.key),
+                                    }))}
+                                />
+                            }
+                        >
                             <a
                                 className="flex items-center gap-2 text-[20px] text-blue-700 cursor-pointer"
                                 onClick={(e) => e.preventDefault()}

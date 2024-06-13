@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Input } from "antd";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { RegisterType, registerSchema } from "schemas";
 import { RootState, useAppDispatch } from "store";
@@ -15,16 +15,20 @@ export const RegisterTemplate = () => {
         control,
         formState: { errors },
         handleSubmit,
-        reset
+        reset,
     } = useForm<RegisterType>({
         resolver: zodResolver(registerSchema),
     });
 
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const { isFetchingRegister } = useSelector(
+    const { isFetchingRegister, userLogin } = useSelector(
         (state: RootState) => state.quanLyNguoiDung
     );
+
+    if(userLogin) {
+        return <Navigate to="/project"/>
+    }
 
     const onSubmit: SubmitHandler<RegisterType> = async (data) => {
         dispatch(quanLyNguoiDungActionsThunks.registerThunk(data))
