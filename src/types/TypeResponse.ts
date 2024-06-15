@@ -1,6 +1,5 @@
-export type ApiResponse = {
-    statusCode: number;
+export type ApiResponse<T> = {
+    content: T;
     message: string;
-    content: object;
-    dateTime: string;
+    statusCode: number;
 };

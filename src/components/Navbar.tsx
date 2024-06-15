@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { PATH } from "constant";
 import { quanLyNguoiDungAction } from "store/quanLyNguoiDung/slice";
 import { toast } from "react-toastify";
+import { CreateTask } from "./CreateTask";
 
 export const Navbar: React.FC = () => {
     const { userLogin } = useSelector(
@@ -53,15 +54,33 @@ export const Navbar: React.FC = () => {
         },
     ];
 
+    // Create task
+    const [open, setOpen] = useState(false);
+
+    const showDrawer = () => {
+        setOpen(true);
+    };
+
+    const onClose = () => {
+        setOpen(false);
+    };
+
     return (
         <div className="container mx-auto">
             <div className="flex justify-between items-center py-2">
                 <div className="flex items-center gap-8">
-                    <img
-                        src="/jira-logo.png"
-                        alt="logo"
-                        className="w-24 h-auto mr-4"
-                    />
+                    <div
+                        className="cursor-pointer"
+                        onClick={() => {
+                            navigate("/project");
+                        }}
+                    >
+                        <img
+                            src="/jira-logo.png"
+                            alt="logo"
+                            className="w-24 h-auto mr-4"
+                        />
+                    </div>
                     <div className="hidden md:flex items-center gap-8">
                         <a
                             key="1"
@@ -81,6 +100,7 @@ export const Navbar: React.FC = () => {
                         <a
                             key="3"
                             className="text-[20px] text-blue-700 cursor-pointer hover:opacity-70 transition-all duration-300"
+                            onClick={showDrawer}
                         >
                             Create Task
                         </a>
@@ -150,6 +170,7 @@ export const Navbar: React.FC = () => {
                     </a>
                 </div>
             )}
+            <CreateTask onClose={onClose} open={open} />
         </div>
     );
 };
