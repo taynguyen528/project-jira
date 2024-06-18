@@ -1,268 +1,324 @@
 import React, { useEffect, useState } from "react";
-import { Drawer, Button, Select, Input, InputNumber, Slider } from "antd";
+import { useForm, Controller } from "react-hook-form";
+import { Drawer, Button } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
-import { ContentProject, MemberTask, PriorityType, StatusType, TaskType } from "types";
-import { optionApi, projectApi } from "api";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import {
+    ContentProject,
+    MemberTask,
+    PriorityType,
+    StatusType,
+    TaskType,
+    CreateTaskType,
+} from "types";
+import { optionApi, projectApi, taskApi } from "api";
+import {
+    AssignersSelect,
+    DescriptionEditor,
+    PriorityAndTaskTypeSelect,
+    ProjectSelect,
+    StatusSelect,
+    TaskNameInput,
+    TimeTrackingInputs,
+} from "components";
+import { createTaskSchema } from "schemas";
+import { toast } from "react-toastify";
 
 interface CreateTaskProps {
-  onClose: () => void;
-  open: boolean;
+    onClose: () => void;
+    open: boolean;
 }
 
 export const CreateTask: React.FC<CreateTaskProps> = ({ onClose, open }) => {
-  const [dataProject, setDataProject] = useState<ContentProject[]>([]);
-  const [statusData, setStatusData] = useState<StatusType[]>([]);
-  const [priorityData, setPriorityData] = useState<PriorityType[]>([]);
-  const [taskTypeData, setTaskTypeData] = useState<TaskType[]>([]);
-  const [assigners, setAssigners] = useState<MemberTask[]>([]);
-  const [totalEstimatedHours, setTotalEstimatedHours] = useState<number>(0);
-  const [hoursSpent, setHoursSpent] = useState<number>(0);
-  const [remainingHours, setRemainingHours] = useState<number>(0);
+    const {
+        control,
+        handleSubmit,
+        watch,
+        setValue,
+        formState: { errors },
+    } = useForm<CreateTaskType>({
+        resolver: zodResolver(createTaskSchema),
+        defaultValues: {
+            listUserAsign: [],
+            taskName: "",
+            description: "",
+            statusId: "1",
+            originalEstimate: 0,
+            timeTrackingSpent: 0,
+            timeTrackingRemaining: 0,
+            projectId: 0,
+            typeId: 1,
+            priorityId: 1,
+        },
+    });
 
-  const fetchDataProject = async () => {
-    try {
-      const res = await projectApi.getAllProject();
-      setDataProject(res.content);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+    const [dataProject, setDataProject] = useState<ContentProject[]>([]);
+    const [statusData, setStatusData] = useState<StatusType[]>([]);
+    const [priorityData, setPriorityData] = useState<PriorityType[]>([]);
+    const [taskTypeData, setTaskTypeData] = useState<TaskType[]>([]);
+    const [assigners, setAssigners] = useState<MemberTask[]>([]);
+    const [projectId, setProjectId] = useState<number>();
 
-  const fetchStatus = async () => {
-    try {
-      const res = await optionApi.getAllStatus();
-      setStatusData(res.content);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+    const fetchDataProject = async () => {
+        try {
+            const res = await projectApi.getAllProject();
+            setDataProject(res.content);
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
-  const fetchPriority = async () => {
-    try {
-      const res = await optionApi.getAllPriority();
-      setPriorityData(res.content);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+    const fetchStatus = async () => {
+        try {
+            const res = await optionApi.getAllStatus();
+            setStatusData(res.content);
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
-  const fetchTaskType = async () => {
-    try {
-      const res = await optionApi.getAllTaskType();
-      setTaskTypeData(res.content);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+    const fetchPriority = async () => {
+        try {
+            const res = await optionApi.getAllPriority();
+            setPriorityData(res.content);
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
-  const fetchDataProjectDetail = async (idProject: number) => {
-    try {
-      const res = await projectApi.getProjectDetail(idProject);
-      setAssigners(res.content.members);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+    const fetchTaskType = async () => {
+        try {
+            const res = await optionApi.getAllTaskType();
+            setTaskTypeData(res.content);
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
-  useEffect(() => {
-    fetchDataProject();
-    fetchStatus();
-    fetchPriority();
-    fetchTaskType();
-    fetchDataProjectDetail(15638);
-  }, []);
+    const fetchDataProjectDetail = async (idProject: number) => {
+        try {
+            const res = await projectApi.getProjectDetail(idProject);
+            setAssigners(res.content.members);
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
-  // select project
-  const filterOption = (
-    input: string,
-    option?: { label: string; value: string }
-  ) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
+    useEffect(() => {
+        fetchDataProject();
+        fetchStatus();
+        fetchPriority();
+        fetchTaskType();
+        if (projectId) {
+            fetchDataProjectDetail(projectId);
+        }
+    }, [projectId]);
 
-  const projectOptions = dataProject.map((item) => ({
-    value: item.alias,
-    label: item.alias,
-  }));
+    const onSubmit = async (data: CreateTaskType) => {
+        try {
+            const res = await taskApi.createTask(data);
+            if (res && res.statusCode === 200) {
+                toast.success("Tạo task thành công.");
+                onClose();
+            }
+        } catch (error: any) {
+            toast.error(error.response.data.content);
+        }
+    };
 
-  // select status
-  const statusOptions = statusData.map((item) => ({
-    value: item.statusName,
-    label: item.statusName,
-  }));
+    const totalEstimatedHours = watch("originalEstimate");
+    const hoursSpent = watch("timeTrackingSpent");
 
-  // select priority
-  const priorityOptions = priorityData.map((item) => ({
-    value: item.priority,
-    label: item.description,
-  }));
+    useEffect(() => {
+        const remaining = totalEstimatedHours - hoursSpent;
+        setValue("timeTrackingRemaining", remaining >= 0 ? remaining : 0);
+    }, [totalEstimatedHours, hoursSpent, setValue]);
 
-  // select taskType
-  const taskTypeOptions = taskTypeData.map((item) => ({
-    label: item.taskType,
-    value: item.taskType,
-  }));
+    return (
+        <Drawer
+            onClose={onClose}
+            open={open}
+            width={700}
+            closeIcon={null}
+            title={
+                <div className="flex justify-between items-center w-full">
+                    <div className="text-[20px] font-semibold">Create Task</div>
+                    <Button
+                        type="text"
+                        onClick={onClose}
+                        className="text-gray-500 hover:text-gray-700"
+                        icon={<CloseOutlined />}
+                    />
+                </div>
+            }
+        >
+            <div>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <Controller
+                        name="projectId"
+                        control={control}
+                        render={({ field }) => (
+                            <ProjectSelect
+                                value={field.value ?? undefined}
+                                onChange={(value) => {
+                                    if (value !== undefined) {
+                                        field.onChange(value);
+                                        fetchDataProjectDetail(value);
+                                    }
+                                }}
+                                projectOptions={dataProject.map((item) => ({
+                                    value: item.id,
+                                    label: item.alias,
+                                }))}
+                                filterOption={(input, option) =>
+                                    (option?.label ?? "")
+                                        .toLowerCase()
+                                        .includes(input.toLowerCase())
+                                }
+                                onSelectProject={(projectId) => {
+                                    if (projectId !== undefined) {
+                                        field.onChange(projectId);
+                                        setProjectId(projectId);
+                                    }
+                                }}
+                            />
+                        )}
+                    />
 
-  const memberOptions = assigners.map((item) => ({
-    label: item.name,
-    value: item.name,
-  }));
+                    <Controller
+                        name="taskName"
+                        control={control}
+                        render={({ field }) => (
+                            <TaskNameInput onChange={field.onChange} />
+                        )}
+                    />
+                    {errors?.taskName && (
+                        <p className="text-red-500 text-xs mt-1 text-[16px]">
+                            {errors.taskName.message}
+                        </p>
+                    )}
 
-  const handleTotalEstimatedHoursChange = (value: number | null) => {
-    setTotalEstimatedHours(value !== null ? Math.max(value, 0) : 0);
-  };
+                    <Controller
+                        name="statusId"
+                        control={control}
+                        render={({ field }) => (
+                            <StatusSelect
+                                statusOptions={statusData.map((item) => ({
+                                    value: Number(item.statusId),
+                                    label: item.statusName,
+                                }))}
+                                defaultStatus={
+                                    statusData.length > 0
+                                        ? Number(statusData[0].statusId)
+                                        : undefined
+                                }
+                                onChange={(value) => field.onChange(value)}
+                                onSelectStatus={(statusId) => {
+                                    field.onChange(statusId.toString());
+                                    console.log("statusId", statusId);
+                                }}
+                            />
+                        )}
+                    />
 
-  const handleHoursSpentChange = (value: number | null) => {
-    setHoursSpent(value !== null ? Math.max(value, 0) : 0);
-  };
+                    <Controller
+                        name="priorityId"
+                        control={control}
+                        render={({ field }) => (
+                            <PriorityAndTaskTypeSelect
+                                priorityOptions={priorityData.map((item) => ({
+                                    label: item.description,
+                                    value: item.priorityId,
+                                }))}
+                                taskTypeOptions={taskTypeData.map((item) => ({
+                                    label: item.taskType,
+                                    value: item.id,
+                                }))}
+                                defaultPriority={
+                                    priorityData.length > 0
+                                        ? priorityData[0].priorityId
+                                        : undefined
+                                }
+                                defaultTaskType={
+                                    taskTypeData.length > 0
+                                        ? taskTypeData[0].id
+                                        : undefined
+                                }
+                                onSelectPriority={(priority) => {
+                                    field.onChange(priority);
+                                }}
+                                onSelectTaskType={(taskType) => {
+                                    field.onChange(taskType);
+                                }}
+                            />
+                        )}
+                    />
 
-  useEffect(() => {
-    const remaining = totalEstimatedHours - hoursSpent;
-    setRemainingHours(remaining >= 0 ? remaining : 0);
-  }, [totalEstimatedHours, hoursSpent]);
+                    <Controller
+                        name="listUserAsign"
+                        control={control}
+                        render={({ field }) => (
+                            <AssignersSelect
+                                memberOptions={assigners.map((item) => ({
+                                    label: item.name,
+                                    value: item.userId,
+                                }))}
+                                onSelectAssigners={(assigners) => {
+                                    field.onChange(assigners);
+                                }}
+                            />
+                        )}
+                    />
+                    {errors?.listUserAsign && (
+                        <p className="text-red-500 text-xs mt-1 text-[16px]">
+                            {errors.listUserAsign.message}
+                        </p>
+                    )}
+                    <Controller
+                        name="originalEstimate"
+                        control={control}
+                        render={({ field }) => (
+                            <TimeTrackingInputs
+                                totalEstimatedHours={field.value ?? 0}
+                                hoursSpent={hoursSpent}
+                                remainingHours={watch("timeTrackingRemaining")}
+                                onTotalEstimatedHoursChange={(value) => {
+                                    field.onChange(value);
+                                }}
+                                onHoursSpentChange={(value) => {
+                                    setValue("timeTrackingSpent", value);
+                                }}
+                            />
+                        )}
+                    />
 
-  return (
-    <Drawer
-      onClose={onClose}
-      open={open}
-      width={700}
-      closeIcon={null}
-      title={
-        <div className="flex justify-between items-center w-full">
-          <div className="text-[20px] font-semibold">Create Task</div>
-          <Button
-            type="text"
-            onClick={onClose}
-            className="text-gray-500 hover:text-gray-700"
-            icon={<CloseOutlined />}
-          />
-        </div>
-      }
-    >
-      <div>
-        <form>
-          <div>
-            <label className="text-[18px] font-bold">Project</label>
-            <div className="mt-2">
-              <Select
-                showSearch
-                placeholder="Select a project"
-                optionFilterProp="children"
-                filterOption={filterOption}
-                style={{ width: "100%" }}
-                options={projectOptions}
-              />
+                    <Controller
+                        name="description"
+                        control={control}
+                        render={({ field }) => (
+                            <DescriptionEditor
+                                description={field.value ?? ""}
+                                onDescriptionChange={(value) => {
+                                    field.onChange(value);
+                                }}
+                            />
+                        )}
+                    />
+                    {errors?.description && (
+                        <p className="text-red-500 text-xs mt-1 text-[16px]">
+                            {errors.description.message}
+                        </p>
+                    )}
+
+                    <div className="flex gap-3 justify-end">
+                        <Button onClick={onClose}>Cancel</Button>
+                        <Button type="primary" htmlType="submit">
+                            Submit
+                        </Button>
+                    </div>
+                </form>
             </div>
-            <p className="text-red-500">
-              *{" "}
-              <span className="italic">
-                You can only create tasks of your own projects!
-              </span>
-            </p>
-          </div>
-
-          <div>
-            <label className="text-[18px] font-bold">Task name</label>
-            <div className="mt-2">
-              <Input placeholder="Task name" />
-            </div>
-          </div>
-
-          <div className="mt-3">
-            <label className="text-[18px] font-bold">Status</label>
-            <div className="mt-2">
-              <Select
-                style={{ width: "100%" }}
-                options={statusOptions}
-                defaultValue={
-                  statusOptions.length > 0 ? statusOptions[0].value : undefined
-                }
-              />
-            </div>
-          </div>
-
-          <div className="mt-3 flex gap-4">
-            <div className="w-1/2">
-              <label className="text-[18px] font-bold">Priority</label>
-              <div className="mt-2">
-                <Select
-                  style={{ width: "100%" }}
-                  options={priorityOptions}
-                  defaultValue={
-                    priorityOptions.length > 0 ? priorityOptions[0] : undefined
-                  }
-                />
-              </div>
-            </div>
-            <div className="w-1/2">
-              <label className="text-[18px] font-bold">Task Type</label>
-              <div className="mt-2">
-                <Select
-                  style={{ width: "100%" }}
-                  options={taskTypeOptions}
-                  defaultValue={
-                    taskTypeOptions.length > 0 ? taskTypeOptions[0] : undefined
-                  }
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-3">
-            <label className="text-[18px] font-bold">Assigners</label>
-            <div className="mt-2">
-              <Select
-                style={{ width: "100%" }}
-                mode="multiple"
-                options={memberOptions}
-              />
-            </div>
-          </div>
-
-          <div className="mt-3">
-            <label className="text-[18px] font-bold">Time Tracking</label>
-          </div>
-          <div className="mt-3 flex gap-4">
-            <div className="w-1/2">
-              <label className="text-[18px] font-bold">
-                Total Estimated Hours
-              </label>
-              <div className="mt-2">
-                <InputNumber
-                  style={{ width: "100%" }}
-                  min={0}
-                  step={0.1}
-                  value={totalEstimatedHours}
-                  onChange={handleTotalEstimatedHoursChange}
-                />
-              </div>
-            </div>
-            <div className="w-1/2">
-              <label className="text-[18px] font-bold">Hours spent</label>
-              <div className="mt-2">
-                <InputNumber
-                  style={{ width: "100%" }}
-                  min={0}
-                  step={0.1} 
-                  value={hoursSpent}
-                  onChange={handleHoursSpentChange}
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-3">
-            <label className="text-[18px] font-bold">Remaining Hours</label>
-            <div className="mt-2">
-              <Slider
-                min={0}
-                max={totalEstimatedHours}
-                value={remainingHours}
-                disabled
-                step={0.1}
-              />
-            </div>
-          </div>
-        </form>
-      </div>
-    </Drawer>
-  );
+        </Drawer>
+    );
 };

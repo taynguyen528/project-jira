@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Menu, Dropdown } from "antd";
+import {  Dropdown } from "antd";
 import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "store";
 import { MenuOutlined } from "@ant-design/icons";
@@ -35,7 +35,7 @@ export const Navbar: React.FC = () => {
         navigate("/login");
     };
 
-    const items = [
+    const menuItems = [
         {
             key: "1",
             label: (
@@ -43,6 +43,7 @@ export const Navbar: React.FC = () => {
                     Profile
                 </span>
             ),
+            onClick: () => handleItemClick("1"),
         },
         {
             key: "2",
@@ -51,6 +52,7 @@ export const Navbar: React.FC = () => {
                     Logout
                 </span>
             ),
+            onClick: () => handleItemClick("2"),
         },
     ];
 
@@ -109,17 +111,7 @@ export const Navbar: React.FC = () => {
                 <div className="flex items-center gap-4">
                     {userLogin ? (
                         <div className="ml-auto">
-                            <Dropdown
-                                overlay={
-                                    <Menu
-                                        items={items.map((item) => ({
-                                            ...item,
-                                            onClick: () =>
-                                                handleItemClick(item.key),
-                                        }))}
-                                    />
-                                }
-                            >
+                            <Dropdown menu={{ items: menuItems }} trigger={['click']}>
                                 <a
                                     className="flex items-center gap-2 text-[20px] text-blue-700 cursor-pointer"
                                     onClick={(e) => e.preventDefault()}
@@ -153,6 +145,9 @@ export const Navbar: React.FC = () => {
                     <a
                         key="1"
                         className="text-[20px] text-blue-700 cursor-pointer hover:opacity-70 transition-all duration-300"
+                        onClick={() => {
+                            navigate("/project");
+                        }}
                     >
                         Project
                     </a>
@@ -165,6 +160,7 @@ export const Navbar: React.FC = () => {
                     <a
                         key="3"
                         className="text-[20px] text-blue-700 cursor-pointer hover:opacity-70 transition-all duration-300"
+                        onClick={showDrawer}
                     >
                         Create Task
                     </a>
