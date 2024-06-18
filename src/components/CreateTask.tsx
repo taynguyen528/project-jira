@@ -24,7 +24,6 @@ import {
 } from "components";
 import { createTaskSchema } from "schemas";
 import { toast } from "react-toastify";
-
 interface CreateTaskProps {
     onClose: () => void;
     open: boolean;
@@ -37,6 +36,7 @@ export const CreateTask: React.FC<CreateTaskProps> = ({ onClose, open }) => {
         watch,
         setValue,
         formState: { errors },
+        reset,
     } = useForm<CreateTaskType>({
         resolver: zodResolver(createTaskSchema),
         defaultValues: {
@@ -121,6 +121,7 @@ export const CreateTask: React.FC<CreateTaskProps> = ({ onClose, open }) => {
             if (res && res.statusCode === 200) {
                 toast.success("Tạo task thành công.");
                 onClose();
+                reset();
             }
         } catch (error: any) {
             toast.error(error.response.data.content);

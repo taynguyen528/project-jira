@@ -69,5 +69,5 @@ export const TimeTrackingInputs: React.FC<TimeTrackingInputsProps> = ({
                 </div>
             </div>
         </>
-    );
+    ); 
 };
