@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { Drawer, Button } from "antd";
+import { Drawer, Button, Select } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -16,14 +16,15 @@ import { optionApi, projectApi, taskApi } from "api";
 import {
     AssignersSelect,
     DescriptionEditor,
-    PriorityAndTaskTypeSelect,
+    PrioritySelect,
     ProjectSelect,
-    StatusSelect,
     TaskNameInput,
+    TaskTypeSelect,
     TimeTrackingInputs,
 } from "components";
 import { createTaskSchema } from "schemas";
 import { toast } from "react-toastify";
+
 interface CreateTaskProps {
     onClose: () => void;
     open: boolean;
@@ -47,7 +48,7 @@ export const CreateTask: React.FC<CreateTaskProps> = ({ onClose, open }) => {
             originalEstimate: 0,
             timeTrackingSpent: 0,
             timeTrackingRemaining: 0,
-            projectId: 0,
+            projectId: undefined,
             typeId: 1,
             priorityId: 1,
         },
@@ -58,7 +59,7 @@ export const CreateTask: React.FC<CreateTaskProps> = ({ onClose, open }) => {
     const [priorityData, setPriorityData] = useState<PriorityType[]>([]);
     const [taskTypeData, setTaskTypeData] = useState<TaskType[]>([]);
     const [assigners, setAssigners] = useState<MemberTask[]>([]);
-    const [projectId, setProjectId] = useState<number>();
+    const [projectId, setProjectId] = useState<number | undefined>(undefined);
 
     const fetchDataProject = async () => {
         try {
@@ -122,6 +123,8 @@ export const CreateTask: React.FC<CreateTaskProps> = ({ onClose, open }) => {
                 toast.success("Tạo task thành công.");
                 onClose();
                 reset();
+                setValue("originalEstimate", 0);
+                setValue("timeTrackingSpent", 0);
             }
         } catch (error: any) {
             toast.error(error.response.data.content);
@@ -165,18 +168,13 @@ export const CreateTask: React.FC<CreateTaskProps> = ({ onClose, open }) => {
                                 onChange={(value) => {
                                     if (value !== undefined) {
                                         field.onChange(value);
-                                        fetchDataProjectDetail(value);
+                                        setProjectId(value);
                                     }
                                 }}
                                 projectOptions={dataProject.map((item) => ({
                                     value: item.id,
                                     label: item.alias,
                                 }))}
-                                filterOption={(input, option) =>
-                                    (option?.label ?? "")
-                                        .toLowerCase()
-                                        .includes(input.toLowerCase())
-                                }
                                 onSelectProject={(projectId) => {
                                     if (projectId !== undefined) {
                                         field.onChange(projectId);
@@ -191,7 +189,12 @@ export const CreateTask: React.FC<CreateTaskProps> = ({ onClose, open }) => {
                         name="taskName"
                         control={control}
                         render={({ field }) => (
-                            <TaskNameInput onChange={field.onChange} />
+                            <TaskNameInput
+                                value={field.value}
+                                onChange={(value) => {
+                                    field.onChange(value);
+                                }}
+                            />
                         )}
                     />
                     {errors?.taskName && (
@@ -200,58 +203,77 @@ export const CreateTask: React.FC<CreateTaskProps> = ({ onClose, open }) => {
                         </p>
                     )}
 
-                    <Controller
-                        name="statusId"
-                        control={control}
-                        render={({ field }) => (
-                            <StatusSelect
-                                statusOptions={statusData.map((item) => ({
-                                    value: Number(item.statusId),
-                                    label: item.statusName,
-                                }))}
-                                defaultStatus={
-                                    statusData.length > 0
-                                        ? Number(statusData[0].statusId)
-                                        : undefined
-                                }
-                                onChange={(value) => field.onChange(value)}
-                                onSelectStatus={(statusId) => {
-                                    field.onChange(statusId.toString());
-                                    console.log("statusId", statusId);
-                                }}
-                            />
-                        )}
-                    />
+                    <div className="mt-3">
+                        <label className="text-[18px] font-bold">Status</label>
+                        <Controller
+                            name="statusId"
+                            control={control}
+                            render={({ field }) => (
+                                <Select
+                                    {...field}
+                                    style={{ width: "100%" }}
+                                    defaultValue={
+                                        statusData.length > 0
+                                            ? statusData[0].statusId.toString()
+                                            : undefined
+                                    }
+                                    onChange={(value) => {
+                                        field.onChange(value);
+                                    }}
+                                >
+                                    {statusData.map((item) => (
+                                        <Select.Option
+                                            key={item.statusId}
+                                            value={item.statusId.toString()}
+                                        >
+                                            {item.statusName}
+                                        </Select.Option>
+                                    ))}
+                                </Select>
+                            )}
+                        />
+                    </div>
 
                     <Controller
                         name="priorityId"
                         control={control}
                         render={({ field }) => (
-                            <PriorityAndTaskTypeSelect
+                            <PrioritySelect
+                                {...field}
                                 priorityOptions={priorityData.map((item) => ({
                                     label: item.description,
                                     value: item.priorityId,
-                                }))}
-                                taskTypeOptions={taskTypeData.map((item) => ({
-                                    label: item.taskType,
-                                    value: item.id,
                                 }))}
                                 defaultPriority={
                                     priorityData.length > 0
                                         ? priorityData[0].priorityId
                                         : undefined
                                 }
+                                onSelectPriority={(priority) =>
+                                    field.onChange(priority)
+                                }
+                            />
+                        )}
+                    />
+
+                    <Controller
+                        name="typeId"
+                        control={control}
+                        render={({ field }) => (
+                            <TaskTypeSelect
+                                {...field}
+                                taskTypeOptions={taskTypeData.map((item) => ({
+                                    label: item.taskType,
+                                    value: item.id,
+                                }))}
                                 defaultTaskType={
                                     taskTypeData.length > 0
                                         ? taskTypeData[0].id
                                         : undefined
                                 }
-                                onSelectPriority={(priority) => {
-                                    field.onChange(priority);
-                                }}
-                                onSelectTaskType={(taskType) => {
-                                    field.onChange(taskType);
-                                }}
+                                onSelectTaskType={(taskType) =>
+                                    field.onChange(taskType)
+                                }
                             />
                         )}
                     />
@@ -265,9 +287,8 @@ export const CreateTask: React.FC<CreateTaskProps> = ({ onClose, open }) => {
                                     label: item.name,
                                     value: item.userId,
                                 }))}
-                                onSelectAssigners={(assigners) => {
-                                    field.onChange(assigners);
-                                }}
+                                value={field.value}
+                                onChange={(values) => field.onChange(values)}
                             />
                         )}
                     />
@@ -276,11 +297,13 @@ export const CreateTask: React.FC<CreateTaskProps> = ({ onClose, open }) => {
                             {errors.listUserAsign.message}
                         </p>
                     )}
+
                     <Controller
                         name="originalEstimate"
                         control={control}
                         render={({ field }) => (
                             <TimeTrackingInputs
+                                key={`${field.value}-${hoursSpent}`}
                                 totalEstimatedHours={field.value ?? 0}
                                 hoursSpent={hoursSpent}
                                 remainingHours={watch("timeTrackingRemaining")}
@@ -306,11 +329,6 @@ export const CreateTask: React.FC<CreateTaskProps> = ({ onClose, open }) => {
                             />
                         )}
                     />
-                    {errors?.description && (
-                        <p className="text-red-500 text-xs mt-1 text-[16px]">
-                            {errors.description.message}
-                        </p>
-                    )}
 
                     <div className="flex gap-3 justify-end">
                         <Button onClick={onClose}>Cancel</Button>

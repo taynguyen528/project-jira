@@ -62,12 +62,12 @@ export const TimeTrackingInputs: React.FC<TimeTrackingInputsProps> = ({
                         style={{ width: "100%" }}
                         styles={{
                             tracks: {
-                                backgroundColor: "#1677ff",
+                                background: "#1677ff",
                             },
                         }}
                     />
                 </div>
             </div>
         </>
-    ); 
+    );
 };

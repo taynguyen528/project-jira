@@ -3,12 +3,14 @@ import { Select } from "antd";
 
 interface AssignersSelectProps {
     memberOptions: { value: number; label: string }[];
-    onSelectAssigners: (assigners: number[]) => void;
+    value?: number[];
+    onChange?: (values: number[]) => void;
 }
 
 export const AssignersSelect: React.FC<AssignersSelectProps> = ({
     memberOptions,
-    onSelectAssigners,
+    value,
+    onChange,
 }) => (
     <div className="mt-3">
         <label className="text-[18px] font-bold">Assigners</label>
@@ -17,7 +19,8 @@ export const AssignersSelect: React.FC<AssignersSelectProps> = ({
                 style={{ width: "100%" }}
                 mode="multiple"
                 options={memberOptions}
-                onChange={(values) => onSelectAssigners(values as number[])}
+                value={value}
+                onChange={(values) => onChange && onChange(values as number[])}
             />
         </div>
     </div>
