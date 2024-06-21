@@ -78,7 +78,7 @@ export const Navbar: React.FC = () => {
                         }}
                     >
                         <img
-                            src="/jira-logo.png"
+                            src="/image/jira-logo.png"
                             alt="logo"
                             className="w-24 h-auto mr-4"
                         />

@@ -1,7 +1,7 @@
 import { Config } from "components";
 import { PATH } from "constant";
 import { AuthLayout, MainLayout } from "layouts";
-import { Login, NotFound, Profile, Project, Register } from "pages";
+import { Board, Login, NotFound, Profile, Project, Register } from "pages";
 import { RouteObject, useRoutes } from "react-router-dom";
 
 const router: RouteObject[] = [
@@ -19,6 +19,10 @@ const router: RouteObject[] = [
             {
                 path: PATH.myProfile,
                 element: <Profile />,
+            },
+            {
+                path: PATH.board,
+                element: <Board />,
             },
         ],
     },

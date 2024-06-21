@@ -3,4 +3,5 @@ export const PATH = {
     register: "/register",
     project: "/project",
     myProfile: "/my-profile",
+    board: "/board/:idProject",
 };

@@ -4,3 +4,4 @@ export * from "./Project";
 export * from "./Profile";
 export * from "./NotFound";
 export * from "./ProtectedRoutePage";
+export * from "./Board";

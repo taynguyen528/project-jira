@@ -1,8 +1,7 @@
 // user API
-
 import { privateClient, publicClient } from "constant";
 import { LoginType, RegisterType } from "schemas";
-import { ApiResponse, UserInfo, UserUpdate } from "types";
+import { ApiResponse, MemberTask, UserInfo, UserUpdate } from "types";
 
 export const userAPI = {
     signIn: (payload: LoginType): Promise<ApiResponse<LoginType>> => {
@@ -16,5 +15,8 @@ export const userAPI = {
     },
     getInfoUser: (userId: string): Promise<ApiResponse<UserInfo>> => {
         return privateClient.get(`/Users/getUser?keyword=${userId}`);
+    },
+    getListUser: (): Promise<ApiResponse<MemberTask[]>> => {
+        return privateClient.get(`/Users/getUser`);
     },
 };

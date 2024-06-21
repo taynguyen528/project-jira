@@ -5,3 +5,10 @@
 .ck-editor__editable {
     min-height: 150px !important;
 }
+
+.ant-breadcrumb-separator {
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
