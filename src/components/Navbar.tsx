@@ -75,6 +75,9 @@ export const Navbar: React.FC = () => {
                         <a
                             key="2"
                             className="text-[20px] text-blue-700 cursor-pointer hover:opacity-70 transition-all duration-300"
+                            onClick={() => {
+                                navigate("/user-management");
+                            }}
                         >
                             User
                         </a>

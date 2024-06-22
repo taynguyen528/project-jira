@@ -1,2 +1,13 @@
-export * from "./TypeResponse";
+export * from "./BaseProps.itf";
+// export * from "./DragnDrop.itf";
+export * from "./FormProps.itf";
+export * from "./ModalForm.itf";
+export * from "./Project.itf";
+export * from "./ProjectCategory.itf";
+// export * from "./QuanLyComment";
+// export * from "./QuanLyPriority";
+// export * from "./QuanLyStatus";
+// export * from "./QuanLyTaskType";
 export * from "./QuanLyUser";
+export * from "./SectionProps.itf";
+export * from "./TypeResponse";
