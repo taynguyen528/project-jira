@@ -1,4 +1,4 @@
-import { Button, Modal, Select, Input } from "antd";
+import { Button, Modal, Input } from "antd";
 import { userAPI } from "api";
 import { useEffect, useState } from "react";
 import { MemberTask } from "types";
@@ -34,16 +34,13 @@ export const ModalAddNewUserProject: React.FC<ModalAddNewUserProjectProps> = ({
     }, []);
 
     const memberIds = listUser.map((member) => member.userId);
-
     const projectMemberIds = memberProject.map((member) => member.userId);
-
     const nonProjectMemberIds = memberIds.filter(
         (id) => !projectMemberIds.includes(id)
     );
     const nonProjectMembers = listUser.filter((user) =>
         nonProjectMemberIds.includes(user.userId)
     );
-
     const filteredNonProjectMembers = nonProjectMembers.filter((user) =>
         user.name.toLowerCase().includes(searchValue.toLowerCase())
     );
@@ -73,7 +70,7 @@ export const ModalAddNewUserProject: React.FC<ModalAddNewUserProjectProps> = ({
                 ]}
             >
                 <div className="mt-[40px]">
-                    <div className="flex items-center justify-center w-[70%] gap-[20px] text-[25px]">
+                    <div className="flex items-center justify-center w-full gap-[20px] text-[25px]">
                         Tìm kiếm thành viên:
                         <Input
                             style={{ width: 300 }}
@@ -82,12 +79,18 @@ export const ModalAddNewUserProject: React.FC<ModalAddNewUserProjectProps> = ({
                             onChange={handleSearch}
                         />
                     </div>
-                    <div className="text-[20px] my-[30px] flex justify-between mx-auto w-[70%] font-bold">
+                    <div className="text-[20px] my-[30px] flex justify-between mx-auto w-[70%] px-[20px] font-bold">
                         <div>Chưa được thêm</div>
                         <div>Thành viên trong dự án</div>
                     </div>
-                    <div className="flex justify-around text-[25px]">
-                        <div style={{ maxHeight: "300px", overflowY: "auto" }}>
+                    <div className="flex justify-around text-[25px] px-[20px]">
+                        <div
+                            style={{
+                                maxHeight: "300px",
+                                overflowY: "auto",
+                                width: "45%",
+                            }}
+                        >
                             <ul>
                                 {filteredNonProjectMembers.map(
                                     (user, index) => (
@@ -132,7 +135,13 @@ export const ModalAddNewUserProject: React.FC<ModalAddNewUserProjectProps> = ({
                                 )}
                             </ul>
                         </div>
-                        <div style={{ maxHeight: "300px", overflowY: "auto" }}>
+                        <div
+                            style={{
+                                maxHeight: "300px",
+                                overflowY: "auto",
+                                width: "45%",
+                            }}
+                        >
                             <ul>
                                 {memberProject.map((member, index) => (
                                     <li key={member.userId} className="mb-3">
