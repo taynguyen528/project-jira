@@ -9,3 +9,4 @@ export * from "./ProjectSelect";
 export * from "./TaskTypeSelect";
 export * from "./PrioritySelect";
 export * from "./ModalAddNewUserProject";
+export * from "./ModalTaskDetail";
