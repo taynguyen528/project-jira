@@ -10,3 +10,5 @@ export * from "./TaskTypeSelect";
 export * from "./PrioritySelect";
 export * from "./ModalAddNewUserProject";
 export * from "./ModalTaskDetail";
+export * from "./DescriptionEditor";
+export * from "./CommentComponent";

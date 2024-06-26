@@ -9,19 +9,29 @@ interface AssignersSelectProps {
 
 export const AssignersSelect: React.FC<AssignersSelectProps> = ({
     memberOptions,
-    value,
+    value = [],
     onChange,
-}) => (
-    <div className="mt-3">
-        <label className="text-[18px] font-bold">Assigners</label>
-        <div className="mt-2">
-            <Select
-                style={{ width: "100%" }}
-                mode="multiple"
-                options={memberOptions}
-                value={value}
-                onChange={(values) => onChange && onChange(values as number[])}
-            />
+}) => {
+    const handleChange = (values: number[]) => {
+        if (values.length > 0) {
+            if (onChange) {
+                onChange(values);
+            }
+        }
+    };
+
+    return (
+        <div className="mt-3">
+            <label className="text-[18px] font-bold">Assigners</label>
+            <div className="mt-2">
+                <Select
+                    style={{ width: "100%" }}
+                    mode="multiple"
+                    options={memberOptions}
+                    value={value}
+                    onChange={handleChange}
+                />
+            </div>
         </div>
-    </div>
-);
+    );
+};

@@ -35,7 +35,7 @@ export const BoardTemplate = () => {
 
     useEffect(() => {
         fetchData();
-    }, [idProject]);
+    }, [idProject, members]);
 
     const handleButtonAddUserProject = () => {
         setOpenModalAddUser(true);
@@ -250,6 +250,7 @@ export const BoardTemplate = () => {
                     open={openModalTaskDetail}
                     onCancel={handleCancelModalTaskDetail}
                     task={selectedTask}
+                    members={members}
                 />
             )}
         </div>
