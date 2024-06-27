@@ -18,7 +18,6 @@ import { CommentComponent } from "./CommentComponent";
 import { DeleteOutlined } from "@ant-design/icons";
 import { showDeleteConfirm } from "./DeleteTask";
 import { toast } from "react-toastify";
-import { useParams } from "react-router-dom";
 
 interface ModalTaskDetailProps {
     open: boolean;
@@ -36,7 +35,6 @@ export const ModalTaskDetail: React.FC<ModalTaskDetailProps> = ({
     onTaskDeleted,
 }) => {
     const [taskInfo, setTaskInfo] = useState<LstTaskDeTail>();
-    const { idProject } = useParams<{ idProject: string }>();
 
     const fetchDataTask = async () => {
         try {
