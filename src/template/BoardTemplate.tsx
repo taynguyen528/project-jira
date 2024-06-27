@@ -35,7 +35,7 @@ export const BoardTemplate = () => {
 
     useEffect(() => {
         fetchData();
-    }, [idProject, members]);
+    }, [idProject]);
 
     const handleButtonAddUserProject = () => {
         setOpenModalAddUser(true);
@@ -224,6 +224,7 @@ export const BoardTemplate = () => {
                     projectName={projectName}
                     members={members}
                     idProject={idProject}
+                    fetchDataMember={fetchData}
                 />
             </div>
             <div className="flex gap-4 w-full mt-[50px]">
@@ -249,8 +250,9 @@ export const BoardTemplate = () => {
                 <ModalTaskDetail
                     open={openModalTaskDetail}
                     onCancel={handleCancelModalTaskDetail}
-                    task={selectedTask}
+                    taskId={selectedTask.taskId}
                     members={members}
+                    onTaskDeleted={fetchData}
                 />
             )}
         </div>

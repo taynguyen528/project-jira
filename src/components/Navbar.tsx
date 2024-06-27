@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {  Dropdown } from "antd";
+import { Dropdown } from "antd";
 import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "store";
 import { MenuOutlined } from "@ant-design/icons";
@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { PATH } from "constant";
 import { quanLyNguoiDungAction } from "store/quanLyNguoiDung/slice";
 import { toast } from "react-toastify";
-import { CreateTask } from "./CreateTask";
+import { CreateTask } from "./TaskComponent/CreateTask";
 
 export const Navbar: React.FC = () => {
     const { userLogin } = useSelector(
@@ -111,7 +111,10 @@ export const Navbar: React.FC = () => {
                 <div className="flex items-center gap-4">
                     {userLogin ? (
                         <div className="ml-auto">
-                            <Dropdown menu={{ items: menuItems }} trigger={['click']}>
+                            <Dropdown
+                                menu={{ items: menuItems }}
+                                trigger={["click"]}
+                            >
                                 <a
                                     className="flex items-center gap-2 text-[20px] text-blue-700 cursor-pointer"
                                     onClick={(e) => e.preventDefault()}

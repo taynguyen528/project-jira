@@ -14,7 +14,7 @@ export const DescriptionEditor: React.FC<DescriptionEditorProps> = ({
     <div className="mt-3">
         <label className="text-[18px] font-bold">Description</label>
         <div className="mt-2">
-            <div style={{ height: "200px" }}>
+            <div className="h-[200px] w-full">
                 <CKEditor
                     editor={ClassicEditor}
                     data={description}

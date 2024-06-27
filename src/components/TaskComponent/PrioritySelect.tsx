@@ -2,10 +2,10 @@ import React from "react";
 import { Select } from "antd";
 
 interface PrioritySelectProps {
-    priorityOptions: { value: number; label: string }[];
+    priorityOptions: { value: number | string; label: string }[];
     defaultPriority?: number;
     onSelectPriority: (priority: number) => void;
-    value: number;
+    value: number | undefined;
     onChange: (value: number) => void;
     onBlur: () => void;
     name: string;

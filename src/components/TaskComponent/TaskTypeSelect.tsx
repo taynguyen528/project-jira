@@ -2,7 +2,7 @@ import React from "react";
 import { Select } from "antd";
 
 interface TaskTypeSelectProps {
-    taskTypeOptions: { value: string; label: string }[];
+    taskTypeOptions: { value: string | number; label: string }[];
     defaultTaskType?: string;
     onSelectTaskType: (taskType: string) => void;
     value: string;
