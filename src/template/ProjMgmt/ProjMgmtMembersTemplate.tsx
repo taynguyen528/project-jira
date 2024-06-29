@@ -3,7 +3,7 @@ import { useAppDispatch } from "store";
 import { spinnerActions } from "../../store/quanLySpinner/spinnerSlice";
 
 // import local services
-import { projectAPI } from "../../api/projectApi";
+import { projectApi } from "../../api/projectApi";
 
 // import local component interface
 import { IProjectMembers } from "../../types/Project.itf";
@@ -50,11 +50,11 @@ export function ProjMgmtMembersTemplate({
 
   const handleAssignUser = (userId: number) => {
     dispatch(spinnerActions.setLoadingOn());
-    projectAPI
+    projectApi
       .assignUserProject({ projectId, userId })
       .then((res) => {
         // console.log(res);
-        dispatch(projectAPI.getAllAndDispatch("Member added successfully"));
+        dispatch(projectApi.getAllAndDispatch("Member added successfully"));
       })
       .catch((err) => {
         console.log(err);
@@ -65,11 +65,11 @@ export function ProjMgmtMembersTemplate({
 
   const handleDeleteMember = (memberId: number) => {
     dispatch(spinnerActions.setLoadingOn());
-    projectAPI
+    projectApi
       .removeUserFromProject({ projectId, userId: memberId })
       .then((res) => {
         // console.log(res);
-        dispatch(projectAPI.getAllAndDispatch("Member deleted"));
+        dispatch(projectApi.getAllAndDispatch("Member deleted"));
       })
       .catch((err) => {
         console.log(err);

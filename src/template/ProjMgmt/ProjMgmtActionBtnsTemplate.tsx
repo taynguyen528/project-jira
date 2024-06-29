@@ -10,7 +10,7 @@ import { spinnerActions } from "../../store/quanLySpinner/spinnerSlice";
 import { ProjMgmtEditTemplate } from "./ProjMgmtEditTemplate";
 
 // import local Service
-import { projectAPI } from "../../api/projectApi";
+import { projectApi } from "../../api/projectApi";
 
 // import antd components
 import {
@@ -30,11 +30,11 @@ export function ProjMgmtActionBtnsTemplate({ project }: IProjectActionBtns) {
   };
   const handleDeleteProject = () => {
     dispatch(spinnerActions.setLoadingOn());
-    projectAPI
+    projectApi
       .delete(project.id)
       .then((res) => {
         console.log(res);
-        dispatch(projectAPI.getAllAndDispatch("Project deleted"));
+        dispatch(projectApi.getAllAndDispatch("Project deleted"));
       })
       .catch((err) => {
         console.log(err);

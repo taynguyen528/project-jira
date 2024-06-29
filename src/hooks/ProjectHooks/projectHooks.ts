@@ -6,7 +6,7 @@ import { AppDispatch } from "../../store/index";
 import { spinnerActions } from "../../store/quanLySpinner/spinnerSlice";
 
 // import local services
-import { projectAPI } from "../../api/projectApi";
+import { projectApi } from "../../api/projectApi";
 
 // import antd component
 import { message } from "antd";
@@ -18,7 +18,7 @@ const projectHooks = {
   ) => {
     useEffect(() => {
       dispatch(spinnerActions.setLoadingOn());
-      projectAPI
+      projectApi
         .getAll()
         .then((res) => {
           dispatch(projectActions.updateProjectList(res.content));

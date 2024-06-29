@@ -13,7 +13,7 @@ import { SectionWrapper } from "../../components/SectionWrapper";
 import { ProjMgmtFormTemplate } from "./ProjMgmtFormTemplate";
 
 // import local Services
-import { projectAPI } from "../../api/projectApi";
+import { projectApi } from "../../api/projectApi";
 
 // import utils
 import toastify from "../../utils/toastifyUtils";
@@ -28,7 +28,7 @@ export const ProjMgmtCreateTemplate = () => {
     if (!values.description) {
       newProject.description = "";
     }
-    projectAPI
+    projectApi
       .createProject(newProject)
       .then((res) => {
         dispatch(projectActions.putProjectDetail(res.content));

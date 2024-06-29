@@ -2,7 +2,7 @@ import { Config } from "components";
 import { PATH } from "constant";
 import { AuthLayout, MainLayout } from "layouts";
 import { Board, Login, NotFound, Profile, Register } from "pages";
-import { ProjMgmtCreate, ProjMgmtForm } from "pages/ProjMgmt";
+import { ProjMgmtCreate } from "pages/ProjMgmt";
 import { ProjMgmt } from "pages/ProjMgmt/ProjMgmt";
 import { UserMgmt } from "pages/UserMgmt/UserMgmt";
 import { RouteObject, useRoutes } from "react-router-dom";

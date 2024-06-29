@@ -13,7 +13,7 @@ import { AppDispatch } from "../store";
 import { privateClient, publicClient } from "constant";
 import { ApiResponse, ContentProject, LstTaskDeTail, Task } from "types";
 
-export const projectAPI = {
+export const projectApi = {
   // anhtuan
   createProject: async (projectInfo: IProject): Promise<any> => {
     return privateClient.post("/Project/createProjectAuthorize", projectInfo);

@@ -7,7 +7,7 @@ import { spinnerActions } from "../../store/quanLySpinner/spinnerSlice";
 import { drawerActions } from "../../store/quanLyDrawer/drawerSlice";
 
 // import local Services
-import { projectAPI } from "../../api/projectApi";
+import { projectApi } from "../../api/projectApi";
 
 // import local component
 import { ProjMgmtFormTemplate } from "./ProjMgmtFormTemplate";
@@ -26,13 +26,13 @@ export function ProjMgmtEditTemplate({ project }: IProjectEdit) {
       id: project.id,
       creator: project.creator.id,
     };
-    projectAPI
+    projectApi
       .update(project.id, updateProject)
       .then(() => {
         toastify("success", "Updated project successfully !");
         dispatch(drawerActions.closeDrawer());
         setTimeout(() => {
-          dispatch(projectAPI.getAllAndDispatch(null));
+          dispatch(projectApi.getAllAndDispatch(null));
           dispatch(spinnerActions.setLoadingOff());
         }, 2500);
       })
