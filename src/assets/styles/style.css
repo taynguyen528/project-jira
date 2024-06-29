@@ -179,12 +179,6 @@ h6 {
 /* END Project Management */
 /* END ================================== ANT Design component styling */
 
-/* START TinyMCE Component styling */
-.tox-notification.tox-notification--in {
-  display: none !important;
-}
-/* END TinyMCE Component styling */
-
 /* ================================== edit task form header taskType styling */
 .select-task-type.ant-select-single:not(.ant-select-customize-input)
   .ant-select-selector {
