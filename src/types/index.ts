@@ -1,5 +1,4 @@
 export * from "./BaseProps.itf";
-// export * from "./DragnDrop.itf";
 export * from "./FormProps.itf";
 export * from "./ModalForm.itf";
 export * from "./Project.itf";
