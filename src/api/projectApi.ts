@@ -2,7 +2,7 @@
 import { message } from "antd";
 
 /* import local interfaces */
-import { IProject, IProjectUpdate } from "types";
+import { IProject, IProjectUpdate } from "../types/Project.itf";
 
 /* import redux hooks */
 import { projectActions } from "../store/quanLyProject/projectSlice";
@@ -12,6 +12,7 @@ import { AppDispatch } from "../store";
 // import config URL
 import { privateClient } from "constant";
 import { ApiResponse } from "types";
+import { AxiosResponse } from "axios";
 
 export const projectAPI = {
   createProject: async (projectInfo: IProject): Promise<any> => {

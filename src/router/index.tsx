@@ -1,20 +1,20 @@
 import { Config } from "components";
 import { PATH } from "constant";
 import { AuthLayout, MainLayout } from "layouts";
-import { Login, NotFound, Profile, Register } from "pages";
+import { Board, Login, NotFound, Profile, Register } from "pages";
 import { ProjMgmtCreate, ProjMgmtForm } from "pages/ProjMgmt";
 import { ProjMgmt } from "pages/ProjMgmt/ProjMgmt";
 import { UserMgmt } from "pages/UserMgmt/UserMgmt";
 import { RouteObject, useRoutes } from "react-router-dom";
 
 const router: RouteObject[] = [
-  {
-    element: <MainLayout />,
-    children: [
-      {
-        path: "/",
-        element: <Config />,
-      },
+    {
+        element: <MainLayout />,
+        children: [
+            {
+                path: "/",
+                element: <Config />,
+            },
       {
         path: PATH.myProfile,
         element: <Profile />,
@@ -31,25 +31,29 @@ const router: RouteObject[] = [
         path: PATH.user,
         element: <UserMgmt />,
       },
-    ],
-  },
-  {
-    element: <AuthLayout />,
-    children: [
-      {
-        path: PATH.login,
-        element: <Login />,
-      },
-      {
-        path: PATH.register,
-        element: <Register />,
-      },
-      {
-        path: "*",
-        element: <NotFound />,
-      },
-    ],
-  },
+            {
+                path: PATH.board,
+                element: <Board />,
+            },
+        ],
+    },
+    {
+        element: <AuthLayout />,
+        children: [
+            {
+                path: PATH.login,
+                element: <Login />,
+            },
+            {
+                path: PATH.register,
+                element: <Register />,
+            },
+            {
+                path: "*",
+                element: <NotFound />,
+            },
+        ],
+    },
 ];
 
 export const Router = () => useRoutes(router);

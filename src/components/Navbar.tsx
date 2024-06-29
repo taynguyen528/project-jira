@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Menu, Dropdown } from "antd";
+import {  Dropdown } from "antd";
 import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "store";
 import { MenuOutlined } from "@ant-design/icons";
@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { PATH } from "constant";
 import { quanLyNguoiDungAction } from "store/quanLyNguoiDung/slice";
 import { toast } from "react-toastify";
+import { CreateTask } from "./CreateTask";
 
 export const Navbar: React.FC = () => {
     const { userLogin } = useSelector(
@@ -34,7 +35,7 @@ export const Navbar: React.FC = () => {
         navigate("/login");
     };
 
-    const items = [
+    const menuItems = [
         {
             key: "1",
             label: (
@@ -42,6 +43,7 @@ export const Navbar: React.FC = () => {
                     Profile
                 </span>
             ),
+            onClick: () => handleItemClick("1"),
         },
         {
             key: "2",
@@ -50,18 +52,37 @@ export const Navbar: React.FC = () => {
                     Logout
                 </span>
             ),
+            onClick: () => handleItemClick("2"),
         },
     ];
+
+    // Create task
+    const [open, setOpen] = useState(false);
+
+    const showDrawer = () => {
+        setOpen(true);
+    };
+
+    const onClose = () => {
+        setOpen(false);
+    };
 
     return (
         <div className="container mx-auto">
             <div className="flex justify-between items-center py-2">
                 <div className="flex items-center gap-8">
-                    <img
-                        src="/jira-logo.png"
-                        alt="logo"
-                        className="w-24 h-auto mr-4"
-                    />
+                    <div
+                        className="cursor-pointer"
+                        onClick={() => {
+                            navigate("/project");
+                        }}
+                    >
+                        <img
+                            src="/image/jira-logo.png"
+                            alt="logo"
+                            className="w-24 h-auto mr-4"
+                        />
+                    </div>
                     <div className="hidden md:flex items-center gap-8">
                         <a
                             key="1"
@@ -84,6 +105,7 @@ export const Navbar: React.FC = () => {
                         <a
                             key="3"
                             className="text-[20px] text-blue-700 cursor-pointer hover:opacity-70 transition-all duration-300"
+                            onClick={showDrawer}
                         >
                             Create Task
                         </a>
@@ -92,17 +114,7 @@ export const Navbar: React.FC = () => {
                 <div className="flex items-center gap-4">
                     {userLogin ? (
                         <div className="ml-auto">
-                            <Dropdown
-                                overlay={
-                                    <Menu
-                                        items={items.map((item) => ({
-                                            ...item,
-                                            onClick: () =>
-                                                handleItemClick(item.key),
-                                        }))}
-                                    />
-                                }
-                            >
+                            <Dropdown menu={{ items: menuItems }} trigger={['click']}>
                                 <a
                                     className="flex items-center gap-2 text-[20px] text-blue-700 cursor-pointer"
                                     onClick={(e) => e.preventDefault()}
@@ -136,6 +148,9 @@ export const Navbar: React.FC = () => {
                     <a
                         key="1"
                         className="text-[20px] text-blue-700 cursor-pointer hover:opacity-70 transition-all duration-300"
+                        onClick={() => {
+                            navigate("/project");
+                        }}
                     >
                         Project
                     </a>
@@ -148,11 +163,13 @@ export const Navbar: React.FC = () => {
                     <a
                         key="3"
                         className="text-[20px] text-blue-700 cursor-pointer hover:opacity-70 transition-all duration-300"
+                        onClick={showDrawer}
                     >
                         Create Task
                     </a>
                 </div>
             )}
+            <CreateTask onClose={onClose} open={open} />
         </div>
     );
 };

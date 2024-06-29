@@ -63,12 +63,14 @@ export const {
             .addCase(
                 quanLyNguoiDungActionsThunks.registerThunk.fulfilled,
                 (state, { payload }) => {
+                    console.log(payload);
                     state.isFetchingRegister = false;
                 }
             )
             .addCase(
                 quanLyNguoiDungActionsThunks.registerThunk.rejected,
                 (state, action) => {
+                    console.log(action);
                     state.isFetchingRegister = false;
                 }
             );

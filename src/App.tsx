@@ -4,14 +4,14 @@ import { CustomModal } from "./components/Modals/CustomModal";
 import { Router } from "router";
 
 function App() {
-  return (
-    <>
+    return (
+        <>
       <Spinner />
       <CustomDrawer />
       <CustomModal />
-      <Router />
-    </>
-  );
+            <Router />
+        </>
+    );
 }
 
 export default App;
