@@ -1,9 +1,15 @@
+import { Spinner } from "./components/Spinners/Spinner";
+import { CustomDrawer } from "./components/Drawer/CustomDrawer";
+import { CustomModal } from "./components/Modals/CustomModal";
 import { Router } from "router";
 
 function App() {
     return (
         <>
-            <Router /> 
+      <Spinner />
+      <CustomDrawer />
+      <CustomModal />
+            <Router />
         </>
     );
 }

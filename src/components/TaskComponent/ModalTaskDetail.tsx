@@ -7,6 +7,7 @@ import {
     StatusType,
     TaskType,
     TaskTypeDetail,
+    TaskTypeModel,
 } from "types";
 import { DescriptionEditor } from "./DescriptionEditor";
 import { PrioritySelect } from "./PrioritySelect";
@@ -44,7 +45,7 @@ export const ModalTaskDetail: React.FC<ModalTaskDetailProps> = ({
                     setTaskInfo(res.content);
                     setTaskName(res.content.taskName);
                     setDescription(res.content.description ?? "");
-                    setPriority(res.content.priorityTask.priority);
+                    setPriority(res.content.priorityTask.priorityId);
                     setTaskType(
                         String(res.content.taskTypeDetail.taskType) ?? ""
                     );
@@ -79,7 +80,7 @@ export const ModalTaskDetail: React.FC<ModalTaskDetailProps> = ({
     useEffect(() => {
         if (taskInfo) {
             setDescription(taskInfo.description ?? "");
-            setPriority(taskInfo.priorityTask.priority);
+            setPriority(taskInfo.priorityTask.priorityId);
             setTaskType(String(taskInfo.taskTypeDetail.taskType) ?? "");
             setStatusId(taskInfo.statusId ?? "");
             setAssignees(
@@ -165,13 +166,27 @@ export const ModalTaskDetail: React.FC<ModalTaskDetailProps> = ({
         setIsDescriptionChanged(value !== taskInfo?.description);
     };
 
-    const hasPriorityChanged = priority !== taskInfo?.priorityTask.priority;
-    const hasTaskTypeChanged = taskType !== taskInfo?.taskTypeDetail.taskType;
+    useEffect(() => {
+        if (
+            priority !== taskInfo?.priorityTask.priorityId ||
+            taskType !== taskInfo?.taskTypeDetail.taskType ||
+            JSON.stringify(assignees) !==
+                JSON.stringify(taskInfo?.assigness.map((a) => a.id))
+        ) {
+            handleUpdateTask({ listUserAsign: assignees, taskType, priority });
+        }
+    }, [priority, taskType, assignees]);
 
-    const handleUpdateTask = async (updatedFields: Partial<LstTaskDeTail>) => {
+    const hasPriorityChanged = priority !== taskInfo?.priorityTask.priorityId;
+    const hasTaskTypeChanged = taskType !== taskInfo?.taskTypeDetail.taskType;
+    const hasAssigneesChanged =
+        JSON.stringify(assignees) !==
+        JSON.stringify(taskInfo?.assigness.map((a) => a.id));
+
+    const handleUpdateTask = async (updatedFields: Partial<TaskTypeModel>) => {
         if (!taskInfo) return;
 
-        const updatedTask = {
+        const updatedTask: TaskTypeModel = {
             ...taskInfo,
             ...updatedFields,
             listUserAsign: assignees,
@@ -188,32 +203,27 @@ export const ModalTaskDetail: React.FC<ModalTaskDetailProps> = ({
                 setIsTaskNameChanged(false);
                 setIsDescriptionChanged(false);
 
-                if (hasPriorityChanged || hasTaskTypeChanged) {
-                    const updatedData = {
-                        listUserAsign: updatedTask.listUserAsign,
-                        taskId: updatedTask.taskId,
-                        taskName: updatedTask.taskName,
-                        description: updatedTask.description,
-                        statusId: updatedTask.statusId,
-                        originalEstimate: updatedTask.originalEstimate ?? 0,
-                        timeTrackingSpent: updatedTask.timeTrackingSpent ?? 0,
-                        timeTrackingRemaining:
-                            updatedTask.timeTrackingRemaining ?? 0,
-                        projectId: updatedTask.projectId ?? 0,
+                if (
+                    hasPriorityChanged ||
+                    hasTaskTypeChanged ||
+                    hasAssigneesChanged
+                ) {
+                    const updateData: TaskTypeModel = {
+                        ...updatedTask,
                         typeId: hasTaskTypeChanged
                             ? parseInt(taskType, 10)
-                            : updatedTask.taskTypeDetail.id,
+                            : taskInfo.taskTypeDetail.id,
                         priorityId: hasPriorityChanged
                             ? parseInt(priority as string, 10)
-                            : updatedTask.priorityTask.priorityId,
+                            : taskInfo.priorityTask.priorityId,
                     };
 
-                    const updateRes = await taskApi.updateTask(updatedData);
+                    const updateRes = await taskApi.updateTask(updateData);
                     if (updateRes && updateRes.statusCode === 200) {
                         onFetchTask();
                     } else {
                         toast.error(
-                            "Có lỗi xảy ra khi cập nhật Priority hoặc Task Type."
+                            "Có lỗi xảy ra khi cập nhật Priority, Task Type, hoặc Assignees."
                         );
                     }
                 }
@@ -241,15 +251,6 @@ export const ModalTaskDetail: React.FC<ModalTaskDetailProps> = ({
             },
         });
     };
-    
-    useEffect(() => {
-        if (
-            priority !== taskInfo?.priorityTask.priority ||
-            taskType !== taskInfo?.taskTypeDetail.taskType
-        ) {
-            handleUpdateTask({ priority, taskType });
-        }
-    }, [priority, taskType]);
 
     return (
         <Modal

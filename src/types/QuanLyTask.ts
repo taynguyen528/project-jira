@@ -80,4 +80,7 @@ export type TaskTypeModel = {
     projectId: number;
     typeId: number;
     priorityId: number;
+
+    taskType?: string;
+    priority?: number | string | undefined;
 };

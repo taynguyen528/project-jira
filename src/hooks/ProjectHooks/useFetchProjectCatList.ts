@@ -1,0 +1,22 @@
+import { useEffect } from "react";
+import { projectCategoryActions } from "../../store/quanLyProjectCategory/projectCategorySlice";
+import { AppDispatch } from "../../store/index";
+import { projectApi } from "../../api/projectApi";
+import { IProjectCategory } from "types/ProjectCategory.itf";
+
+export const useFetchProjectCatList = (dispatch: AppDispatch) => {
+  useEffect(() => {
+    projectApi
+      .getAllProjectCategory()
+      .then((res) => {
+        dispatch(
+          projectCategoryActions.getAllProjectCategory(
+            res.content as IProjectCategory[]
+          )
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+};

@@ -13,5 +13,3 @@ export const optionApi = {
     return publicClient.get("TaskType/getAll");
   },
 };
-
-

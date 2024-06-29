@@ -5,9 +5,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Assigness, LstTask, LstTaskDeTail, MemberTask } from "types";
 import { UserAddOutlined } from "@ant-design/icons";
 import {
-    CreateTask,
-    ModalAddNewUserProject,
-    ModalTaskDetail,
+  CreateTask,
+  ModalAddNewUserProject,
+  ModalTaskDetail,
 } from "components";
 
 export const BoardTemplate = () => {

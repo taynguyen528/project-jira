@@ -96,7 +96,6 @@ export const ModalAddNewUserProject: React.FC<ModalAddNewUserProjectProps> = ({
                 projectId: +idProject,
                 userId,
             });
-
             if (res && res.statusCode === 200) {
                 toast.success(res.message);
 
