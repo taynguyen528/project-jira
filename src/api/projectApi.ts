@@ -10,18 +10,21 @@ import { spinnerActions } from "../store/quanLySpinner/spinnerSlice";
 import { AppDispatch } from "../store";
 
 // import config URL
-import { privateClient } from "constant";
-import { ApiResponse } from "types";
-import { AxiosResponse } from "axios";
+import { privateClient, publicClient } from "constant";
+import { ApiResponse, ContentProject, LstTaskDeTail, Task } from "types";
 
 export const projectAPI = {
+  // anhtuan
   createProject: async (projectInfo: IProject): Promise<any> => {
     return privateClient.post("/Project/createProjectAuthorize", projectInfo);
   },
-  getAll: async (): Promise<ApiResponse> => {
+  getAll: async (): Promise<ApiResponse<IProject[]>> => {
     return privateClient.get(`/Project/getAllProject`);
   },
-  getAllByName: async (searchKey: string): Promise<ApiResponse> => {
+  getAllProject: (): Promise<ApiResponse<ContentProject[]>> => {
+    return publicClient.get("Project/getAllProject");
+  },
+  getAllByName: async (searchKey: string): Promise<ApiResponse<object>> => {
     return privateClient.get(`/Project/getAllProject?keyword=${searchKey}`);
   },
   getAllAndDispatch:
@@ -41,82 +44,42 @@ export const projectAPI = {
           dispatch(spinnerActions.setLoadingOff());
         });
     },
-  getAllProjectCategory: async (): Promise<ApiResponse> => {
+  getAllProjectCategory: async (): Promise<ApiResponse<object>> => {
     return privateClient.get(`/ProjectCategory`);
   },
-  getDetails: async (projectId: string | undefined): Promise<any> => {
-    let { data } = await privateClient.get<IProject>(
-      `/Project/getProjectDetail?id=${projectId}`
-    );
-    return data;
+  getProjectDetail: (id: number): Promise<ApiResponse<Task>> => {
+    return privateClient.get(`Project/getProjectDetail?id=${id}`);
   },
-
-  getDetailsThunk: (projectId: string) => (dispatch: AppDispatch) => {
-    privateClient
-      .get(`/Project/getProjectDetail?id=${projectId}`)
-      .then((res) => {
-        let resContent = res.data.content;
-        resContent = {
-          ...resContent,
-          categoryName: resContent.projectCategory.name,
-        };
-        dispatch(projectActions.putProjectDetail(resContent));
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        setTimeout(() => {
-          dispatch(spinnerActions.setLoadingOff());
-        }, 1000);
-      });
-  },
-
-  getDetailsAndSetProject:
-    (
-      projectID: number,
-      setProject: React.Dispatch<React.SetStateAction<IProject | null>>,
-      successMessage?: string
-    ) =>
-    (dispatch: AppDispatch) => {
-      privateClient
-        .get(`/Project/getProjectDetail?id=${projectID}`)
-        .then((res) => {
-          console.log(res);
-          setProject(res.data.content);
-          if (successMessage) {
-            message.success(successMessage);
-          }
-          dispatch(spinnerActions.setLoadingOff());
-        })
-        .catch((err) => {
-          console.log(err);
-          message.error(err.response.data.content);
-          dispatch(spinnerActions.setLoadingOff());
-        });
-    },
   update: async (
     projectId: number,
     updatedProject: IProjectUpdate
-  ): Promise<ApiResponse> => {
+  ): Promise<ApiResponse<object>> => {
     return privateClient.put(
       `/Project/updateProject?projectId=${projectId}`,
       updatedProject
     );
   },
-  delete: async (projectID: number): Promise<ApiResponse> => {
-    return privateClient.delete(`/Project/deleteProject?projectId=${projectID}`);
+  delete: async (projectID: number): Promise<ApiResponse<object>> => {
+    return privateClient.delete(
+      `/Project/deleteProject?projectId=${projectID}`
+    );
   },
-  assignUser: async (
-    projectId: number,
-    userId: string
-  ): Promise<ApiResponse> => {
-    return privateClient.post(`/Project/assignUserProject`, { projectId, userId });
+  assignUserProject: (data: {
+    projectId: number;
+    userId: number;
+  }): Promise<ApiResponse<{ projectId: number; userId: number }>> => {
+    return privateClient.post(`/Project/assignUserProject`, data);
   },
-  deleteMember: async (
-    projectId: number,
-    userId: string
-  ): Promise<ApiResponse> => {
-    return privateClient.post(`/Project/removeUserFromProject`, { projectId, userId });
+  removeUserFromProject: (data: {
+    projectId: number;
+    userId: number;
+  }): Promise<ApiResponse<{ projectId: number; userId: number }>> => {
+    return privateClient.post(`/Project/removeUserFromProject`, data);
+  },
+  getTaskDetail: (taskId: number): Promise<ApiResponse<LstTaskDeTail>> => {
+    return privateClient.get(`/Project/getTaskDetail?taskId=${taskId}`);
+  },
+  removeTask: (taskId: number): Promise<ApiResponse<{ taskId: number }>> => {
+    return privateClient.delete(`/Project/removeTask?taskId=${taskId}`);
   },
 };

@@ -1,0 +1,155 @@
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { Button, Input } from "antd";
+import { commentApi } from "api";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { RootState } from "store";
+import { CommentType } from "types";
+import { showDeleteConfirm } from "./DeleteTask";
+
+interface ModalCommentProps {
+    taskId: number;
+}
+
+export const CommentComponent: React.FC<ModalCommentProps> = ({ taskId }) => {
+    const { userLogin } = useSelector(
+        (state: RootState) => state.quanLyNguoiDung
+    );
+    const [listComment, setListComment] = useState<CommentType[]>([]);
+    const [contentComment, setContentComment] = useState<string>("");
+
+    const fetchDataComment = async () => {
+        try {
+            const res = await commentApi.getAllComment(taskId);
+            if (res && res.statusCode === 200) {
+                setListComment(res.content);
+            }
+        } catch (error: any) {
+            console.log(error.response.data.content);
+        }
+    };
+
+    useEffect(() => {
+        fetchDataComment();
+    }, [taskId]);
+
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setContentComment(event.target.value);
+    };
+
+    const handleBtnSubmitComment = async () => {
+        if (!contentComment.trim()) return;
+
+        try {
+            const res = await commentApi.insertComment({
+                taskId,
+                contentComment,
+            });
+
+            if (res && res.statusCode === 200) {
+                toast.success("Bình luận thành công.");
+                const newComment: CommentType = {
+                    id: res.content.id,
+                    userId: userLogin.userId,
+                    taskId: taskId,
+                    contentComment: res.content.contentComment,
+                    deleted: false,
+                    alias: res.content.contentComment,
+                    user: {
+                        userId: userLogin.userId,
+                        name: userLogin.name,
+                        avatar: userLogin.avatar,
+                    },
+                };
+
+                setListComment((prevComments) => [...prevComments, newComment]);
+
+                setContentComment("");
+            }
+        } catch (error: any) {
+            console.log(error.response.data.content);
+        }
+    };
+
+    const handleBtnDeleteComment = (commentId: number, content: string) => {
+        console.log("commentId", commentId);
+        console.log("content", content);
+        showDeleteConfirm({
+            title: `Bạn có chắc chắn muốn xóa comment này không?`,
+            content: `Nội dung: ${content}`,
+            onOk: async () => {
+                try {
+                    const res = await commentApi.deleteComment(commentId);
+                    if (res && res.statusCode === 200) {
+                        toast.success("Xóa bình luận thành công.");
+                        fetchDataComment();
+                    }
+                } catch (error: any) {
+                    toast.error(error.response.data.content);
+                }
+            },
+        });
+    };
+
+    return (
+        <div>
+            <div className="mt-2 flex items-center gap-4">
+                <img
+                    src={userLogin.avatar}
+                    alt="avatar"
+                    className="w-[40px] rounded-full"
+                />
+                <Input
+                    placeholder="Viết câu trả lời"
+                    style={{ width: "60%" }}
+                    value={contentComment}
+                    onChange={handleInputChange}
+                />
+                <Button type="primary" onClick={handleBtnSubmitComment}>
+                    Submit
+                </Button>
+            </div>
+            <div className="max-h-[300px] overflow-y-scroll">
+                {listComment.map((comment: CommentType) => (
+                    <div
+                        key={comment.id}
+                        className="mt-4 flex items-center gap-4"
+                    >
+                        <img
+                            src={comment.user.avatar}
+                            alt="avatar"
+                            className="w-[40px] rounded-full"
+                        />
+                        <div>
+                            <div className="font-bold text-[18px]">
+                                {comment.user.name}
+                            </div>
+                            <div className="text-[16px]">
+                                {comment.contentComment}
+                            </div>
+                            {comment.userId === userLogin.id && (
+                                <div className="flex gap-3 ">
+                                    <div className="cursor-pointer text-[#929398] text-[14px]">
+                                        Chỉnh sửa <EditOutlined />
+                                    </div>
+                                    <div
+                                        className="cursor-pointer text-[#929398] text-[14px]"
+                                        onClick={() =>
+                                            handleBtnDeleteComment(
+                                                comment.id,
+                                                comment.contentComment
+                                            )
+                                        }
+                                    >
+                                        Xóa <DeleteOutlined />
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+};

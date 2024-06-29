@@ -10,6 +10,7 @@ interface ModalAddNewUserProjectProps {
     projectName: string;
     members: MemberTask[];
     idProject: string | undefined;
+    fetchDataMember: () => void;
 }
 
 export const ModalAddNewUserProject: React.FC<ModalAddNewUserProjectProps> = ({
@@ -18,6 +19,7 @@ export const ModalAddNewUserProject: React.FC<ModalAddNewUserProjectProps> = ({
     projectName,
     members,
     idProject,
+    fetchDataMember,
 }) => {
     const [listUser, setListUser] = useState<MemberTask[]>([]);
     const [searchValue, setSearchValue] = useState<string>("");
@@ -77,6 +79,7 @@ export const ModalAddNewUserProject: React.FC<ModalAddNewUserProjectProps> = ({
                         prev.filter((user) => user.userId !== userId)
                     );
                 }
+                fetchDataMember();
             }
         } catch (error: any) {
             toast.error(error.response.data.content);
@@ -106,6 +109,7 @@ export const ModalAddNewUserProject: React.FC<ModalAddNewUserProjectProps> = ({
                     setListUser((prev) => [...prev, removedUser]);
                 }
             }
+            fetchDataMember();
         } catch (error: any) {
             toast.error(error.response.data.content);
         }

@@ -1,7 +1,7 @@
 export type Task = {
     lstTask: LstTask[];
     members: MemberTask[];
-    creator: Creator;
+    creator: CreatorTask;
     id: number;
     projectName: string;
     description: string;
@@ -59,7 +59,7 @@ export type MemberTask = {
     phoneNumber: any;
 };
 
-export type Creator = {
+export type CreatorTask = {
     id: number;
     name: string;
 };

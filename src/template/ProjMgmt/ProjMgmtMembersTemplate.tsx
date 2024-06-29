@@ -10,8 +10,8 @@ import { IProjectMembers } from "../../types/Project.itf";
 import { UserInfo, UserUpdate } from "../../types/QuanLyUser";
 
 // import local compoment
-import {ProjMgmtMembersAddTemplate} from "./ProjMgmtMembersAddTemplate";
-import {ProjMgmtMembersListTemplate} from "./ProjMgmtMembersListTemplate";
+import { ProjMgmtMembersAddTemplate } from "./ProjMgmtMembersAddTemplate";
+import { ProjMgmtMembersListTemplate } from "./ProjMgmtMembersListTemplate";
 
 // import antd component
 import { Avatar, message, Popover } from "antd";
@@ -42,16 +42,16 @@ export const renderMembers = (members: Partial<UserInfo>[]) => {
 };
 
 export function ProjMgmtMembersTemplate({
-  projectID,
+  projectID: projectId,
   projectName,
   members,
 }: IProjectMembers) {
   const dispatch = useAppDispatch();
 
-  const handleAssignUser = (userId: string) => {
+  const handleAssignUser = (userId: number) => {
     dispatch(spinnerActions.setLoadingOn());
     projectAPI
-      .assignUser(projectID, userId)
+      .assignUserProject({ projectId, userId })
       .then((res) => {
         // console.log(res);
         dispatch(projectAPI.getAllAndDispatch("Member added successfully"));
@@ -63,10 +63,10 @@ export function ProjMgmtMembersTemplate({
       });
   };
 
-  const handleDeleteMember = (memberID: string) => {
+  const handleDeleteMember = (memberId: number) => {
     dispatch(spinnerActions.setLoadingOn());
     projectAPI
-      .deleteMember(projectID, memberID)
+      .removeUserFromProject({ projectId, userId: memberId })
       .then((res) => {
         // console.log(res);
         dispatch(projectAPI.getAllAndDispatch("Member deleted"));

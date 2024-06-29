@@ -11,8 +11,6 @@ import { projectAPI } from "../../api/projectApi";
 // import antd component
 import { message } from "antd";
 
-import { IProject } from "../../types/Project.itf";
-
 const projectHooks = {
   useFetchProjectList: (
     dispatch: AppDispatch,
@@ -23,7 +21,7 @@ const projectHooks = {
       projectAPI
         .getAll()
         .then((res) => {
-          dispatch(projectActions.updateProjectList(res.content as IProject[]));
+          dispatch(projectActions.updateProjectList(res.content));
           if (successMessage) {
             message.success(successMessage);
           }
