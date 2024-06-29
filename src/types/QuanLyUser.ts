@@ -21,7 +21,7 @@ export interface IUser extends UserInfo {
 }
 
 export interface IUserTableProps {
-  userList: IUser[];
+  userList: UserUpdate[];
 }
 
 export interface IUserActionProps {
