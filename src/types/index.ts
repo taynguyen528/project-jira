@@ -6,3 +6,6 @@ export * from "./QuanLyTaskType";
 export * from "./QuanLyTask";
 export * from "./QuanLyPriority";
 export * from "./QuanLyComment";
+export * from "./ProjectCategory.itf";
+export * from "./Project.itf";
+export * from "./BaseProps.itf";
