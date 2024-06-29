@@ -5,6 +5,8 @@ import {
   MailOutlined,
   MobileOutlined,
   IdcardOutlined,
+  EyeInvisibleOutlined,
+  EyeTwoTone,
 } from "@ant-design/icons";
 
 /* import local components*/
@@ -40,7 +42,7 @@ export const UserEditModalTemplate = ({
 
   return (
     <Form
-      name="registerForm"
+      name="userEditForm"
       className="register-form w-full"
       onFinish={onFinish}
       layout="vertical"
@@ -101,10 +103,14 @@ export const UserEditModalTemplate = ({
           },
         ]}
       >
-        <Input
+        <Input.Password
           prefix={<LockOutlined className="site-form-item-icon" />}
           type="password"
           placeholder="Enter your passwords"
+          iconRender={(visible) =>
+            visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+          }
+          visibilityToggle
         />
       </Form.Item>
 
@@ -129,10 +135,14 @@ export const UserEditModalTemplate = ({
           }),
         ]}
       >
-        <Input
+        <Input.Password
           prefix={<LockOutlined className="site-form-item-icon" />}
           type="password"
           placeholder="Enter the confirmation passwords"
+          iconRender={(visible) =>
+            visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+          }
+          visibilityToggle
         />
       </Form.Item>
 
@@ -151,16 +161,6 @@ export const UserEditModalTemplate = ({
         ]}
       >
         <Input prefix={<MobileOutlined />} placeholder="0897831245" />
-      </Form.Item>
-
-      <Form.Item>
-        <Button
-          type="primary"
-          htmlType="submit"
-          className="register-form-button mt-3 text-lg font-semibold"
-        >
-          Update User
-        </Button>
       </Form.Item>
     </Form>
   );

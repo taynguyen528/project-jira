@@ -3,17 +3,14 @@ import { userAPI } from "api";
 import { IUserActionProps } from "types";
 import toastify from "../../utils/toastifyUtils";
 import { UserEditModalTemplate } from "./UserEditModalTemplate";
-import { Modal, Popconfirm } from "antd";
+import { Button, Modal, Popconfirm } from "antd";
 import {
   DeleteOutlined,
   FormOutlined,
   QuestionCircleOutlined,
 } from "@ant-design/icons";
 
-export function UserActionTemplate({
-  user,
-  onSuccess,
-}: IUserActionProps) {
+export function UserActionTemplate({ user, onSuccess }: IUserActionProps) {
   let handleDeleteUser = () => {
     userAPI
       .deleteUser(user.userId)
@@ -42,8 +39,19 @@ export function UserActionTemplate({
       <Modal
         title="Update user information"
         open={isModalOpen}
-        onCancel={handleCancel}
-        okText
+        footer={[
+          <Button key="back" onClick={handleCancel}>
+            Cancel
+          </Button>,
+          <Button
+            form="userEditForm"
+            type="primary"
+            key="submit"
+            htmlType="submit"
+          >
+            Update User
+          </Button>,
+        ]}
       >
         <UserEditModalTemplate user={user} onSuccess={onSuccess} />
       </Modal>
