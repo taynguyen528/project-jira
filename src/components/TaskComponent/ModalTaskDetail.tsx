@@ -12,11 +12,11 @@ import { DescriptionEditor } from "./DescriptionEditor";
 import { PrioritySelect } from "./PrioritySelect";
 import { TaskTypeSelect } from "./TaskTypeSelect";
 import { AssignersSelect } from "./AssignersSelect";
-import { optionApi, projectApi } from "api";
+import { optionApi, taskApi } from "api";
 import { useFetch } from "hooks";
 import { CommentComponent } from "./CommentComponent";
 import { DeleteOutlined } from "@ant-design/icons";
-import { showDeleteConfirm } from "./DeleteTask";
+import { showDeleteConfirm } from "./ConfirmDelete";
 import { toast } from "react-toastify";
 
 interface ModalTaskDetailProps {
@@ -24,7 +24,7 @@ interface ModalTaskDetailProps {
     onCancel: () => void;
     taskId: number;
     members: MemberTask[];
-    onTaskDeleted: () => void;
+    onFetchTask: () => void;
 }
 
 export const ModalTaskDetail: React.FC<ModalTaskDetailProps> = ({
@@ -32,35 +32,54 @@ export const ModalTaskDetail: React.FC<ModalTaskDetailProps> = ({
     onCancel,
     members,
     taskId,
-    onTaskDeleted,
+    onFetchTask,
 }) => {
     const [taskInfo, setTaskInfo] = useState<LstTaskDeTail>();
 
-    const fetchDataTask = async () => {
-        try {
-            const res = await projectApi.getTaskDetail(taskId);
-            if (res && res.statusCode === 200) {
-                setTaskInfo(res.content);
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
     useEffect(() => {
-        fetchDataTask();
-    }, [taskId]);
+        const fetchDataTask = async () => {
+            try {
+                const res = await taskApi.getTaskDetail(taskId);
+                if (res && res.statusCode === 200) {
+                    setTaskInfo(res.content);
+                    setTaskName(res.content.taskName);
+                    setDescription(res.content.description ?? "");
+                    setPriority(res.content.priorityTask.priority);
+                    setTaskType(
+                        String(res.content.taskTypeDetail.taskType) ?? ""
+                    );
+                    setStatusId(res.content.statusId ?? "");
+                    setAssignees(
+                        res.content.assigness.map((assignee) => assignee.id) ??
+                            []
+                    );
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        if (open && taskId) {
+            fetchDataTask();
+        }
+    }, [open, taskId]);
 
     const [description, setDescription] = useState<string>("");
-    const [priority, setPriority] = useState<number | undefined>(undefined);
+    const [priority, setPriority] = useState<number | string | undefined>(
+        undefined
+    );
     const [taskType, setTaskType] = useState<string>("");
     const [statusId, setStatusId] = useState<string>("");
     const [assignees, setAssignees] = useState<number[]>([]);
+    const [taskName, setTaskName] = useState<string>("");
+    const [isTaskNameChanged, setIsTaskNameChanged] = useState<boolean>(false);
+    const [isDescriptionChanged, setIsDescriptionChanged] =
+        useState<boolean>(false);
 
     useEffect(() => {
         if (taskInfo) {
             setDescription(taskInfo.description ?? "");
-            setPriority(taskInfo.priorityTask.priorityId);
+            setPriority(taskInfo.priorityTask.priority);
             setTaskType(String(taskInfo.taskTypeDetail.taskType) ?? "");
             setStatusId(taskInfo.statusId ?? "");
             setAssignees(
@@ -95,7 +114,7 @@ export const ModalTaskDetail: React.FC<ModalTaskDetailProps> = ({
         (priorityData &&
             priorityData.length > 0 &&
             priorityData.map((item: PriorityType) => ({
-                value: String(item.priorityId),
+                value: item.priorityId,
                 label: item.priority,
             }))) ||
         [];
@@ -120,8 +139,88 @@ export const ModalTaskDetail: React.FC<ModalTaskDetailProps> = ({
             label: item.statusName,
         })) || [];
 
-    const handleStatusChange = (value: string) => {
+    const handleStatusChange = async (value: string) => {
         setStatusId(value);
+        try {
+            const res = await taskApi.updateStatus({
+                taskId,
+                statusId: value,
+            });
+            if (res && res.statusCode === 200) {
+                toast.success("Cập nhật trạng thái thành công!");
+                onFetchTask();
+            }
+        } catch (error: any) {
+            toast.error(error.response.data.content);
+        }
+    };
+
+    const handleTaskNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setTaskName(e.target.value);
+        setIsTaskNameChanged(e.target.value !== taskInfo?.taskName);
+    };
+
+    const handleDescriptionChange = (value: string) => {
+        setDescription(value);
+        setIsDescriptionChanged(value !== taskInfo?.description);
+    };
+
+    const hasPriorityChanged = priority !== taskInfo?.priorityTask.priority;
+    const hasTaskTypeChanged = taskType !== taskInfo?.taskTypeDetail.taskType;
+
+    const handleUpdateTask = async (updatedFields: Partial<LstTaskDeTail>) => {
+        if (!taskInfo) return;
+
+        const updatedTask = {
+            ...taskInfo,
+            ...updatedFields,
+            listUserAsign: assignees,
+            taskName: taskName,
+            description: description,
+            statusId: statusId,
+        };
+
+        try {
+            const res = await taskApi.updateTask(updatedTask);
+            if (res && res.statusCode === 200) {
+                toast.success("Cập nhật task thành công!");
+                onFetchTask();
+                setIsTaskNameChanged(false);
+                setIsDescriptionChanged(false);
+
+                if (hasPriorityChanged || hasTaskTypeChanged) {
+                    const updatedData = {
+                        listUserAsign: updatedTask.listUserAsign,
+                        taskId: updatedTask.taskId,
+                        taskName: updatedTask.taskName,
+                        description: updatedTask.description,
+                        statusId: updatedTask.statusId,
+                        originalEstimate: updatedTask.originalEstimate ?? 0,
+                        timeTrackingSpent: updatedTask.timeTrackingSpent ?? 0,
+                        timeTrackingRemaining:
+                            updatedTask.timeTrackingRemaining ?? 0,
+                        projectId: updatedTask.projectId ?? 0,
+                        typeId: hasTaskTypeChanged
+                            ? parseInt(taskType, 10)
+                            : updatedTask.taskTypeDetail.id,
+                        priorityId: hasPriorityChanged
+                            ? parseInt(priority as string, 10)
+                            : updatedTask.priorityTask.priorityId,
+                    };
+
+                    const updateRes = await taskApi.updateTask(updatedData);
+                    if (updateRes && updateRes.statusCode === 200) {
+                        onFetchTask();
+                    } else {
+                        toast.error(
+                            "Có lỗi xảy ra khi cập nhật Priority hoặc Task Type."
+                        );
+                    }
+                }
+            }
+        } catch (error: any) {
+            toast.error(error.response.data.content);
+        }
     };
 
     const handleBtnDeleteTask = () => {
@@ -130,10 +229,10 @@ export const ModalTaskDetail: React.FC<ModalTaskDetailProps> = ({
             content: `Thông tin: ${taskInfo?.taskName}`,
             onOk: async () => {
                 try {
-                    const res = await projectApi.removeTask(taskId);
+                    const res = await taskApi.removeTask(taskId);
                     if (res && res.statusCode === 200) {
                         toast.success("Xóa task thành công!");
-                        onTaskDeleted();
+                        onFetchTask();
                         onCancel();
                     }
                 } catch (error: any) {
@@ -142,6 +241,15 @@ export const ModalTaskDetail: React.FC<ModalTaskDetailProps> = ({
             },
         });
     };
+    
+    useEffect(() => {
+        if (
+            priority !== taskInfo?.priorityTask.priority ||
+            taskType !== taskInfo?.taskTypeDetail.taskType
+        ) {
+            handleUpdateTask({ priority, taskType });
+        }
+    }, [priority, taskType]);
 
     return (
         <Modal
@@ -177,18 +285,34 @@ export const ModalTaskDetail: React.FC<ModalTaskDetailProps> = ({
                 <div className="flex gap-[30px]">
                     <div className="w-full">
                         <div className="flex">
-                            <Input defaultValue={taskInfo.taskName} />
-                            <Button type="primary" className="ml-[20px]">
+                            <Input
+                                value={taskName}
+                                onChange={handleTaskNameChange}
+                            />
+                            <Button
+                                type="primary"
+                                className="ml-[20px]"
+                                disabled={!isTaskNameChanged}
+                                onClick={() => handleUpdateTask({ taskName })}
+                            >
                                 Submit
                             </Button>
                         </div>
                         <div>
                             <DescriptionEditor
                                 description={description}
-                                onDescriptionChange={setDescription}
+                                onDescriptionChange={handleDescriptionChange}
                             />
                             <div className="flex justify-end">
-                                <Button type="primary">Save</Button>
+                                <Button
+                                    type="primary"
+                                    onClick={() =>
+                                        handleUpdateTask({ description })
+                                    }
+                                    disabled={!isDescriptionChanged}
+                                >
+                                    Save
+                                </Button>
                             </div>
                         </div>
                         <div>
@@ -239,13 +363,13 @@ export const ModalTaskDetail: React.FC<ModalTaskDetailProps> = ({
                             <span className="font-semibold w-1/2">
                                 Original Estimate (hours):{" "}
                             </span>
-                            <Input defaultValue={taskInfo.originalEstimate} />
+                            <Input value={taskInfo.originalEstimate} />
                         </div>
                         <div className="mb-4 flex gap-[10px]">
                             <span className="font-semibold w-1/2">
                                 Time Spent (hours):{" "}
                             </span>
-                            <Input defaultValue={taskInfo.timeTrackingSpent} />
+                            <Input value={taskInfo.timeTrackingSpent} />
                         </div>
                         <div className="mb-4">
                             <span className="font-semibold">

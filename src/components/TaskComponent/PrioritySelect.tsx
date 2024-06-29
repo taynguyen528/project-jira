@@ -3,10 +3,10 @@ import { Select } from "antd";
 
 interface PrioritySelectProps {
     priorityOptions: { value: number | string; label: string }[];
-    defaultPriority?: number;
-    onSelectPriority: (priority: number) => void;
-    value: number | undefined;
-    onChange: (value: number) => void;
+    defaultPriority?: number | string | undefined;
+    onSelectPriority: (priority: number | string) => void;
+    value: number | undefined | string;
+    onChange: (value: number | string) => void;
     onBlur: () => void;
     name: string;
 }

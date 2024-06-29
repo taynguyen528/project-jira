@@ -15,4 +15,4 @@ export const createTaskSchema = z.object({
     priorityId: z.number(),
 });
 
-export type CreateTaskType = z.infer<typeof createTaskSchema>;
+export type TaskType = z.infer<typeof createTaskSchema>;

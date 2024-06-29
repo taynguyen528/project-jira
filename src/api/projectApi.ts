@@ -20,10 +20,5 @@ export const projectApi = {
     }): Promise<ApiResponse<{ projectId: number; userId: number }>> => {
         return privateClient.post(`/Project/removeUserFromProject`, data);
     },
-    getTaskDetail: (taskId: number): Promise<ApiResponse<LstTaskDeTail>> => {
-        return privateClient.get(`/Project/getTaskDetail?taskId=${taskId}`);
-    },
-    removeTask: (taskId: number): Promise<ApiResponse<{ taskId: number }>> => {
-        return privateClient.delete(`/Project/removeTask?taskId=${taskId}`);
-    },
+    
 };

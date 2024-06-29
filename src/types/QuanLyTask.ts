@@ -69,7 +69,7 @@ export type ProjectCategory = {
     name: string;
 };
 
-export type CreateTaskType = {
+export type TaskTypeModel = {
     listUserAsign: number[];
     taskName: string;
     description: string;
