@@ -19,7 +19,7 @@ const projectHooks = {
     useEffect(() => {
       dispatch(spinnerActions.setLoadingOn());
       projectApi
-        .getAll()
+        .getAllProject()
         .then((res) => {
           dispatch(projectActions.updateProjectList(res.content));
           if (successMessage) {

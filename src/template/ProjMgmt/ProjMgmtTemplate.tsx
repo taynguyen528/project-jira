@@ -160,7 +160,7 @@ export default function ProjMgmtTemplate() {
         <span
           className="projectName text-lg font-semibold cursor-pointer transition-colors duration-300"
           onClick={() => {
-            window.location.href = `/project-detail/${project.id}`;
+            window.location.href = `/board/${project.id}`;
           }}
         >
           {projectName}

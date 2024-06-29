@@ -18,9 +18,6 @@ export const projectApi = {
   createProject: async (projectInfo: IProject): Promise<any> => {
     return privateClient.post("/Project/createProjectAuthorize", projectInfo);
   },
-  getAll: async (): Promise<ApiResponse<IProject[]>> => {
-    return privateClient.get(`/Project/getAllProject`);
-  },
   getAllProject: (): Promise<ApiResponse<ContentProject[]>> => {
     return publicClient.get("Project/getAllProject");
   },
