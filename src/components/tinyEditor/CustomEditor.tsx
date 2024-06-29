@@ -14,6 +14,7 @@ const CustomEditor = ({ name, className, formInstance }: EditorProps) => {
 
   return (
     <Editor
+      apiKey="c2omx3qs4yxebrgjyno2i2vyv6hwe4q9fjg195fxzefov8jz"
       value={formInstance?.getFieldValue("description")}
       onInit={(evt, editor) => (editorRef.current = editor)}
       init={initEditorConfig}
