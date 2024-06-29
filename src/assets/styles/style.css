@@ -1,0 +1,210 @@
+/* ==================================================================root variable styling ============*/
+:root {
+  --toastify-toast-width: 400px !important;
+}
+
+h3,
+h6 {
+  margin-bottom: 0;
+}
+
+/* ================================================================== root variable styling ============*/
+
+/* ================================================================== root container styling ============*/
+#root {
+  height: 100%;
+  color: #344563;
+}
+
+/* ================================================================== root container styling ============*/
+
+/* ================================================================== form item styling ============*/
+
+.myform .ant-input-prefix {
+  margin-right: 10px !important;
+}
+
+/* error message styling */
+.myform .ant-form-item-explain-error {
+  padding: 12px 0 !important;
+}
+/* error message styling */
+
+.myform .select-category .ant-select-selector {
+  border-radius: 0.375rem !important;
+}
+
+/* form button group styling */
+.form-btn-group .ant-form-item-control-input-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: end;
+}
+
+.form-btn-group .btn-reset span {
+  position: relative;
+  transition: 0.4s;
+}
+
+.form-btn-group .btn-reset span::before {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  height: 2px;
+  width: 0%;
+  background-color: currentColor;
+  transition: 0.4s;
+}
+
+.form-btn-group .btn-reset:hover span::before {
+  width: 100%;
+}
+
+/* form button group styling */
+
+/* form select styling */
+.ant-select-selector {
+  border-radius: 0.375rem !important;
+}
+/* form select styling */
+
+/* form timetracking slider styling */
+.timeTrackingSlider .ant-slider-rail {
+  height: 7px;
+  background-color: #dfe1e6 !important;
+  border-radius: 4px;
+}
+
+.timeTrackingSlider.ant-slider-disabled .ant-slider-track {
+  background-color: #0052cc !important;
+}
+
+/* form timetracking slider styling */
+
+/* form input number styling */
+.ant-input-number {
+  width: 100% !important;
+}
+/* form input number styling */
+
+/* ================================================================== form item styling ============*/
+
+/* ================================================================== edit task form styling ============*/
+.editTaskForm input:hover,
+.editTaskForm .ant-select {
+  border-radius: 0.375rem !important;
+}
+
+.editTaskForm
+  .ant-select:not(.ant-select-customize-input)
+  .ant-select-selector {
+  background-color: #dfe1e6 !important;
+  padding: 0.3rem;
+}
+
+.editTaskForm input:focus {
+  background-color: unset !important;
+  box-shadow: 0 0 0 2px #79bfffe8 !important;
+}
+/* ================================== edit task form styling */
+/* START ================================== ANT Design component styling */
+/* START Sidebar */
+.project-sidebar .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected,
+.project-sidebar .ant-menu-item:active {
+  background-color: #fffaf0;
+}
+.project-sidebar .ant-menu-inline .ant-menu-item::after {
+  border-color: #ed8936;
+}
+.project-sidebar .ant-menu-item-selected,
+.project-sidebar .ant-menu-light .ant-menu-item-active {
+  color: #ed8936;
+}
+.project-sidebar .ant-menu-light .ant-menu-item:hover,
+.project-sidebar .ant-menu-item a:hover {
+  color: #ed8936;
+}
+.project-sidebar .ant-menu-item-selected a,
+.project-sidebar .ant-menu-item-selected a:hover {
+  color: #ed8936;
+}
+/* END Sidebar */
+
+/* START Project Management */
+/* Start DESKTOP */
+.projectManagement
+  .projectManagement__content
+  .ant-table-row:hover
+  .ant-table-cell
+  .projectName {
+  color: #f56565;
+}
+.ant-btn.btn-delete-cancel,
+.ant-btn.btn-delete-cancel {
+  border-color: #a0aec0;
+  background: #a0aec0;
+}
+.ant-btn.btn-delete-cancel:hover,
+.ant-btn.btn-delete-cancel:focus {
+  border-color: rgba(160, 174, 192, 0.8);
+  background: rgba(160, 174, 192, 0.8);
+}
+/* End DESKTOP */
+
+/* Start MOBILE: Project Setting  */
+.projectManagement__setting .ant-modal-content {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.projectSetting__members__showAll
+  .ant-collapse-item
+  .ant-collapse-header
+  .ant-collapse-header-text {
+  display: flex;
+}
+.projectSetting__members__showAll
+  .ant-collapse-item
+  .ant-collapse-content
+  .ant-collapse-content-box {
+  padding: 0;
+}
+.projectSetting__members__addNew .ant-modal-content {
+  height: 100%;
+}
+/* End MOBILE: Project Setting */
+/* END Project Management */
+/* END ================================== ANT Design component styling */
+
+/* START TinyMCE Component styling */
+.tox-notification.tox-notification--in {
+  display: none !important;
+}
+/* END TinyMCE Component styling */
+
+/* ================================== edit task form header taskType styling */
+.select-task-type.ant-select-single:not(.ant-select-customize-input)
+  .ant-select-selector {
+  height: 40px !important;
+}
+
+.edit-task-header .select-task-type .ant-select-selector {
+  border: none !important;
+}
+
+.edit-task-header .select-task-type:hover .ant-select-selector {
+  background-color: none !important;
+  border: none !important;
+}
+
+.edit-task-header
+  .ant-select:not(.ant-select-disabled):hover
+  .ant-select-selector {
+  border: none !important;
+}
+/* ================================== edit task form header taskType styling */
+
+/* ================================================================== edit task form styling ============*/

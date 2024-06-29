@@ -1,16 +1,30 @@
 export type UserUpdate = {
-    id: string;
-    email: string;
-    name: string;
-    phoneNumber: string;
-    password: string;
+  id: string;
+  email: string;
+  name: string;
+  phoneNumber: string;
+  password: string;
 };
 
 export type UserInfo = {
-    id: number;
-    email: string;
-    avatar: string;
-    phoneNumber: string;
-    name: string;
-    accessToken?: string;
+  userId: string;
+  id: string;
+  email: string;
+  name: string;
+  phoneNumber: string;
+  accessToken?: string;
+  avatar: string;
 };
+
+export interface IUser extends UserInfo {
+  action?: React.ReactNode;
+}
+
+export interface IUserTableProps {
+  userList: IUser[];
+}
+
+export interface IUserActionProps {
+  user: IUser;
+  onSuccess: () => void;
+}

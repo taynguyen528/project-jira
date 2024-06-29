@@ -1,0 +1,9 @@
+/* ================================== modal custom styling */
+.ant-modal-header {
+  padding-right: 60px !important;
+}
+
+.ant-modal-content .ant-modal-close {
+  top: 10px !important;
+}
+/* ================================== modal custom styling */
