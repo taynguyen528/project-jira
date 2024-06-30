@@ -9,7 +9,7 @@
   <h1 align="center">Jira</h1>
   
   <p align="center">
-    <a href="">View Demo</a>
+    <a href="https://project-jira-gamma.vercel.app/">View Demo</a>
     ·
     <a href="https://github.com/taynguyen528/project-jira">GitHub</a>
     ·
