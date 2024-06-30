@@ -1,19 +1,19 @@
 import { useState, useRef } from "react";
 
-import { useAppDispatch, useAppSelector } from "../../store/index.ts";
+import { useAppDispatch, useAppSelector } from "store";
 import { useNavigate } from "react-router-dom";
 
 // import custom Hooks
-import projectHooks from "../../hooks/ProjectHooks/projectHooks.ts";
+import { projectHooks } from "projectHooks";
 
 // import local interface
-import { IProject } from "types";
+import { ContentProject } from "types";
 
 // import local components
-import { SectionWrapper } from "../../components/SectionWrapper.tsx";
+import { SectionWrapper } from "components";
 import { ProjMgmtActionBtnsTemplate } from "./ProjMgmtActionBtnsTemplate.tsx";
 import { ProjMgmtMembersTemplate } from "./ProjMgmtMembersTemplate.tsx";
-import ButtonLocal from "../../components/ButtonLocal";
+import { ButtonLocal } from "components";
 
 // import antd type
 import type { ColumnsType, ColumnType } from "antd/es/table";
@@ -43,7 +43,7 @@ export default function ProjMgmtTemplate() {
   };
 
   //antd control
-  type ProjectIndex = keyof IProject;
+  type ProjectIndex = keyof ContentProject;
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef<InputRef>(null);
@@ -64,7 +64,7 @@ export default function ProjMgmtTemplate() {
 
   const getColumnSearchProps = (
     projectIndex: ProjectIndex
-  ): ColumnType<IProject> => ({
+  ): ColumnType<ContentProject> => ({
     filterDropdown: ({
       setSelectedKeys,
       selectedKeys,
@@ -147,7 +147,7 @@ export default function ProjMgmtTemplate() {
       ),
   });
 
-  const columns: ColumnsType<IProject> = [
+  const columns: ColumnsType<ContentProject> = [
     {
       title: <span className="text-lg">Name</span>,
       dataIndex: "projectName",
@@ -160,7 +160,7 @@ export default function ProjMgmtTemplate() {
         <span
           className="projectName text-lg font-semibold cursor-pointer transition-colors duration-300"
           onClick={() => {
-            window.location.href = `/project-detail/${project.id}`;
+            window.location.href = `/board/${project.id}`;
           }}
         >
           {projectName}
@@ -204,7 +204,7 @@ export default function ProjMgmtTemplate() {
       render: (_, project) => <ProjMgmtActionBtnsTemplate project={project} />,
     },
   ];
-  // console.log("rendered");
+
   return (
     <SectionWrapper
       content={
@@ -232,8 +232,8 @@ export default function ProjMgmtTemplate() {
           />
         </>
       }
-      sectionClass="projectManagement"
-      contentClass="projectManagement__content"
+      sectionClass="dataManagement"
+      contentClass="dataManagement__content"
     />
   );
 }

@@ -3,7 +3,7 @@ import { Button, Input } from "antd";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import { RootState, useAppDispatch } from "store";
-import { quanLyNguoiDungActionsThunks } from "store/quanLyNguoiDung";
+import { quanLyNguoiDungActionsThunks } from "userSlice";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";

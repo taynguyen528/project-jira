@@ -1,4 +1,4 @@
-import { ProjMgmtFormTemplate } from "template/ProjMgmt";
+import { ProjMgmtFormTemplate } from "projMgmtTpl";
 import { IProjectForm } from "types";
 
 export const ProjMgmtForm = ({

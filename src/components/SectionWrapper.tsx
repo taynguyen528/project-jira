@@ -2,8 +2,8 @@
 import clsx from "clsx";
 
 /* import local components */
-import Container from "../components/Container";
-import { SectionProps } from "../types/SectionProps.itf";
+import Container from "container";
+import { SectionProps } from "types";
 
 export function SectionWrapper({
   title,

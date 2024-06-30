@@ -1,9 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IProject } from "../../types/Project.itf";
+import { IProject } from "types";
+import { ContentProject } from "types";
 
 type InitialState = {
   project: IProject | undefined;
-  projectList: Array<IProject> | undefined;
+  projectList: Array<ContentProject> | undefined;
 };
 
 const initialState: InitialState = {
@@ -19,7 +20,10 @@ export const { actions: projectActions, reducer: projectReducer } = createSlice(
       putProjectDetail: (state, action: PayloadAction<IProject>) => {
         state.project = action.payload;
       },
-      updateProjectList: (state, action: PayloadAction<Array<IProject>>) => {
+      updateProjectList: (
+        state,
+        action: PayloadAction<Array<ContentProject>>
+      ) => {
         state.projectList = action.payload;
       },
     },

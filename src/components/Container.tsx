@@ -1,7 +1,7 @@
 import clsx from "clsx";
 
 /* import local interface */
-import { BaseProps } from "../types/BaseProps.itf";
+import { BaseProps } from "types";
 
 const Container = ({ className, children }: BaseProps) => {
   return (

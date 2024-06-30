@@ -1,13 +1,12 @@
 // import redux
 import { useAppDispatch } from "store";
-import { spinnerActions } from "../../store/quanLySpinner/spinnerSlice";
+import { spinnerActions } from "spinnerSlice";
 
 // import local services
-import { projectApi } from "../../api/projectApi";
+import { projectApi } from "api";
 
 // import local component interface
-import { IProjectMembers } from "../../types/Project.itf";
-import { UserInfo, UserUpdate } from "../../types/QuanLyUser";
+import { IMember, IProjectMembers } from "types";
 
 // import local compoment
 import { ProjMgmtMembersAddTemplate } from "./ProjMgmtMembersAddTemplate";
@@ -18,7 +17,7 @@ import { Avatar, message, Popover } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 
 // local Render
-export const renderMembers = (members: Partial<UserInfo>[]) => {
+export const renderMembers = (members: Partial<IMember>[]) => {
   const totalMembers = members.length;
   if (totalMembers === 0) return null;
   if (totalMembers <= 2) {
@@ -52,8 +51,7 @@ export function ProjMgmtMembersTemplate({
     dispatch(spinnerActions.setLoadingOn());
     projectApi
       .assignUserProject({ projectId, userId })
-      .then((res) => {
-        // console.log(res);
+      .then(() => {
         dispatch(projectApi.getAllAndDispatch("Member added successfully"));
       })
       .catch((err) => {
@@ -67,8 +65,7 @@ export function ProjMgmtMembersTemplate({
     dispatch(spinnerActions.setLoadingOn());
     projectApi
       .removeUserFromProject({ projectId, userId: memberId })
-      .then((res) => {
-        // console.log(res);
+      .then(() => {
         dispatch(projectApi.getAllAndDispatch("Member deleted"));
       })
       .catch((err) => {

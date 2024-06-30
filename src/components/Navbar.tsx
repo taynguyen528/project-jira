@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import { PATH } from "constant";
 import { quanLyNguoiDungAction } from "store/quanLyNguoiDung/slice";
 import { toast } from "react-toastify";
-import { CreateTask } from "./CreateTask";
 
 export const Navbar: React.FC = () => {
   const { userLogin } = useSelector(
@@ -72,7 +71,7 @@ export const Navbar: React.FC = () => {
               className="w-24 h-auto mr-4"
             />
           </div>
-          <div className="hidden md:flex items-center gap-8">
+          <div className="invisible md:flex md:visible items-center gap-8">
             <a
               key="1"
               className="text-[20px] text-blue-700 cursor-pointer hover:opacity-70 transition-all duration-300"
@@ -85,6 +84,9 @@ export const Navbar: React.FC = () => {
             <a
               key="2"
               className="text-[20px] text-blue-700 cursor-pointer hover:opacity-70 transition-all duration-300"
+              onClick={() => {
+                navigate("/user-management");
+              }}
             >
               User
             </a>
@@ -134,6 +136,9 @@ export const Navbar: React.FC = () => {
           <a
             key="2"
             className="text-[20px] text-blue-700 cursor-pointer hover:opacity-70 transition-all duration-300"
+            onClick={() => {
+              navigate("/user-management");
+            }}
           >
             User
           </a>

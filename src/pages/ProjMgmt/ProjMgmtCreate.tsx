@@ -1,4 +1,4 @@
-import { ProjMgmtCreateTemplate } from "template/ProjMgmt";
+import { ProjMgmtCreateTemplate } from "projMgmtTpl";
 
 export const ProjMgmtCreate = () => {
   return <ProjMgmtCreateTemplate />;

@@ -1,10 +1,10 @@
 // import local types
-import { ButtonLocalProps } from "../types/BaseProps.itf";
+import { ButtonLocalProps } from "types";
 
 // import other library
 import clsx from "clsx";
 
-export default function ButtonLocal({
+export function ButtonLocal({
   children,
   className = "px-5 py-2.5 rounded-lg",
   baseColor,

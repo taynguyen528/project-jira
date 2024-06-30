@@ -4,7 +4,7 @@ import { Button } from "antd";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { optionApi } from "api/optionApi";
+import { optionApi } from "api";
 
 type FormData = {
     username: string;

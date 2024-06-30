@@ -1,18 +1,20 @@
 import { useState } from "react";
-import { IUser } from "types";
+import { UserInfo } from "types";
 import { useEffect } from "react";
-import { userAPI } from "../../api";
+import { userAPI } from "api";
 import { UserTableTemplate } from "./UserTableTemplate";
 import { UserActionTemplate } from "./UserActionTemplate";
+import clsx from "clsx";
+import { SectionWrapper } from "components";
 
 export default function UserMgmtTemplate() {
-  const [userList, setUserList] = useState<IUser[]>([]);
+  const [userList, setUserList] = useState<UserInfo[]>([]);
 
   useEffect(() => {
     let fetchUserList = async () => {
       try {
         const res = await userAPI.getAllUser();
-        const data = (res.content as IUser[]).map((user: IUser) => {
+        const data = res.content.map((user) => {
           return {
             ...user,
             action: (
@@ -29,10 +31,24 @@ export default function UserMgmtTemplate() {
   }, []);
 
   return (
-    <div className="container mx-auto pt-16">
-      <h1 className="text-center text-3xl">User Management</h1>
-
-      <UserTableTemplate userList={userList} />
-    </div>
+    <SectionWrapper
+      content={
+        <>
+          <div className="mb-2 flex justify-between items-center">
+            <h3
+              className={clsx(
+                "title",
+                "uppercase text-[#172B4D] text-2xl font-extrabold tracking-wide"
+              )}
+            >
+              User Management
+            </h3>
+          </div>
+          <UserTableTemplate userList={userList} />
+        </>
+      }
+      sectionClass="dataManagement"
+      contentClass="dataManagement__content"
+    />
   );
 }

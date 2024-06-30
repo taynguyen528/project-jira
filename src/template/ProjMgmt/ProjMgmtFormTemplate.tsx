@@ -1,10 +1,10 @@
 import { Button, Form, Input, Select } from "antd";
 import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../../store/index";
-import { useFetchProjectCatList } from "../../hooks/ProjectHooks/useFetchProjectCatList";
-import { IProjectForm } from "../../types/FormProps.itf";
-import Label from "../../components/Label/Label";
-import CustomEditor from "../../components/tinyEditor/CustomEditor";
+import { useAppDispatch, useAppSelector } from "store";
+import { useFetchProjectCatList } from "projectHooks";
+import { IProjectForm } from "types";
+import { Label } from "label";
+import { CustomEditor } from "editor";
 
 export const ProjMgmtFormTemplate = ({
   layout = "horizontal",
@@ -23,11 +23,8 @@ export const ProjMgmtFormTemplate = ({
 
   const getInitialValue = () => {
     if (project) {
-      const categoryId = project.categoryId
-        ? project.categoryId
-        : project.projectCategory.id;
       return {
-        categoryId,
+        categoryId: project.categoryId,
         projectName: project.projectName,
         description: project.description,
       };

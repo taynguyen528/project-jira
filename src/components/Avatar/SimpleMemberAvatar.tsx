@@ -1,7 +1,7 @@
 import { Avatar } from "antd";
 
 /* import local interface */
-import { IProject } from "../../types/Project.itf";
+import { IProject } from "types";
 
 export const SimpleMemberAvatar = ({ members }: Partial<IProject>) => {
   const renderAvatar = () => {

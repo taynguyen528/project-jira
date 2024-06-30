@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IProjectCategory } from "../../types/ProjectCategory.itf";
+import { IProjectCategory } from "types";
 
 type InitialState = {
   projectCategoryArr: IProjectCategory[];

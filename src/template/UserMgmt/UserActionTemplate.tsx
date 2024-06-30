@@ -1,28 +1,25 @@
 import { useState } from "react";
 import { userAPI } from "api";
 import { IUserActionProps } from "types";
-import toastify from "../../utils/toastifyUtils";
+import { toastifyUtils } from "utils";
 import { UserEditModalTemplate } from "./UserEditModalTemplate";
-import { Modal, Popconfirm } from "antd";
+import { Button, Modal, Popconfirm } from "antd";
 import {
   DeleteOutlined,
   FormOutlined,
   QuestionCircleOutlined,
 } from "@ant-design/icons";
 
-export function UserActionTemplate({
-  user,
-  onSuccess,
-}: IUserActionProps) {
+export function UserActionTemplate({ user, onSuccess }: IUserActionProps) {
   let handleDeleteUser = () => {
     userAPI
       .deleteUser(user.userId)
-      .then((res) => {
-        toastify("success", "Delete user successfully!");
+      .then(() => {
+        toastifyUtils("success", "Delete user successfully!");
         onSuccess();
       })
       .catch((err) => {
-        toastify("error", err.response.data.message);
+        toastifyUtils("error", err.response.data.message);
       });
   };
 
@@ -35,7 +32,7 @@ export function UserActionTemplate({
   };
 
   return (
-    <div className="space-x-2">
+    <div className="space-x-2 flex justify-between items-center">
       <button onClick={showModal}>
         <FormOutlined className="text-blue-500 text-2xl" />
       </button>
@@ -43,7 +40,19 @@ export function UserActionTemplate({
         title="Update user information"
         open={isModalOpen}
         onCancel={handleCancel}
-        okText
+        footer={[
+          <Button key="back" onClick={handleCancel}>
+            Cancel
+          </Button>,
+          <Button
+            form="userEditForm"
+            type="primary"
+            key="submit"
+            htmlType="submit"
+          >
+            Update User
+          </Button>,
+        ]}
       >
         <UserEditModalTemplate user={user} onSuccess={onSuccess} />
       </Modal>
@@ -51,13 +60,14 @@ export function UserActionTemplate({
       <Popconfirm
         title={
           <span className="text-lg pl-1">
-            Are you sure you want to delete this user?
+            Are you sure you want to delete user{" "}
+            <span className="font-semibold">{user.name}</span>?
           </span>
         }
         onConfirm={handleDeleteUser}
         okText="Yes"
         cancelText="No"
-        icon={<QuestionCircleOutlined className="top-1 text-red-500 text-xl" />}
+        icon={<QuestionCircleOutlined className="top-1 text-red-500 text-3xl" />}
       >
         <DeleteOutlined className="text-red-500 text-2xl" />
       </Popconfirm>

@@ -1,9 +1,8 @@
 // import local Interface
-import { IProjectMembersList } from "../../types/Project.itf";
-import { UserInfo, UserUpdate } from "../../types/QuanLyUser";
+import { IMember, IProjectMembersList } from "types";
 
 // import ant component
-import { Avatar, Modal, Popconfirm } from "antd";
+import { Avatar, Popconfirm } from "antd";
 import {
   CloseCircleOutlined,
   QuestionCircleOutlined,
@@ -17,11 +16,11 @@ export function ProjMgmtMembersListTemplate({
 }: IProjectMembersList) {
 
   // render function
-  const renderDelBtn = (member: Partial<UserUpdate>) => (
+  const renderDelBtn = (member: Partial<IMember>) => (
     <Popconfirm
       title={
         <span className="text-lg pl-1">
-          Are you sure to delete{" "}
+          Are you sure you want to delete{" "}
           <span className="font-semibold">{member.name}</span>?
         </span>
       }
@@ -41,7 +40,7 @@ export function ProjMgmtMembersListTemplate({
         size: "large",
         className: "btn-delete-cancel",
       }}
-      icon={<QuestionCircleOutlined className="top-1 text-red-500 text-xl" />}
+      icon={<QuestionCircleOutlined className="top-1 text-red-500 text-3xl" />}
     >
       <CloseCircleOutlined
         style={{ fontSize: 20 }}

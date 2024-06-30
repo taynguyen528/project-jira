@@ -11,7 +11,7 @@ interface TaskDetailsFormProps {
     setPriority: (value: string | number) => void;
     taskTypeOptions: { value: string; label: string }[];
     taskType: string;
-    setTaskType: (value: string) => void;
+    handleTaskTypeChange: (value: string) => void;
     memberOptions: { value: number; label: string }[];
     assignees: number[];
     setAssignees: (value: number[]) => void;
@@ -39,7 +39,7 @@ export const TaskDetailsForm: React.FC<TaskDetailsFormProps> = ({
     setPriority,
     taskTypeOptions,
     taskType,
-    setTaskType,
+    handleTaskTypeChange,
     memberOptions,
     assignees,
     setAssignees,
@@ -76,9 +76,9 @@ export const TaskDetailsForm: React.FC<TaskDetailsFormProps> = ({
         <TaskTypeSelect
             taskTypeOptions={taskTypeOptions}
             defaultTaskType={taskType}
-            onSelectTaskType={setTaskType}
+            onSelectTaskType={handleTaskTypeChange}
             value={taskType}
-            onChange={setTaskType}
+            onChange={handleTaskTypeChange}
             onBlur={() => {}}
             name="taskType"
         />
@@ -94,6 +94,7 @@ export const TaskDetailsForm: React.FC<TaskDetailsFormProps> = ({
             <Input
                 value={originalEstimate}
                 onChange={handleOriginalEstimateChange}
+                type="number"
             />
         </div>
         <div className="mb-4 flex gap-[10px]">
@@ -109,6 +110,7 @@ export const TaskDetailsForm: React.FC<TaskDetailsFormProps> = ({
             <Input
                 value={timeTrackingRemaining}
                 onChange={handleTimeTrackingRemainingChange}
+                type="number"
             />
         </div>
         <div className="mb-4">

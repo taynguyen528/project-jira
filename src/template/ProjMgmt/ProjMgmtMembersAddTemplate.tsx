@@ -1,11 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 
 // import local Interface
-import { UserInfo, UserUpdate } from "../../types/QuanLyUser";
-import { IProjectMembersAdd } from "../../types/Project.itf";
+import { IMember, IProjectMembersAdd, UserInfo } from "types";
 
 // import local service
-import {userAPI} from "../../api/userApi";
+import { userAPI } from "api";
 
 // import antd components
 import { Avatar, Modal, Popconfirm } from "antd";
@@ -14,7 +13,7 @@ import {
   QuestionCircleOutlined,
 } from "@ant-design/icons";
 
-import InnerSpinner from "../../components/Spinners/InnerSpinner";
+import { InnerSpinner } from "spinners";
 import clsx from "clsx";
 
 export function ProjMgmtMembersAddTemplate({
@@ -28,7 +27,7 @@ export function ProjMgmtMembersAddTemplate({
   const searchRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const [userList, setUserList] = useState<Partial<UserUpdate>[] | null>(null);
+  const [userList, setUserList] = useState<Partial<UserInfo>[] | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -39,9 +38,9 @@ export function ProjMgmtMembersAddTemplate({
 
   const getUserList = (keyword: string) => {
     setIsLoading(true);
-    userAPI.getUserByKeyword(keyword)
+    userAPI
+      .getUserByKeyword(keyword)
       .then((res) => {
-        // console.log(res);
         setUserList(res.content);
         setIsLoading(false);
       })
@@ -53,7 +52,7 @@ export function ProjMgmtMembersAddTemplate({
 
   // ANTD Modal Control
   const { confirm } = Modal;
-  const showAssignUserConfirm = (user: Partial<UserInfo>) => {
+  const showAssignUserConfirm = (user: Partial<IMember>) => {
     confirm({
       title: (
         <span className="text-lg">
@@ -73,31 +72,30 @@ export function ProjMgmtMembersAddTemplate({
     });
   };
 
-  // render function
-  const renderUser = (
-    user: Partial<UserInfo>,
+  const renderMember = (
+    member: Partial<IMember>,
     index: number,
     isMobileRendering: boolean
   ) => (
     <div
       className="w-full px-3 py-2 flex justify-between items-center hover:bg-slate-100 cursor-pointer"
-      key={user.userId!.toString() + index}
+      key={member.userId!.toString() + index}
       onClick={() => {
-        if (isMobileRendering) showAssignUserConfirm(user);
+        if (isMobileRendering) showAssignUserConfirm(member);
       }}
     >
       <div className="flex-shrink-0">
-        <Avatar src={user.avatar} />
+        <Avatar src={member.avatar} />
       </div>
-      <p className="ml-2 mb-0 align-middle text-lg break-all">{user.name}</p>
+      <p className="ml-2 mb-0 align-middle text-lg break-all">{member.name}</p>
     </div>
   );
 
-  const renderUserDesktop = (user: Partial<UserInfo>, index: number) => (
+  const renderUserDesktop = (member: Partial<IMember>, index: number) => (
     <Popconfirm
       title={
         <span className="text-lg pl-1">
-          Adding <span className="font-semibold">{user.name}</span> to{" "}
+          Adding <span className="font-semibold">{member.name}</span> to{" "}
           <span className="font-semibold">
             {projectName ? projectName : "Project"}
           </span>
@@ -105,7 +103,7 @@ export function ProjMgmtMembersAddTemplate({
         </span>
       }
       onConfirm={() => {
-        handleAssignUser(user.userId!);
+        handleAssignUser(member.userId!);
         inputRef.current!.focus();
       }}
       okText="Yes"
@@ -113,14 +111,14 @@ export function ProjMgmtMembersAddTemplate({
       cancelText="No"
       cancelButtonProps={{ size: "large" }}
       icon={
-        <QuestionCircleOutlined className="top-1 text-yellow-500 text-xl" />
+        <QuestionCircleOutlined className="top-1 text-yellow-500 text-3xl" />
       }
     >
-      {renderUser(user, index, false)}
+      {renderMember(member, index, false)}
     </Popconfirm>
   );
 
-  const renderUsersList = (userList: Partial<UserUpdate>[] | null) => {
+  const renderMembers = (userList: Partial<IMember>[] | null) => {
     if (!userList) return null;
     return (
       <div
@@ -131,9 +129,7 @@ export function ProjMgmtMembersAddTemplate({
         )}
       >
         {userList.map((user, index) => (
-          <>
-            {renderUserDesktop(user, index)}
-          </>
+          <>{renderUserDesktop(user, index)}</>
         ))}
       </div>
     );
@@ -154,7 +150,6 @@ export function ProjMgmtMembersAddTemplate({
             clearTimeout(searchRef.current);
           }
           searchRef.current = setTimeout(() => {
-            // console.log(e.target.value);
             getUserList(e.target.value);
           }, 300);
         }}
@@ -166,7 +161,7 @@ export function ProjMgmtMembersAddTemplate({
           />
         </div>
       ) : (
-        renderUsersList(userList)
+        renderMembers(userList)
       )}
     </div>
   );

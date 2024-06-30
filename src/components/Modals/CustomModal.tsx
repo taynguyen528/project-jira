@@ -2,12 +2,12 @@
 import { Modal } from "antd";
 
 /* import redux */
-import { useAppDispatch, useAppSelector } from "../../store/index";
-import { modalActions } from "../../store/quanLyModal/modalSlice";
+import { useAppDispatch, useAppSelector } from "store";
+import { modalActions } from "modalSlice";
 
 export const CustomModal = () => {
   let dispatch = useAppDispatch();
-  let { open, modalContent, headerContent, width, form } = useAppSelector(
+  let { open, modalContent, headerContent, width } = useAppSelector(
     (state) => state.modalSlice.modalProps
   );
   const onCancel = () => {

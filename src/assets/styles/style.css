@@ -134,8 +134,8 @@ h6 {
 
 /* START Project Management */
 /* Start DESKTOP */
-.projectManagement
-  .projectManagement__content
+.dataManagement
+  .dataManagement__content
   .ant-table-row:hover
   .ant-table-cell
   .projectName {
@@ -178,12 +178,6 @@ h6 {
 /* End MOBILE: Project Setting */
 /* END Project Management */
 /* END ================================== ANT Design component styling */
-
-/* START TinyMCE Component styling */
-.tox-notification.tox-notification--in {
-  display: none !important;
-}
-/* END TinyMCE Component styling */
 
 /* ================================== edit task form header taskType styling */
 .select-task-type.ant-select-single:not(.ant-select-customize-input)
