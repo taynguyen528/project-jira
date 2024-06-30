@@ -50,8 +50,8 @@ export const UserEditModalTemplate = ({
       initialValues={{
         email: `${user.email}`,
         name: `${user.name}`,
-        password: "undefined",
-        confirmPassword: "undefined",
+        password: undefined,
+        confirmPassword: undefined,
         phoneNumber: `${user.phoneNumber}`,
       }}
     >

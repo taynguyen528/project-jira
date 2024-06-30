@@ -119,7 +119,7 @@ export const UserTableTemplate = ({ userList }: IUserTableProps) => {
       sorter: (a, b) => b.name.localeCompare(a.name),
       sortDirections: ["descend", "ascend"],
       render: (text) => (
-        <span className="projectName text-lg font-semibold cursor-pointer transition-colors duration-300">
+        <span className="text-lg font-semibold">
           {text}
         </span>
       ),
