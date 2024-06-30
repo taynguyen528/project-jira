@@ -6,7 +6,7 @@ import { AppDispatch } from "../../store/index";
 import { spinnerActions } from "../../store/quanLySpinner/spinnerSlice";
 
 // import local services
-import { projectApi } from "../../api/projectApi";
+import { projectApi } from "api";
 
 // import antd component
 import { message } from "antd";

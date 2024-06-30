@@ -15,18 +15,14 @@ interface IConfirmModal {
 }
 
 export const ConfirmModal = ({
-  title,
   content,
   okText,
   cancelText,
   passOkFunc,
   passCancelFunc,
-  handleOk,
-  handleCancel,
   className,
 }: IConfirmModal) => {
   const { confirm } = Modal;
-  const modalBtnProps = { size: "large", className: "" };
 
   const showDeleteConfirm = () => {
     return confirm({

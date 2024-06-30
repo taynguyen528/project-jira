@@ -7,7 +7,7 @@ import { modalActions } from "../../store/quanLyModal/modalSlice";
 
 export const CustomModal = () => {
   let dispatch = useAppDispatch();
-  let { open, modalContent, headerContent, width, form } = useAppSelector(
+  let { open, modalContent, headerContent, width } = useAppSelector(
     (state) => state.modalSlice.modalProps
   );
   const onCancel = () => {

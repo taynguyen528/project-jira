@@ -13,19 +13,16 @@ export const userAPI = {
   editUser: (payload: UserUpdate): Promise<ApiResponse<UserUpdate>> => {
     return privateClient.put("/Users/editUser", payload);
   },
-  deleteUser: (userId: string): Promise<ApiResponse<object>> => {
+  deleteUser: (userId: number): Promise<ApiResponse<object>> => {
     return privateClient.delete(`/Users/deleteUser?id=${userId}`);
   },
   getInfoUser: (userId: string): Promise<ApiResponse<UserInfo>> => {
     return privateClient.get(`/Users/getUser?keyword=${userId}`);
   },
-  getUserByKeyword: (keyword: string): Promise<any> => {
+  getUserByKeyword: (keyword: string): Promise<ApiResponse<UserInfo[]>> => {
     return privateClient.get(`/Users/getUser?keyword=${keyword}`);
   },
-  getAllUser: (): Promise<ApiResponse<object>> => {
-    return privateClient.get(`/Users/getUser`);
-  },
-  getListUser: (): Promise<ApiResponse<MemberTask[]>> => {
+  getAllUser: (): Promise<ApiResponse<UserInfo[]>> => {
     return privateClient.get(`/Users/getUser`);
   },
   getListUser: (): Promise<ApiResponse<MemberTask[]>> => {

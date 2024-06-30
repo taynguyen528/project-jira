@@ -1,9 +1,9 @@
 // import local Interface
-import { IProjectMembersList } from "../../types/Project.itf";
-import { UserInfo, UserUpdate } from "../../types/QuanLyUser";
+import { IMember, IProjectMembersList } from "types";
+import { UserInfo } from "types";
 
 // import ant component
-import { Avatar, Modal, Popconfirm } from "antd";
+import { Avatar, Popconfirm } from "antd";
 import {
   CloseCircleOutlined,
   QuestionCircleOutlined,
@@ -17,7 +17,7 @@ export function ProjMgmtMembersListTemplate({
 }: IProjectMembersList) {
 
   // render function
-  const renderDelBtn = (member: Partial<UserUpdate>) => (
+  const renderDelBtn = (member: Partial<IMember>) => (
     <Popconfirm
       title={
         <span className="text-lg pl-1">

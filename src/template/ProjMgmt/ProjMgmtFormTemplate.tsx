@@ -2,7 +2,7 @@ import { Button, Form, Input, Select } from "antd";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/index";
 import { useFetchProjectCatList } from "../../hooks/ProjectHooks/useFetchProjectCatList";
-import { IProjectForm } from "../../types/FormProps.itf";
+import { IProjectForm } from "types";
 import Label from "../../components/Label/Label";
 import CustomEditor from "../../components/Editor/CustomEditor";
 

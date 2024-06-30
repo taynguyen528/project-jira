@@ -1,5 +1,5 @@
 /* import antd components */
-import { Button, Form, Input } from "antd";
+import { Form, Input } from "antd";
 import {
   LockOutlined,
   MailOutlined,
@@ -14,20 +14,20 @@ import Label from "../../components/Label/Label";
 import toastifyUtils from "../../utils/toastifyUtils";
 
 /* import local interfaces */
-import { IUserActionProps, UserUpdate } from "types";
+import { IUserActionProps } from "types";
 
 /* import local service */
-import { userAPI } from "../../api";
+import { userAPI } from "api";
 
 export const UserEditModalTemplate = ({
   user,
   onSuccess,
 }: IUserActionProps) => {
-  const onFinish = (value: UserUpdate) => {
+  const onFinish = (value: any) => {
     let userEdit = { ...value, id: user.userId };
     userAPI
       .editUser(userEdit)
-      .then((res) => {
+      .then(() => {
         toastifyUtils("success", "Update user successfully!");
         onSuccess();
       })
@@ -155,12 +155,13 @@ export const UserEditModalTemplate = ({
             message: "Please do not leave ${name} empty",
           },
           {
-            pattern: /^(?:\d*)$/,
-            message: "${name} only accepts number. Please input again",
+            pattern: /^[0-9]{10,11}$/,
+            message:
+              "Invalid phone number. Please use correct format for phone number.",
           },
         ]}
       >
-        <Input prefix={<MobileOutlined />} placeholder="0897831245" />
+        <Input prefix={<MobileOutlined />} placeholder="0987654321" />
       </Form.Item>
     </Form>
   );

@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import projectHooks from "../../hooks/ProjectHooks/projectHooks.ts";
 
 // import local interface
-import { IProject } from "types";
+import { ContentProject } from "types";
 
 // import local components
 import { SectionWrapper } from "../../components/SectionWrapper.tsx";
@@ -43,7 +43,7 @@ export default function ProjMgmtTemplate() {
   };
 
   //antd control
-  type ProjectIndex = keyof IProject;
+  type ProjectIndex = keyof ContentProject;
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef<InputRef>(null);
@@ -64,7 +64,7 @@ export default function ProjMgmtTemplate() {
 
   const getColumnSearchProps = (
     projectIndex: ProjectIndex
-  ): ColumnType<IProject> => ({
+  ): ColumnType<ContentProject> => ({
     filterDropdown: ({
       setSelectedKeys,
       selectedKeys,
@@ -147,7 +147,7 @@ export default function ProjMgmtTemplate() {
       ),
   });
 
-  const columns: ColumnsType<IProject> = [
+  const columns: ColumnsType<ContentProject> = [
     {
       title: <span className="text-lg">Name</span>,
       dataIndex: "projectName",

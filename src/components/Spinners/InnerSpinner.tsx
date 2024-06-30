@@ -1,5 +1,5 @@
 // import local interface
-import { InterfaceSpinner } from "../../types/BaseProps.itf";
+import { InterfaceSpinner } from "types";
 
 /* import packages */
 import { MoonLoader } from "react-spinners";

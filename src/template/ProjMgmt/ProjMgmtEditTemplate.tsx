@@ -1,5 +1,5 @@
 // import local interface
-import { IProjectEdit, IProjectUpdate } from "../../types/Project.itf";
+import { IProjectEdit, IProjectUpdate } from "types";
 
 // import redux
 import { useAppDispatch } from "../../store";
@@ -7,7 +7,7 @@ import { spinnerActions } from "../../store/quanLySpinner/spinnerSlice";
 import { drawerActions } from "../../store/quanLyDrawer/drawerSlice";
 
 // import local Services
-import { projectApi } from "../../api/projectApi";
+import { projectApi } from "api";
 
 // import local component
 import { ProjMgmtFormTemplate } from "./ProjMgmtFormTemplate";

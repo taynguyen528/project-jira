@@ -14,7 +14,7 @@ export function UserActionTemplate({ user, onSuccess }: IUserActionProps) {
   let handleDeleteUser = () => {
     userAPI
       .deleteUser(user.userId)
-      .then((res) => {
+      .then(() => {
         toastify("success", "Delete user successfully!");
         onSuccess();
       })

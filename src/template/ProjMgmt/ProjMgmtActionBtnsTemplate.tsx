@@ -1,5 +1,5 @@
 // import local interface
-import { IProject, IProjectActionBtns } from "../../types/Project.itf";
+import { IProject, IProjectActionBtns } from "types";
 
 // import redux
 import { useAppDispatch } from "../../store/index";
@@ -10,7 +10,7 @@ import { spinnerActions } from "../../store/quanLySpinner/spinnerSlice";
 import { ProjMgmtEditTemplate } from "./ProjMgmtEditTemplate";
 
 // import local Service
-import { projectApi } from "../../api/projectApi";
+import { projectApi } from "api";
 
 // import antd components
 import {
