@@ -1,11 +1,11 @@
 // import local interface
-import { InterfaceSpinner } from "../../types/BaseProps.itf";
+import { InterfaceSpinner } from "types";
 
 /* import packages */
 import { MoonLoader } from "react-spinners";
 import clsx from "clsx";
 
-export default function InnerSpinner({
+export function InnerSpinner({
   isLoading = true,
   spinnerClass = "absolute w-full h-full",
   spinnerType = <MoonLoader />,

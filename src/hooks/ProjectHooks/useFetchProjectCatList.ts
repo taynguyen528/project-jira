@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import { projectCategoryActions } from "../../store/quanLyProjectCategory/projectCategorySlice";
-import { AppDispatch } from "../../store/index";
-import { projectApi } from "../../api/projectApi";
+import { projectCategoryActions } from "projCtgrSlice";
+import { AppDispatch } from "store";
+import { projectApi } from "api";
 import { IProjectCategory } from "types";
 
 export const useFetchProjectCatList = (dispatch: AppDispatch) => {

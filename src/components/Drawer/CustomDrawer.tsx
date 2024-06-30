@@ -1,7 +1,7 @@
 // import antd components
 import { Drawer } from "antd";
-import { useAppDispatch, useAppSelector } from "../../store/index";
-import { drawerActions } from "../../store/quanLyDrawer/drawerSlice";
+import { useAppDispatch, useAppSelector } from "store";
+import { drawerActions } from "drawerSlice";
 
 export function CustomDrawer() {
   let dispatch = useAppDispatch();

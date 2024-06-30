@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IProject } from "../../types/Project.itf";
+import { IProject } from "types";
 import { ContentProject } from "types";
 
 type InitialState = {

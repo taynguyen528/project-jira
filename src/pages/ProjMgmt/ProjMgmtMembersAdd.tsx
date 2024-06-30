@@ -1,4 +1,4 @@
-import { ProjMgmtMembersAddTemplate } from "template/ProjMgmt";
+import { ProjMgmtMembersAddTemplate } from "projMgmtTpl";
 import { IProjectMembersAdd } from "types";
 
 export const ProjMgmtMembersAdd = ({

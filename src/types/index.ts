@@ -9,3 +9,6 @@ export * from "./QuanLyComment";
 export * from "./ProjectCategory.itf";
 export * from "./Project.itf";
 export * from "./BaseProps.itf";
+export * from "./FormProps.itf";
+export * from "./ModalForm.itf";
+export * from "./SectionProps.itf";

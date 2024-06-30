@@ -1,6 +1,6 @@
 import { toast, ToastOptions } from "react-toastify";
 
-const toastifyUtils = (type: string, content: string) => {
+export const toastifyUtils = (type: string, content: string) => {
   const toastOptions: ToastOptions = {
     position: "bottom-right",
     autoClose: 3000,
@@ -24,5 +24,3 @@ const toastifyUtils = (type: string, content: string) => {
       return toast(content, { ...toastOptions });
   }
 };
-
-export default toastifyUtils;

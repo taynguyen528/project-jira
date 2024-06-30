@@ -6,7 +6,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { RegisterType, registerSchema } from "schemas";
 import { RootState, useAppDispatch } from "store";
-import { quanLyNguoiDungActionsThunks } from "store/quanLyNguoiDung";
+import { quanLyNguoiDungActionsThunks } from "userSlice";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import { PATH } from "constant";
 

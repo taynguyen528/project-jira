@@ -4,10 +4,10 @@ import { FilterConfirmProps } from "antd/es/table/interface";
 import { ColumnType, ColumnsType } from "antd/lib/table";
 import { useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
-import { UserUpdate, IUserTableProps } from "types";
+import { UserInfo, IUserTableProps } from "types";
 
 export const UserTableTemplate = ({ userList }: IUserTableProps) => {
-  type UserIndex = keyof UserUpdate;
+  type UserIndex = keyof UserInfo;
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef<InputRef>(null);
@@ -28,7 +28,7 @@ export const UserTableTemplate = ({ userList }: IUserTableProps) => {
 
   const getColumnSearchProps = (
     userIndex: UserIndex
-  ): ColumnType<UserUpdate> => ({
+  ): ColumnType<UserInfo> => ({
     filterDropdown: ({
       setSelectedKeys,
       selectedKeys,
@@ -38,7 +38,7 @@ export const UserTableTemplate = ({ userList }: IUserTableProps) => {
       <div style={{ padding: 8 }}>
         <Input
           ref={searchInput}
-          placeholder={`Search ${userIndex === "id" ? "User" : userIndex}`}
+          placeholder={`Search ${userIndex === "userId" ? "User" : userIndex}`}
           value={selectedKeys[0]}
           onChange={(e) =>
             setSelectedKeys(e.target.value ? [e.target.value] : [])
@@ -109,7 +109,7 @@ export const UserTableTemplate = ({ userList }: IUserTableProps) => {
       ),
   });
 
-  let headColumns: ColumnsType<UserUpdate> = [
+  let headColumns: ColumnsType<UserInfo> = [
     {
       title: "User Name",
       dataIndex: "name",

@@ -1,6 +1,4 @@
-// import { ITaskDetailList } from "types";
 import { UserInfo } from "types";
-import { IProjectCategory } from "types";
 
 export interface ICreator {
   name: string;
@@ -12,12 +10,10 @@ export interface IProject {
   alias: string;
   categoryId: number;
   categoryName: string;
-  projectCategory: IProjectCategory;
   projectName: string;
   description: string;
   creator: ICreator;
   members: Partial<UserInfo>[];
-  // lstTask: ITaskDetailList[];
 }
 
 export interface IProjectDetail {
@@ -47,10 +43,16 @@ export interface IProjectMembers {
 }
 
 export interface IProjectMembersList {
-  members: Partial<UserInfo>[];
-  handleDeleteMember: (memberID: string) => void;
+  members: Partial<IMember>[];
+  handleDeleteMember: (memberId: number) => void;
   containerStyle?: string;
   title?: string;
+}
+
+export interface IMember {
+  userId: number;
+  name: string;
+  avatar: string;
 }
 
 export interface IProjectMembersAdd {
@@ -59,5 +61,5 @@ export interface IProjectMembersAdd {
   projectName?: string;
   containerClassName?: string;
   userListClassName?: string;
-  handleAssignUser: (userID: string) => void;
+  handleAssignUser: (userId: number) => void;
 }

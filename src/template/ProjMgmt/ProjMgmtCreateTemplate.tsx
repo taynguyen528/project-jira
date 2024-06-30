@@ -1,22 +1,22 @@
 import { useNavigate } from "react-router-dom";
 
 // import redux
-import { useAppDispatch } from "../../store/index";
-import { projectActions } from "../../store/quanLyProject/projectSlice";
-import { spinnerActions } from "../../store/quanLySpinner/spinnerSlice";
+import { useAppDispatch } from "store";
+import { projectActions } from "projSlice";
+import { spinnerActions } from "spinnerSlice";
 
 // import local Interface
-import { IProject } from "../../types/Project.itf";
+import { IProject } from "types";
 
 // import local component
-import { SectionWrapper } from "../../components/SectionWrapper";
+import { SectionWrapper } from "components";
 import { ProjMgmtFormTemplate } from "./ProjMgmtFormTemplate";
 
 // import local Services
-import { projectApi } from "../../api/projectApi";
+import { projectApi } from "api";
 
 // import utils
-import toastify from "../../utils/toastifyUtils";
+import { toastifyUtils } from "utils";
 
 export const ProjMgmtCreateTemplate = () => {
   const dispatch = useAppDispatch();
@@ -35,12 +35,12 @@ export const ProjMgmtCreateTemplate = () => {
         setTimeout(() => {
           navigate("/project", { replace: true });
           dispatch(spinnerActions.setLoadingOff());
-          toastify("success", "Create project successfully !");
+          toastifyUtils("success", "Create project successfully !");
         }, 2500);
       })
       .catch((err) => {
         setTimeout(() => {
-          toastify("error", err.response.data.content);
+          toastifyUtils("error", err.response.data.content);
           dispatch(spinnerActions.setLoadingOff());
         }, 2500);
       });

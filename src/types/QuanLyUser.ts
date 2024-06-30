@@ -1,5 +1,5 @@
 export type UserUpdate = {
-  id: string;
+  id: number;
   email: string;
   name: string;
   phoneNumber: string;
@@ -7,13 +7,12 @@ export type UserUpdate = {
 };
 
 export type UserInfo = {
-  userId: string;
-  id: string;
-  email: string;
+  userId: number;
   name: string;
+  avatar: string;
+  email: string;
   phoneNumber: string;
   accessToken?: string;
-  avatar: string;
 };
 
 export interface IUser extends UserInfo {
@@ -21,10 +20,10 @@ export interface IUser extends UserInfo {
 }
 
 export interface IUserTableProps {
-  userList: UserUpdate[];
+  userList: UserInfo[];
 }
 
 export interface IUserActionProps {
-  user: IUser;
+  user: UserInfo;
   onSuccess: () => void;
 }

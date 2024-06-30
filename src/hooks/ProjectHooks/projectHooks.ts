@@ -1,17 +1,17 @@
 import { useEffect } from "react";
 
 // import redux
-import { projectActions } from "../../store/quanLyProject/projectSlice";
-import { AppDispatch } from "../../store/index";
-import { spinnerActions } from "../../store/quanLySpinner/spinnerSlice";
+import { projectActions } from "projSlice";
+import { AppDispatch } from "store";
+import { spinnerActions } from "spinnerSlice";
 
 // import local services
-import { projectApi } from "../../api/projectApi";
+import { projectApi } from "api";
 
 // import antd component
 import { message } from "antd";
 
-const projectHooks = {
+export const projectHooks = {
   useFetchProjectList: (
     dispatch: AppDispatch,
     successMessage: string | null
@@ -35,5 +35,3 @@ const projectHooks = {
     }, []);
   },
 };
-
-export default projectHooks;

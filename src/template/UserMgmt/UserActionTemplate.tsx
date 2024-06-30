@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { userAPI } from "api";
 import { IUserActionProps } from "types";
-import toastify from "../../utils/toastifyUtils";
+import { toastifyUtils } from "utils";
 import { UserEditModalTemplate } from "./UserEditModalTemplate";
 import { Button, Modal, Popconfirm } from "antd";
 import {
@@ -14,12 +14,12 @@ export function UserActionTemplate({ user, onSuccess }: IUserActionProps) {
   let handleDeleteUser = () => {
     userAPI
       .deleteUser(user.userId)
-      .then((res) => {
-        toastify("success", "Delete user successfully!");
+      .then(() => {
+        toastifyUtils("success", "Delete user successfully!");
         onSuccess();
       })
       .catch((err) => {
-        toastify("error", err.response.data.message);
+        toastifyUtils("error", err.response.data.message);
       });
   };
 
@@ -39,6 +39,7 @@ export function UserActionTemplate({ user, onSuccess }: IUserActionProps) {
       <Modal
         title="Update user information"
         open={isModalOpen}
+        onCancel={handleCancel}
         footer={[
           <Button key="back" onClick={handleCancel}>
             Cancel

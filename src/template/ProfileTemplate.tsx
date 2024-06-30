@@ -44,7 +44,7 @@ export const ProfileTemplate = () => {
             if (res && Array.isArray(res.content) && res.content.length > 0) {
                 const userData = res.content[0];
                 const formattedUserData: UserInfo = {
-                    id: userData.userId,
+                    userId: userData.userId,
                     email: userData.email,
                     name: userData.name,
                     phoneNumber: userData.phoneNumber,
@@ -53,7 +53,7 @@ export const ProfileTemplate = () => {
                 };
                 setDataUser(formattedUserData);
                 reset({
-                    id: formattedUserData.id.toString(),
+                    id: formattedUserData.userId.toString(),
                     email: formattedUserData.email,
                     name: formattedUserData.name,
                     phoneNumber: formattedUserData.phoneNumber,
@@ -79,7 +79,7 @@ export const ProfileTemplate = () => {
 
         const dataSubmit: UserUpdate = {
             ...restData,
-            id: dataUser.id.toString(),
+            id: dataUser.userId,
         };
 
         try {

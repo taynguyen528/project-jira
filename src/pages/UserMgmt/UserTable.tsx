@@ -1,4 +1,4 @@
-import { UserTableTemplate } from "template/UserMgmt";
+import { UserTableTemplate } from "userMgmtTpl";
 import { IUserTableProps } from "types";
 
 export const UserTable = ({ userList }: IUserTableProps) => {

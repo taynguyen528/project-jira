@@ -1,16 +1,16 @@
 // import local interface
-import { IProject, IProjectActionBtns } from "../../types/Project.itf";
+import { IProject, IProjectActionBtns } from "types";
 
 // import redux
-import { useAppDispatch } from "../../store/index";
-import { drawerActions } from "../../store/quanLyDrawer/drawerSlice";
-import { spinnerActions } from "../../store/quanLySpinner/spinnerSlice";
+import { useAppDispatch } from "store";
+import { drawerActions } from "drawerSlice";
+import { spinnerActions } from "spinnerSlice";
 
 // import local component
 import { ProjMgmtEditTemplate } from "./ProjMgmtEditTemplate";
 
 // import local Service
-import { projectApi } from "../../api/projectApi";
+import { projectApi } from "api";
 
 // import antd components
 import {

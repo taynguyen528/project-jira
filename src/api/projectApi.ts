@@ -2,12 +2,12 @@
 import { message } from "antd";
 
 /* import local interfaces */
-import { IProject, IProjectUpdate } from "../types/Project.itf";
+import { IProject, IProjectUpdate } from "types";
 
 /* import redux hooks */
-import { projectActions } from "../store/quanLyProject/projectSlice";
-import { spinnerActions } from "../store/quanLySpinner/spinnerSlice";
-import { AppDispatch } from "../store";
+import { projectActions } from "projSlice";
+import { spinnerActions } from "spinnerSlice";
+import { AppDispatch } from "store";
 
 // import config URL
 import { privateClient, publicClient } from "constant";
