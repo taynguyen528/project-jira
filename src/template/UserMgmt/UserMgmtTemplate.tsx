@@ -4,6 +4,8 @@ import { useEffect } from "react";
 import { userAPI } from "api";
 import { UserTableTemplate } from "./UserTableTemplate";
 import { UserActionTemplate } from "./UserActionTemplate";
+import clsx from "clsx";
+import { SectionWrapper } from "components";
 
 export default function UserMgmtTemplate() {
   const [userList, setUserList] = useState<UserInfo[]>([]);
@@ -29,10 +31,24 @@ export default function UserMgmtTemplate() {
   }, []);
 
   return (
-    <div className="container mx-auto pt-16">
-      <h1 className="text-center text-3xl">User Management</h1>
-
-      <UserTableTemplate userList={userList} />
-    </div>
+    <SectionWrapper
+      content={
+        <>
+          <div className="mb-2 flex justify-between items-center">
+            <h3
+              className={clsx(
+                "title",
+                "uppercase text-[#172B4D] text-2xl font-extrabold tracking-wide"
+              )}
+            >
+              User Management
+            </h3>
+          </div>
+          <UserTableTemplate userList={userList} />
+        </>
+      }
+      sectionClass="dataManagement"
+      contentClass="dataManagement__content"
+    />
   );
 }

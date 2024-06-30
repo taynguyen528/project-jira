@@ -71,7 +71,7 @@ export const Navbar: React.FC = () => {
               className="w-24 h-auto mr-4"
             />
           </div>
-          <div className="md:flex items-center gap-8">
+          <div className="invisible md:flex md:visible items-center gap-8">
             <a
               key="1"
               className="text-[20px] text-blue-700 cursor-pointer hover:opacity-70 transition-all duration-300"

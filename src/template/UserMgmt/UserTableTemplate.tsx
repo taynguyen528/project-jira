@@ -111,33 +111,38 @@ export const UserTableTemplate = ({ userList }: IUserTableProps) => {
 
   let headColumns: ColumnsType<UserInfo> = [
     {
-      title: "User Name",
+      title: <span className="text-lg">User Name</span>,
       dataIndex: "name",
       key: "name",
       ...getColumnSearchProps("name"),
       sorter: (a, b) => b.name.localeCompare(a.name),
       sortDirections: ["descend", "ascend"],
-      render: (text) => {
-        return <span className="text-red-500 font-medium">{text}</span>;
-      },
+      render: (text) => (
+        <span className="projectName text-lg font-semibold cursor-pointer transition-colors duration-300">
+          {text}
+        </span>
+      ),
     },
     {
-      title: "Email",
+      title: <span className="text-lg">Email</span>,
       dataIndex: "email",
       key: "email",
+      render: (text) => <span className="text-base">{text}</span>,
     },
     {
-      title: "User Id",
+      title: <span className="text-lg">User ID</span>,
       dataIndex: "userId",
       key: "userId",
+      render: (text) => <span className="text-base">{text}</span>,
     },
     {
-      title: "Phone Number",
+      title: <span className="text-lg">Phone Number</span>,
       dataIndex: "phoneNumber",
       key: "phoneNumber",
+      render: (text) => <span className="text-base">{text}</span>,
     },
     {
-      title: "Edit",
+      title: <span className="text-lg">Edit</span>,
       dataIndex: "action",
       key: "action",
     },

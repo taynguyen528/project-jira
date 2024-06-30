@@ -32,7 +32,7 @@ export function UserActionTemplate({ user, onSuccess }: IUserActionProps) {
   };
 
   return (
-    <div className="space-x-2">
+    <div className="space-x-2 flex justify-between items-center">
       <button onClick={showModal}>
         <FormOutlined className="text-blue-500 text-2xl" />
       </button>
@@ -60,13 +60,14 @@ export function UserActionTemplate({ user, onSuccess }: IUserActionProps) {
       <Popconfirm
         title={
           <span className="text-lg pl-1">
-            Are you sure you want to delete this user?
+            Are you sure you want to delete user{" "}
+            <span className="font-semibold">{user.name}</span>?
           </span>
         }
         onConfirm={handleDeleteUser}
         okText="Yes"
         cancelText="No"
-        icon={<QuestionCircleOutlined className="top-1 text-red-500 text-xl" />}
+        icon={<QuestionCircleOutlined className="top-1 text-red-500 text-3xl" />}
       >
         <DeleteOutlined className="text-red-500 text-2xl" />
       </Popconfirm>
