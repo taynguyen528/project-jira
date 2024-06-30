@@ -1,6 +1,6 @@
 // import redux
 import { useAppDispatch } from "store";
-import { spinnerActions } from "../../store/quanLySpinner/spinnerSlice";
+import { spinnerActions } from "spinnerSlice";
 
 // import local services
 import { projectApi } from "api";

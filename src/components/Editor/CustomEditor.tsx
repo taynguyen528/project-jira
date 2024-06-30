@@ -3,7 +3,7 @@ import { EditorProps } from "types";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
-const CustomEditor = ({ formInstance }: EditorProps) => {
+export const CustomEditor = ({ formInstance }: EditorProps) => {
   const [_, setValue] = useState<string>("");
 
   return (
@@ -19,5 +19,3 @@ const CustomEditor = ({ formInstance }: EditorProps) => {
     />
   );
 };
-
-export default CustomEditor;

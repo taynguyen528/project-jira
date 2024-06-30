@@ -1,4 +1,4 @@
-import { UserActionTemplate } from "template/UserMgmt";
+import { UserActionTemplate } from "userMgmtTpl";
 import { IUserActionProps } from "types";
 
 export const UserAction = ({ user, onSuccess }: IUserActionProps) => {

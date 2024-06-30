@@ -10,8 +10,8 @@ import {
 } from "@ant-design/icons";
 
 /* import local components*/
-import Label from "../../components/Label/Label";
-import toastifyUtils from "../../utils/toastifyUtils";
+import { Label } from "label";
+import { toastifyUtils } from "utils";
 
 /* import local interfaces */
 import { IUserActionProps } from "types";
@@ -50,8 +50,8 @@ export const UserEditModalTemplate = ({
       initialValues={{
         email: `${user.email}`,
         name: `${user.name}`,
-        password: 'undefined',
-        confirmPassword: 'undefined',
+        password: "undefined",
+        confirmPassword: "undefined",
         phoneNumber: `${user.phoneNumber}`,
       }}
     >

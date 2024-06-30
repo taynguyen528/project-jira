@@ -2,9 +2,9 @@
 import { IProject, IProjectActionBtns } from "types";
 
 // import redux
-import { useAppDispatch } from "../../store/index";
-import { drawerActions } from "../../store/quanLyDrawer/drawerSlice";
-import { spinnerActions } from "../../store/quanLySpinner/spinnerSlice";
+import { useAppDispatch } from "store";
+import { drawerActions } from "drawerSlice";
+import { spinnerActions } from "spinnerSlice";
 
 // import local component
 import { ProjMgmtEditTemplate } from "./ProjMgmtEditTemplate";

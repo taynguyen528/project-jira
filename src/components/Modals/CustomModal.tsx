@@ -2,8 +2,8 @@
 import { Modal } from "antd";
 
 /* import redux */
-import { useAppDispatch, useAppSelector } from "../../store/index";
-import { modalActions } from "../../store/quanLyModal/modalSlice";
+import { useAppDispatch, useAppSelector } from "store";
+import { modalActions } from "modalSlice";
 
 export const CustomModal = () => {
   let dispatch = useAppDispatch();

@@ -1,6 +1,6 @@
-import { Spinner } from "./components/Spinners/Spinner";
-import { CustomDrawer } from "./components/Drawer/CustomDrawer";
-import { CustomModal } from "./components/Modals/CustomModal";
+import { Spinner } from "spinners";
+import { CustomDrawer } from "drawer";
+import { CustomModal } from "modals";
 import { Router } from "router";
 
 function App() {

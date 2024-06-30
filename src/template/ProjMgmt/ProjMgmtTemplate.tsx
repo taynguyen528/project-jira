@@ -1,19 +1,19 @@
 import { useState, useRef } from "react";
 
-import { useAppDispatch, useAppSelector } from "../../store/index.ts";
+import { useAppDispatch, useAppSelector } from "store";
 import { useNavigate } from "react-router-dom";
 
 // import custom Hooks
-import projectHooks from "../../hooks/ProjectHooks/projectHooks.ts";
+import { projectHooks } from "projectHooks";
 
 // import local interface
 import { ContentProject } from "types";
 
 // import local components
-import { SectionWrapper } from "../../components/SectionWrapper.tsx";
+import { SectionWrapper } from "components";
 import { ProjMgmtActionBtnsTemplate } from "./ProjMgmtActionBtnsTemplate.tsx";
 import { ProjMgmtMembersTemplate } from "./ProjMgmtMembersTemplate.tsx";
-import ButtonLocal from "../../components/ButtonLocal";
+import { ButtonLocal } from "components";
 
 // import antd type
 import type { ColumnsType, ColumnType } from "antd/es/table";

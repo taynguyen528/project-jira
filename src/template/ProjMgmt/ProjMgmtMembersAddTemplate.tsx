@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { IMember, IProjectMembersAdd, UserInfo } from "types";
 
 // import local service
-import {userAPI} from "api/userApi";
+import { userAPI } from "api";
 
 // import antd components
 import { Avatar, Modal, Popconfirm } from "antd";
@@ -13,7 +13,7 @@ import {
   QuestionCircleOutlined,
 } from "@ant-design/icons";
 
-import InnerSpinner from "../../components/Spinners/InnerSpinner";
+import { InnerSpinner } from "spinners";
 import clsx from "clsx";
 
 export function ProjMgmtMembersAddTemplate({
@@ -38,7 +38,8 @@ export function ProjMgmtMembersAddTemplate({
 
   const getUserList = (keyword: string) => {
     setIsLoading(true);
-    userAPI.getUserByKeyword(keyword)
+    userAPI
+      .getUserByKeyword(keyword)
       .then((res) => {
         setUserList(res.content);
         setIsLoading(false);
@@ -128,9 +129,7 @@ export function ProjMgmtMembersAddTemplate({
         )}
       >
         {userList.map((user, index) => (
-          <>
-            {renderUserDesktop(user, index)}
-          </>
+          <>{renderUserDesktop(user, index)}</>
         ))}
       </div>
     );

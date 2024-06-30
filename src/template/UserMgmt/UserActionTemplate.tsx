@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { userAPI } from "api";
 import { IUserActionProps } from "types";
-import toastify from "../../utils/toastifyUtils";
+import { toastifyUtils } from "utils";
 import { UserEditModalTemplate } from "./UserEditModalTemplate";
 import { Button, Modal, Popconfirm } from "antd";
 import {
@@ -15,11 +15,11 @@ export function UserActionTemplate({ user, onSuccess }: IUserActionProps) {
     userAPI
       .deleteUser(user.userId)
       .then(() => {
-        toastify("success", "Delete user successfully!");
+        toastifyUtils("success", "Delete user successfully!");
         onSuccess();
       })
       .catch((err) => {
-        toastify("error", err.response.data.message);
+        toastifyUtils("error", err.response.data.message);
       });
   };
 

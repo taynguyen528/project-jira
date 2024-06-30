@@ -1,4 +1,4 @@
-import { UserEditModalTemplate } from "template/UserMgmt";
+import { UserEditModalTemplate } from "userMgmtTpl";
 import { IUserActionProps } from "types";
 
 export const UserEditModal = ({ user, onSuccess }: IUserActionProps) => {

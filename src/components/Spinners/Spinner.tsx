@@ -1,6 +1,6 @@
 import clsx from "clsx";
 
-import { useAppSelector } from "../../store/index";
+import { useAppSelector } from "store";
 
 /* import packages */
 import { HashLoader } from "react-spinners";

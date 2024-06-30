@@ -2,9 +2,9 @@
 import { IProjectEdit, IProjectUpdate } from "types";
 
 // import redux
-import { useAppDispatch } from "../../store";
-import { spinnerActions } from "../../store/quanLySpinner/spinnerSlice";
-import { drawerActions } from "../../store/quanLyDrawer/drawerSlice";
+import { useAppDispatch } from "store";
+import { spinnerActions } from "spinnerSlice";
+import { drawerActions } from "drawerSlice";
 
 // import local Services
 import { projectApi } from "api";
@@ -13,8 +13,8 @@ import { projectApi } from "api";
 import { ProjMgmtFormTemplate } from "./ProjMgmtFormTemplate";
 
 // import utils
-import toastify from "../../utils/toastifyUtils";
-import { SectionWrapper } from "../../components/SectionWrapper";
+import { toastifyUtils } from "utils";
+import { SectionWrapper } from "components";
 
 export function ProjMgmtEditTemplate({ project }: IProjectEdit) {
   const dispatch = useAppDispatch();
@@ -29,7 +29,7 @@ export function ProjMgmtEditTemplate({ project }: IProjectEdit) {
     projectApi
       .update(project.id, updateProject)
       .then(() => {
-        toastify("success", "Updated project successfully !");
+        toastifyUtils("success", "Updated project successfully !");
         dispatch(drawerActions.closeDrawer());
         setTimeout(() => {
           dispatch(projectApi.getAllAndDispatch(null));
@@ -38,7 +38,7 @@ export function ProjMgmtEditTemplate({ project }: IProjectEdit) {
       })
       .catch((err) => {
         setTimeout(() => {
-          toastify("error", err.response.data.message);
+          toastifyUtils("error", err.response.data.message);
           dispatch(spinnerActions.setLoadingOff());
         }, 2500);
       });
