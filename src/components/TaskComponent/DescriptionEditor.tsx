@@ -19,6 +19,7 @@ export const DescriptionEditor: React.FC<DescriptionEditorProps> = ({
                     editor={ClassicEditor}
                     data={description}
                     onChange={(event, editor) => {
+                        console.log(event);
                         const data = editor.getData();
                         onDescriptionChange(data);
                     }}

@@ -14,6 +14,7 @@
         "@ant-design/icons": "^5.3.7",
         "@ckeditor/ckeditor5-build-classic": "^41.4.2",
         "@ckeditor/ckeditor5-react": "^7.0.0",
+        "@ckeditor/ckeditor5-watchdog": "^42.0.0",
         "@hookform/resolvers": "^3.6.0",
         "@reduxjs/toolkit": "^2.2.5",
         "antd": "^5.18.0",
@@ -24,6 +25,7 @@
         "postcss": "^8.4.38",
         "query-string": "^9.0.0",
         "react": "^18.2.0",
+        "react-beautiful-dnd": "^13.1.1",
         "react-dom": "^18.2.0",
         "react-highlight-words": "^0.20.0",
         "react-hook-form": "^7.51.5",
@@ -39,6 +41,7 @@
     "devDependencies": {
         "@types/node": "^20.14.2",
         "@types/react": "^18.2.66",
+        "@types/react-beautiful-dnd": "^13.1.8",
         "@types/react-dom": "^18.2.22",
         "@types/react-highlight-words": "^0.20.0",
         "@typescript-eslint/eslint-plugin": "^7.2.0",

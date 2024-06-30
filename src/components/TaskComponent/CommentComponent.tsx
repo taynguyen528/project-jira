@@ -1,12 +1,12 @@
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import React, { useEffect, useState } from "react";
 import { Button, Input } from "antd";
-import { commentApi } from "api";
-import { useEffect, useState } from "react";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import { commentApi } from "api";
 import { RootState } from "store";
 import { CommentType } from "types";
-import { showDeleteConfirm } from "./DeleteTask";
+import { showDeleteConfirm } from "./ConfirmDelete";
 
 interface ModalCommentProps {
     taskId: number;
@@ -18,6 +18,8 @@ export const CommentComponent: React.FC<ModalCommentProps> = ({ taskId }) => {
     );
     const [listComment, setListComment] = useState<CommentType[]>([]);
     const [contentComment, setContentComment] = useState<string>("");
+    const [editCommentId, setEditCommentId] = useState<number | null>(null);
+    const [editCommentContent, setEditCommentContent] = useState<string>("");
 
     const fetchDataComment = async () => {
         try {
@@ -36,6 +38,22 @@ export const CommentComponent: React.FC<ModalCommentProps> = ({ taskId }) => {
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setContentComment(event.target.value);
+    };
+
+    const handleEditInputChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        setEditCommentContent(event.target.value);
+    };
+
+    const handleBtnEditComment = (
+        commentId: number | undefined,
+        content: string
+    ) => {
+        if (commentId !== undefined) {
+            setEditCommentId(commentId);
+            setEditCommentContent(content);
+        }
     };
 
     const handleBtnSubmitComment = async () => {
@@ -68,11 +86,33 @@ export const CommentComponent: React.FC<ModalCommentProps> = ({ taskId }) => {
                 setContentComment("");
             }
         } catch (error: any) {
-            console.log(error.response.data.content);
+            toast.error(error.response.data.content);
         }
     };
 
-    const handleBtnDeleteComment = (commentId: number, content: string) => {
+    const handleBtnSaveEditComment = async () => {
+        try {
+            if (editCommentId) {
+                const res = await commentApi.updateComment(
+                    editCommentId,
+                    editCommentContent
+                );
+                if (res && res.statusCode === 200) {
+                    toast.success(res.message);
+                    fetchDataComment();
+                    setEditCommentId(null);
+                    setEditCommentContent("");
+                }
+            }
+        } catch (error: any) {
+            toast.error(error.response.data.content);
+        }
+    };
+
+    const handleBtnDeleteComment = (
+        commentId: number | undefined,
+        content: string
+    ) => {
         console.log("commentId", commentId);
         console.log("content", content);
         showDeleteConfirm({
@@ -80,10 +120,12 @@ export const CommentComponent: React.FC<ModalCommentProps> = ({ taskId }) => {
             content: `Nội dung: ${content}`,
             onOk: async () => {
                 try {
-                    const res = await commentApi.deleteComment(commentId);
-                    if (res && res.statusCode === 200) {
-                        toast.success("Xóa bình luận thành công.");
-                        fetchDataComment();
+                    if (commentId !== undefined) {
+                        const res = await commentApi.deleteComment(commentId);
+                        if (res && res.statusCode === 200) {
+                            toast.success("Xóa bình luận thành công.");
+                            fetchDataComment();
+                        }
                     }
                 } catch (error: any) {
                     toast.error(error.response.data.content);
@@ -125,25 +167,62 @@ export const CommentComponent: React.FC<ModalCommentProps> = ({ taskId }) => {
                             <div className="font-bold text-[18px]">
                                 {comment.user.name}
                             </div>
-                            <div className="text-[16px]">
-                                {comment.contentComment}
-                            </div>
+                            {editCommentId === comment.id ? (
+                                <div className="flex gap-10">
+                                    <Input
+                                        value={editCommentContent}
+                                        onChange={handleEditInputChange}
+                                        style={{ width: "70%" }}
+                                    />
+                                    <div className="flex gap-2 w-[30%]">
+                                        <Button
+                                            type="primary"
+                                            onClick={() =>
+                                                handleBtnSaveEditComment()
+                                            }
+                                        >
+                                            Save
+                                        </Button>
+                                        <Button
+                                            onClick={() => {
+                                                setEditCommentId(null);
+                                                setEditCommentContent("");
+                                            }}
+                                        >
+                                            Cancel
+                                        </Button>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div>{comment.contentComment}</div>
+                            )}
+
                             {comment.userId === userLogin.id && (
                                 <div className="flex gap-3 ">
-                                    <div className="cursor-pointer text-[#929398] text-[14px]">
-                                        Chỉnh sửa <EditOutlined />
-                                    </div>
                                     <div
-                                        className="cursor-pointer text-[#929398] text-[14px]"
+                                        className="cursor-pointer text-[#929398] text-[14px] hover:opacity-70 transition-all duration-300"
                                         onClick={() =>
-                                            handleBtnDeleteComment(
+                                            handleBtnEditComment(
                                                 comment.id,
                                                 comment.contentComment
                                             )
                                         }
                                     >
-                                        Xóa <DeleteOutlined />
+                                        Chỉnh sửa <EditOutlined />
                                     </div>
+                                    {comment.id !== undefined && (
+                                        <div
+                                            className="cursor-pointer text-[#929398] text-[14px] hover:opacity-70 transition-all duration-300"
+                                            onClick={() =>
+                                                handleBtnDeleteComment(
+                                                    comment.id,
+                                                    comment.contentComment
+                                                )
+                                            }
+                                        >
+                                            Xóa <DeleteOutlined />
+                                        </div>
+                                    )}
                                 </div>
                             )}
                         </div>

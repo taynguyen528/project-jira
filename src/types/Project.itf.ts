@@ -1,4 +1,8 @@
 import { UserInfo } from "types";
+<<<<<<< HEAD
+import { IProjectCategory } from "./ProjectCategory.itf";
+=======
+>>>>>>> 5b184e135bfa5a450bbd4656b581dcac4469ff58
 
 export interface ICreator {
   name: string;

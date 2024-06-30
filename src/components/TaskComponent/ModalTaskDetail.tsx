@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Button, Modal, Progress, Input, Select } from "antd";
+import { Button, Modal } from "antd";
+import { DeleteOutlined } from "@ant-design/icons";
+import { toast } from "react-toastify";
+import { optionApi, projectApi, taskApi } from "api";
+import { showDeleteConfirm } from "./ConfirmDelete";
 import {
     LstTaskDeTail,
     MemberTask,
@@ -7,24 +11,18 @@ import {
     StatusType,
     TaskType,
     TaskTypeDetail,
+    TaskTypeModel,
 } from "types";
-import { DescriptionEditor } from "./DescriptionEditor";
-import { PrioritySelect } from "./PrioritySelect";
-import { TaskTypeSelect } from "./TaskTypeSelect";
-import { AssignersSelect } from "./AssignersSelect";
-import { optionApi, projectApi } from "api";
 import { useFetch } from "hooks";
-import { CommentComponent } from "./CommentComponent";
-import { DeleteOutlined } from "@ant-design/icons";
-import { showDeleteConfirm } from "./DeleteTask";
-import { toast } from "react-toastify";
+import { TaskDetailsForm } from "./TaskDetailsForm";
+import { TaskInfoForm } from "./TaskInfoForm";
 
 interface ModalTaskDetailProps {
     open: boolean;
     onCancel: () => void;
     taskId: number;
     members: MemberTask[];
-    onTaskDeleted: () => void;
+    onFetchTask: () => void;
 }
 
 export const ModalTaskDetail: React.FC<ModalTaskDetailProps> = ({
@@ -32,15 +30,29 @@ export const ModalTaskDetail: React.FC<ModalTaskDetailProps> = ({
     onCancel,
     members,
     taskId,
-    onTaskDeleted,
+    onFetchTask,
 }) => {
     const [taskInfo, setTaskInfo] = useState<LstTaskDeTail>();
-
     const fetchDataTask = async () => {
         try {
-            const res = await projectApi.getTaskDetail(taskId);
+            const res = await taskApi.getTaskDetail(taskId);
             if (res && res.statusCode === 200) {
+                setProjectId(res.content.projectId);
                 setTaskInfo(res.content);
+                setTaskName(res.content.taskName);
+                setDescription(res.content.description ?? "");
+                setPriority(res.content.priorityTask.priorityId);
+                setTaskType(String(res.content.taskTypeDetail.taskType) ?? "");
+                setTypeId(res.content.taskTypeDetail.id ?? 1);
+                setStatusId(res.content.statusId ?? "");
+                setAssignees(
+                    res.content.assigness.map((assignee) => assignee.id) ?? []
+                );
+                setOriginalEstimate(res.content.originalEstimate ?? 0);
+                setTimeTrackingSpent(res.content.timeTrackingSpent ?? 0);
+                setTimeTrackingRemaining(
+                    res.content.timeTrackingRemaining ?? 0
+                );
             }
         } catch (error) {
             console.log(error);
@@ -48,14 +60,27 @@ export const ModalTaskDetail: React.FC<ModalTaskDetailProps> = ({
     };
 
     useEffect(() => {
-        fetchDataTask();
-    }, [taskId]);
+        if (open && taskId) {
+            fetchDataTask();
+        }
+    }, [open, taskId]);
 
+    const [projectId, setProjectId] = useState<number>(0);
     const [description, setDescription] = useState<string>("");
-    const [priority, setPriority] = useState<number | undefined>(undefined);
+    const [priority, setPriority] = useState<number | string>(0);
     const [taskType, setTaskType] = useState<string>("");
+    const [typeId, setTypeId] = useState<number>(1);
     const [statusId, setStatusId] = useState<string>("");
     const [assignees, setAssignees] = useState<number[]>([]);
+    const [taskName, setTaskName] = useState<string>("");
+    const [isTaskNameChanged, setIsTaskNameChanged] = useState<boolean>(false);
+    const [isDescriptionChanged, setIsDescriptionChanged] =
+        useState<boolean>(false);
+    const [originalEstimate, setOriginalEstimate] = useState<number>(0);
+    const [timeTrackingSpent, setTimeTrackingSpent] = useState<number>(0);
+    const [timeTrackingRemaining, setTimeTrackingRemaining] =
+        useState<number>(0);
+    const [percent, setPercent] = useState<number>(0);
 
     useEffect(() => {
         if (taskInfo) {
@@ -66,6 +91,10 @@ export const ModalTaskDetail: React.FC<ModalTaskDetailProps> = ({
             setAssignees(
                 taskInfo.assigness.map((assignee) => assignee.id) ?? []
             );
+            setTypeId(taskInfo.taskTypeDetail.id);
+            setOriginalEstimate(taskInfo.originalEstimate ?? 0);
+            setTimeTrackingSpent(taskInfo.timeTrackingSpent ?? 0);
+            setTimeTrackingRemaining(taskInfo.timeTrackingRemaining ?? 0);
         }
     }, [taskInfo]);
 
@@ -76,6 +105,10 @@ export const ModalTaskDetail: React.FC<ModalTaskDetailProps> = ({
         return (spent / (spent + remaining)) * 100;
     };
 
+    useEffect(() => {
+        setPercent(calculatePercent(timeTrackingSpent, timeTrackingRemaining));
+    }, [timeTrackingSpent, timeTrackingRemaining]);
+
     const { data: statusData } = useFetch<StatusType[]>(optionApi.getAllStatus);
     const { data: priorityData } = useFetch<PriorityType[]>(
         optionApi.getAllPriority
@@ -84,18 +117,11 @@ export const ModalTaskDetail: React.FC<ModalTaskDetailProps> = ({
         optionApi.getAllTaskType
     );
 
-    const percent = taskInfo
-        ? calculatePercent(
-              taskInfo.timeTrackingSpent,
-              taskInfo.timeTrackingRemaining
-          )
-        : 0;
-
     const priorityOptions =
         (priorityData &&
             priorityData.length > 0 &&
             priorityData.map((item: PriorityType) => ({
-                value: String(item.priorityId),
+                value: item.priorityId,
                 label: item.priority,
             }))) ||
         [];
@@ -120,8 +146,143 @@ export const ModalTaskDetail: React.FC<ModalTaskDetailProps> = ({
             label: item.statusName,
         })) || [];
 
-    const handleStatusChange = (value: string) => {
+    const handleStatusChange = async (value: string) => {
         setStatusId(value);
+        try {
+            const res = await taskApi.updateStatus({
+                taskId: taskId,
+                statusId: value,
+            });
+            if (res && res.statusCode === 200) {
+                toast.success("Cập nhật trạng thái thành công!");
+                onFetchTask();
+            }
+        } catch (error) {
+            toast.error("Cập nhật trạng thái thất bại!");
+            console.log(error);
+        }
+    };
+
+    const handleTaskNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setTaskName(e.target.value);
+        setIsTaskNameChanged(true);
+    };
+
+    const handleDescriptionChange = (value: string) => {
+        setDescription(value);
+        setIsDescriptionChanged(true);
+    };
+
+    const handleTaskTypeChange = (value: string) => {
+        setTaskType(value);
+        const selectedTaskType = taskTypeData?.find(
+            (type) => String(type.id) === value
+        );
+        if (selectedTaskType) {
+            setTypeId(selectedTaskType.id);
+        }
+    };
+
+    const hasPriorityChanged = priority !== taskInfo?.priorityTask.priorityId;
+    const hasTaskTypeChanged = taskType !== taskInfo?.taskTypeDetail.taskType;
+    const hasAssigneesChanged =
+        JSON.stringify(assignees) !==
+        JSON.stringify(taskInfo?.assigness.map((a) => a.id));
+
+    const handleUpdateTask = async () => {
+        if (!taskInfo) return;
+        const updateData: TaskTypeModel = {
+            projectId,
+            listUserAsign: assignees,
+            taskId: taskId,
+            taskName: taskName || "",
+            description: description || "",
+            statusId: statusId,
+            originalEstimate: originalEstimate,
+            timeTrackingSpent: timeTrackingSpent,
+            timeTrackingRemaining: timeTrackingRemaining,
+            typeId: typeId,
+            priorityId: Number(priority),
+        };
+
+        try {
+            const res = await taskApi.updateTask(updateData);
+            if (res && res.statusCode === 200) {
+                toast.success("Cập nhật thông tin task thành công!");
+                setIsTaskNameChanged(false);
+                setIsDescriptionChanged(false);
+                onFetchTask();
+            } else {
+                toast.error("Cập nhật thông tin task thất bại!");
+            }
+        } catch (error: any) {
+            toast.error(error.response.data.content);
+        }
+    };
+
+    useEffect(() => {
+        if (hasPriorityChanged || hasTaskTypeChanged || hasAssigneesChanged) {
+            handleUpdateTask();
+        }
+    }, [priority, taskType, assignees]);
+
+    const handleOriginalEstimateChange = async (
+        e: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        const value = parseFloat(e.target.value);
+        setOriginalEstimate(value);
+        try {
+            const res = await projectApi.updateEstimate({
+                taskId,
+                originalEstimate: value,
+            });
+            if (res && res.statusCode === 200) {
+                toast.success(res.message);
+                onFetchTask();
+            }
+        } catch (error: any) {
+            toast.error(error.response.data.content);
+        }
+    };
+
+    const handleTimeTrackingSpentChange = async (
+        e: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        const value = parseFloat(e.target.value);
+        setTimeTrackingSpent(value);
+        try {
+            const res = await projectApi.updateTimeTracking({
+                taskId,
+                timeTrackingSpent: value,
+                timeTrackingRemaining,
+            });
+            if (res && res.statusCode === 200) {
+                toast.success(res.message);
+                onFetchTask();
+            }
+        } catch (error: any) {
+            toast.error(error.response.data.content);
+        }
+    };
+
+    const handleTimeTrackingRemainingChange = async (
+        e: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        const value = parseFloat(e.target.value);
+        setTimeTrackingRemaining(value);
+        try {
+            const res = await projectApi.updateTimeTracking({
+                taskId,
+                timeTrackingSpent,
+                timeTrackingRemaining: value,
+            });
+            if (res && res.statusCode === 200) {
+                toast.success(res.message);
+                onFetchTask();
+            }
+        } catch (error: any) {
+            toast.error(error.response.data.content);
+        }
     };
 
     const handleBtnDeleteTask = () => {
@@ -130,10 +291,10 @@ export const ModalTaskDetail: React.FC<ModalTaskDetailProps> = ({
             content: `Thông tin: ${taskInfo?.taskName}`,
             onOk: async () => {
                 try {
-                    const res = await projectApi.removeTask(taskId);
+                    const res = await taskApi.removeTask(taskId);
                     if (res && res.statusCode === 200) {
                         toast.success("Xóa task thành công!");
-                        onTaskDeleted();
+                        onFetchTask();
                         onCancel();
                     }
                 } catch (error: any) {
@@ -169,102 +330,49 @@ export const ModalTaskDetail: React.FC<ModalTaskDetailProps> = ({
             closeIcon={null}
             footer={[
                 <Button key="back" onClick={onCancel}>
-                    Cancel
+                    Huỷ bỏ
                 </Button>,
             ]}
         >
             {taskInfo && (
                 <div className="flex gap-[30px]">
-                    <div className="w-full">
-                        <div className="flex">
-                            <Input defaultValue={taskInfo.taskName} />
-                            <Button type="primary" className="ml-[20px]">
-                                Submit
-                            </Button>
-                        </div>
-                        <div>
-                            <DescriptionEditor
-                                description={description}
-                                onDescriptionChange={setDescription}
-                            />
-                            <div className="flex justify-end">
-                                <Button type="primary">Save</Button>
-                            </div>
-                        </div>
-                        <div>
-                            <label className="text-[18px] font-bold">
-                                Comment
-                            </label>
-                            <CommentComponent taskId={taskId} />
-                        </div>
-                    </div>
-                    <div className="w-1/2">
-                        <div className="flex flex-col">
-                            <label className="text-[18px] font-bold">
-                                Status
-                            </label>
-                            <div className="mt-2 ">
-                                <Select
-                                    className="w-full"
-                                    options={statusDataOptions}
-                                    value={statusId}
-                                    onChange={handleStatusChange}
-                                />
-                            </div>
-                        </div>
-                        <PrioritySelect
-                            priorityOptions={priorityOptions}
-                            defaultPriority={priority}
-                            onSelectPriority={setPriority}
-                            value={priority}
-                            onChange={setPriority}
-                            onBlur={() => {}}
-                            name="priority"
-                        />
-                        <TaskTypeSelect
-                            taskTypeOptions={taskTypeOptions}
-                            defaultTaskType={taskType}
-                            onSelectTaskType={setTaskType}
-                            value={taskType}
-                            onChange={setTaskType}
-                            onBlur={() => {}}
-                            name="taskType"
-                        />
-                        <AssignersSelect
-                            memberOptions={memberOptions}
-                            value={assignees}
-                            onChange={setAssignees}
-                        />
-                        <div className="my-4 flex gap-[10px]">
-                            <span className="font-semibold w-1/2">
-                                Original Estimate (hours):{" "}
-                            </span>
-                            <Input defaultValue={taskInfo.originalEstimate} />
-                        </div>
-                        <div className="mb-4 flex gap-[10px]">
-                            <span className="font-semibold w-1/2">
-                                Time Spent (hours):{" "}
-                            </span>
-                            <Input defaultValue={taskInfo.timeTrackingSpent} />
-                        </div>
-                        <div className="mb-4">
-                            <span className="font-semibold">
-                                Time Remaining:{" "}
-                            </span>
-                            <span>{taskInfo.timeTrackingRemaining} hours</span>
-                        </div>
-                        <div className="mb-4">
-                            <span className="font-semibold">
-                                Time Tracking:{" "}
-                            </span>
-                            <Progress
-                                percent={percent}
-                                format={(percent) =>
-                                    `${(percent ?? 0).toFixed(2)}%`
-                                }
-                            />
-                        </div>
-                    </div>
+                    <TaskInfoForm
+                        taskId={taskId}
+                        taskName={taskName}
+                        description={description}
+                        isTaskNameChanged={isTaskNameChanged}
+                        isDescriptionChanged={isDescriptionChanged}
+                        handleTaskNameChange={handleTaskNameChange}
+                        handleDescriptionChange={handleDescriptionChange}
+                        handleUpdateTask={handleUpdateTask}
+                    />
+                    <TaskDetailsForm
+                        statusId={statusId}
+                        handleStatusChange={handleStatusChange}
+                        priorityOptions={priorityOptions}
+                        priority={priority}
+                        setPriority={setPriority}
+                        taskTypeOptions={taskTypeOptions}
+                        statusDataOptions={statusDataOptions}
+                        taskType={taskType}
+                        handleTaskTypeChange={handleTaskTypeChange}
+                        memberOptions={memberOptions}
+                        assignees={assignees}
+                        setAssignees={setAssignees}
+                        originalEstimate={originalEstimate}
+                        handleOriginalEstimateChange={
+                            handleOriginalEstimateChange
+                        }
+                        timeTrackingSpent={timeTrackingSpent}
+                        handleTimeTrackingSpentChange={
+                            handleTimeTrackingSpentChange
+                        }
+                        timeTrackingRemaining={timeTrackingRemaining}
+                        handleTimeTrackingRemainingChange={
+                            handleTimeTrackingRemainingChange
+                        }
+                        percent={percent}
+                    />
                 </div>
             )}
         </Modal>

@@ -26,4 +26,12 @@ export const commentApi = {
             `/Comment/deleteComment?idComment=${idComment}`
         );
     },
+    updateComment: (
+        id: number,
+        contentComment: string
+    ): Promise<ApiResponse<{ id: number; contentComment: string }>> => {
+        return privateClient.put(
+            `/Comment/updateComment?id=${id}&contentComment=${contentComment}`
+        );
+    },
 };
