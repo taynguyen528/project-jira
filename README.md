@@ -53,9 +53,10 @@ This is an example of how to list things you need to use the software and how to
 
 ## Preview
 
-![alt text](<Untitled 2.png>)
-![alt text](Untitled.png)
-![alt text](<Untitled 3.png>)
+![alt text](</public/image/Untitled 2.png>)
+![alt text](</public/image/Untitled.png>)
+![alt text](</public/image/Untitled 3.png>)
+
 
 ## Contact
 
