@@ -204,7 +204,7 @@ export default function ProjMgmtTemplate() {
       render: (_, project) => <ProjMgmtActionBtnsTemplate project={project} />,
     },
   ];
-  // console.log("rendered");
+
   return (
     <SectionWrapper
       content={

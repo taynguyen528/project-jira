@@ -83,10 +83,6 @@ export const UserEditModalTemplate = ({
             required: true,
             message: "Please do not leave ${name} empty",
           },
-          // {
-          //   pattern: /^[A-Za-z\s]*$/i,
-          //   message: "${name} only accepts text, and char. Please input again.",
-          // },
         ]}
       >
         <Input prefix={<IdcardOutlined />} placeholder="John Doe" />

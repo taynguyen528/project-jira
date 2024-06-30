@@ -23,11 +23,8 @@ export const ProjMgmtFormTemplate = ({
 
   const getInitialValue = () => {
     if (project) {
-      const categoryId = project.categoryId
-        ? project.categoryId
-        : project.projectCategory.id;
       return {
-        categoryId,
+        categoryId: project.categoryId,
         projectName: project.projectName,
         description: project.description,
       };

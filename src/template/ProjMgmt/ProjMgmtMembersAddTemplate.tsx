@@ -71,7 +71,6 @@ export function ProjMgmtMembersAddTemplate({
     });
   };
 
-  // render function
   const renderMember = (
     member: Partial<IMember>,
     index: number,
@@ -152,7 +151,6 @@ export function ProjMgmtMembersAddTemplate({
             clearTimeout(searchRef.current);
           }
           searchRef.current = setTimeout(() => {
-            // console.log(e.target.value);
             getUserList(e.target.value);
           }, 300);
         }}

@@ -1,6 +1,5 @@
 // import local Interface
 import { IMember, IProjectMembersList } from "types";
-import { UserInfo } from "types";
 
 // import ant component
 import { Avatar, Popconfirm } from "antd";
