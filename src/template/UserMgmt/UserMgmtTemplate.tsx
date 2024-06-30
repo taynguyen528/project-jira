@@ -1,18 +1,18 @@
 import { useState } from "react";
-import { IUser } from "types";
+import { UserInfo } from "types";
 import { useEffect } from "react";
-import { userAPI } from "../../api";
+import { userAPI } from "api";
 import { UserTableTemplate } from "./UserTableTemplate";
 import { UserActionTemplate } from "./UserActionTemplate";
 
 export default function UserMgmtTemplate() {
-  const [userList, setUserList] = useState<IUser[]>([]);
+  const [userList, setUserList] = useState<UserInfo[]>([]);
 
   useEffect(() => {
     let fetchUserList = async () => {
       try {
         const res = await userAPI.getAllUser();
-        const data = (res.content as IUser[]).map((user: IUser) => {
+        const data = res.content.map((user) => {
           return {
             ...user,
             action: (
