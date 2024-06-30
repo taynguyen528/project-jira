@@ -39,6 +39,7 @@ export function UserActionTemplate({ user, onSuccess }: IUserActionProps) {
       <Modal
         title="Update user information"
         open={isModalOpen}
+        onCancel={handleCancel}
         footer={[
           <Button key="back" onClick={handleCancel}>
             Cancel
