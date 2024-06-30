@@ -5,6 +5,7 @@ import { ColumnType, ColumnsType } from "antd/lib/table";
 import { useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
 import { UserInfo, IUserTableProps } from "types";
+import { formatPhoneNumber } from "utils";
 
 export const UserTableTemplate = ({ userList }: IUserTableProps) => {
   type UserIndex = keyof UserInfo;
@@ -118,7 +119,7 @@ export const UserTableTemplate = ({ userList }: IUserTableProps) => {
       sorter: (a, b) => b.name.localeCompare(a.name),
       sortDirections: ["descend", "ascend"],
       render: (text) => (
-        <span className="projectName text-lg font-semibold cursor-pointer transition-colors duration-300">
+        <span className="text-lg font-semibold">
           {text}
         </span>
       ),
@@ -139,7 +140,7 @@ export const UserTableTemplate = ({ userList }: IUserTableProps) => {
       title: <span className="text-lg">Phone Number</span>,
       dataIndex: "phoneNumber",
       key: "phoneNumber",
-      render: (text) => <span className="text-base">{text}</span>,
+      render: (phone) => <span className="text-base">{formatPhoneNumber(phone)}</span>,
     },
     {
       title: <span className="text-lg">Edit</span>,

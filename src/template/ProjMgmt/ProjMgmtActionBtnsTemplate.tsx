@@ -44,7 +44,7 @@ export function ProjMgmtActionBtnsTemplate({ project }: IProjectActionBtns) {
   };
 
   return (
-    <div className="space-x-2 flex justify-between items-center">
+    <div className="space-x-2 flex items-center">
       <Tooltip title="Edit Project">
         <button
           onClick={() => {

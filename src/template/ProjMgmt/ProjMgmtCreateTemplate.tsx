@@ -61,7 +61,7 @@ export const ProjMgmtCreateTemplate = () => {
   return (
     <div className="create-project-page h-full">
       <SectionWrapper
-        title="Add project-details"
+        title="Add project"
         subTitle="You can change these details anytime in your project settings."
         content={pageContent}
         sectionClass="create-project-section"
