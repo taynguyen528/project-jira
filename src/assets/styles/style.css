@@ -134,8 +134,8 @@ h6 {
 
 /* START Project Management */
 /* Start DESKTOP */
-.projectManagement
-  .projectManagement__content
+.dataManagement
+  .dataManagement__content
   .ant-table-row:hover
   .ant-table-cell
   .projectName {

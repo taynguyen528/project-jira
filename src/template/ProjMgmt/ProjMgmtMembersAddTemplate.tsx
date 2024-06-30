@@ -111,7 +111,7 @@ export function ProjMgmtMembersAddTemplate({
       cancelText="No"
       cancelButtonProps={{ size: "large" }}
       icon={
-        <QuestionCircleOutlined className="top-1 text-yellow-500 text-xl" />
+        <QuestionCircleOutlined className="top-1 text-yellow-500 text-3xl" />
       }
     >
       {renderMember(member, index, false)}

@@ -232,8 +232,8 @@ export default function ProjMgmtTemplate() {
           />
         </>
       }
-      sectionClass="projectManagement"
-      contentClass="projectManagement__content"
+      sectionClass="dataManagement"
+      contentClass="dataManagement__content"
     />
   );
 }

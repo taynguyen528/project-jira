@@ -20,7 +20,7 @@ export function ProjMgmtMembersListTemplate({
     <Popconfirm
       title={
         <span className="text-lg pl-1">
-          Are you sure to delete{" "}
+          Are you sure you want to delete{" "}
           <span className="font-semibold">{member.name}</span>?
         </span>
       }
@@ -40,7 +40,7 @@ export function ProjMgmtMembersListTemplate({
         size: "large",
         className: "btn-delete-cancel",
       }}
-      icon={<QuestionCircleOutlined className="top-1 text-red-500 text-xl" />}
+      icon={<QuestionCircleOutlined className="top-1 text-red-500 text-3xl" />}
     >
       <CloseCircleOutlined
         style={{ fontSize: 20 }}

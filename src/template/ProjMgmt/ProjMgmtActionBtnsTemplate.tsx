@@ -44,7 +44,7 @@ export function ProjMgmtActionBtnsTemplate({ project }: IProjectActionBtns) {
   };
 
   return (
-    <div className="space-x-2">
+    <div className="space-x-2 flex justify-between items-center">
       <Tooltip title="Edit Project">
         <button
           onClick={() => {
@@ -59,7 +59,7 @@ export function ProjMgmtActionBtnsTemplate({ project }: IProjectActionBtns) {
       <Popconfirm
         title={
           <span className="text-lg pl-1">
-            Are you sure to delete{" "}
+            Are you sure you want to delete project {" "}
             <span className="font-semibold">{project.projectName}</span>?
           </span>
         }
@@ -77,7 +77,7 @@ export function ProjMgmtActionBtnsTemplate({ project }: IProjectActionBtns) {
           size: "large",
           className: "btn-delete-cancel",
         }}
-        icon={<QuestionCircleOutlined className="top-1 text-red-500 text-xl" />}
+        icon={<QuestionCircleOutlined className="top-1 text-red-500 text-3xl" />}
       >
         <Tooltip title="Delete Project">
           <span className="p-2 rounded inline-flex justify-center items-center bg-red-500 hover:bg-red-600 text-xl text-white transition duration-300 cursor-pointer">
