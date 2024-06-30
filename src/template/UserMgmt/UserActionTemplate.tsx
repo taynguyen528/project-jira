@@ -3,7 +3,7 @@ import { userAPI } from "api";
 import { IUserActionProps } from "types";
 import { toastifyUtils } from "utils";
 import { UserEditModalTemplate } from "./UserEditModalTemplate";
-import { Button, Modal, Popconfirm } from "antd";
+import { Button, Modal, Popconfirm, Tooltip } from "antd";
 import {
   DeleteOutlined,
   FormOutlined,
@@ -32,10 +32,14 @@ export function UserActionTemplate({ user, onSuccess }: IUserActionProps) {
   };
 
   return (
-    <div className="space-x-2 flex justify-between items-center">
-      <button onClick={showModal}>
-        <FormOutlined className="text-blue-500 text-2xl" />
-      </button>
+    <div className="space-x-2 flex items-center">
+      <Tooltip title="Edit User">
+        <button onClick={showModal}>
+          <span className="p-2 rounded inline-flex justify-center items-center bg-indigo-500 hover:bg-indigo-400 text-xl text-white transition duration-300 cursor-pointer">
+            <FormOutlined />
+          </span>
+        </button>
+      </Tooltip>
       <Modal
         title="Update user information"
         open={isModalOpen}
@@ -66,10 +70,27 @@ export function UserActionTemplate({ user, onSuccess }: IUserActionProps) {
         }
         onConfirm={handleDeleteUser}
         okText="Yes"
+        okButtonProps={{
+          type: "default",
+          danger: true,
+          size: "large",
+          className: "btn-delete-ok",
+        }}
         cancelText="No"
-        icon={<QuestionCircleOutlined className="top-1 text-red-500 text-3xl" />}
+        cancelButtonProps={{
+          type: "primary",
+          size: "large",
+          className: "btn-delete-cancel",
+        }}
+        icon={
+          <QuestionCircleOutlined className="top-1 text-red-500 text-3xl" />
+        }
       >
-        <DeleteOutlined className="text-red-500 text-2xl" />
+        <Tooltip title="Delete User">
+          <span className="p-2 rounded inline-flex justify-center items-center bg-red-500 hover:bg-red-600 text-xl text-white transition duration-300 cursor-pointer">
+            <DeleteOutlined />
+          </span>
+        </Tooltip>
       </Popconfirm>
     </div>
   );

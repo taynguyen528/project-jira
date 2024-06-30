@@ -3,10 +3,7 @@ import { IMember, IProjectMembersList } from "types";
 
 // import ant component
 import { Avatar, Popconfirm } from "antd";
-import {
-  CloseCircleOutlined,
-  QuestionCircleOutlined,
-} from "@ant-design/icons";
+import { CloseCircleOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 
 export function ProjMgmtMembersListTemplate({
   members,
@@ -14,14 +11,13 @@ export function ProjMgmtMembersListTemplate({
   containerStyle = "w-64",
   title = "ALL MEMBERS",
 }: IProjectMembersList) {
-
   // render function
   const renderDelBtn = (member: Partial<IMember>) => (
     <Popconfirm
       title={
         <span className="text-lg pl-1">
-          Are you sure you want to delete{" "}
-          <span className="font-semibold">{member.name}</span>?
+          Are you sure you want to unassign{" "}
+          <span className="font-semibold">{member.name}</span> from project?
         </span>
       }
       onConfirm={() => {
@@ -48,7 +44,7 @@ export function ProjMgmtMembersListTemplate({
       />
     </Popconfirm>
   );
-  
+
   return (
     <div className={containerStyle}>
       <p className="w-full mb-0 px-2 bg-gray-200 text-sm text-gray-500 font-bold">

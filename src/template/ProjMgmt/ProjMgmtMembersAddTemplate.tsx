@@ -95,7 +95,7 @@ export function ProjMgmtMembersAddTemplate({
     <Popconfirm
       title={
         <span className="text-lg pl-1">
-          Adding <span className="font-semibold">{member.name}</span> to{" "}
+          Adding <span className="font-semibold">{member.name}</span> to project{" "}
           <span className="font-semibold">
             {projectName ? projectName : "Project"}
           </span>
