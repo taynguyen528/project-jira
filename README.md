@@ -13,7 +13,7 @@
     ·
     <a href="https://github.com/taynguyen528/project-jira">GitHub</a>
     ·
-    <a href="">YouTube</a>
+    <a href="https://www.youtube.com/watch?v=m64LHwdkS00">YouTube</a>
   </p>
 </div>
 
