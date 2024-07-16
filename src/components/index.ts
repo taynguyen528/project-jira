@@ -9,7 +9,6 @@ export * from "./TaskComponent/AssignersSelect";
 export * from "./TaskComponent/DescriptionEditor";
 export * from "./TaskComponent/TimeTrackingInputs";
 export * from "./TaskComponent/TaskNameInput";
-export * from "./TaskComponent/ProjectSelect";
 export * from "./TaskComponent/TaskTypeSelect";
 export * from "./TaskComponent/PrioritySelect";
 export * from "./TaskComponent/ModalTaskDetail";

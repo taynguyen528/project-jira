@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { Drawer, Button, Select } from "antd";
+import { Drawer, Button, Select, Input } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
-    ContentProject,
     MemberTask,
     PriorityType,
     StatusType,
@@ -17,13 +16,13 @@ import {
     AssignersSelect,
     DescriptionEditor,
     PrioritySelect,
-    ProjectSelect,
     TaskNameInput,
     TaskTypeSelect,
     TimeTrackingInputs,
 } from "components";
 import { createTaskSchema } from "schemas";
 import { toast } from "react-toastify";
+import { useParams } from "react-router-dom";
 
 interface CreateTaskProps {
     onClose: () => void;
@@ -36,6 +35,7 @@ export const CreateTask: React.FC<CreateTaskProps> = ({
     open,
     onTaskCreate,
 }) => {
+    const { idProject } = useParams<{ idProject: string }>();
     const {
         control,
         handleSubmit,
@@ -53,27 +53,17 @@ export const CreateTask: React.FC<CreateTaskProps> = ({
             originalEstimate: 0,
             timeTrackingSpent: 0,
             timeTrackingRemaining: 0,
-            projectId: undefined,
+            projectId: Number(idProject),
             typeId: 1,
             priorityId: 1,
         },
     });
 
-    const [dataProject, setDataProject] = useState<ContentProject[]>([]);
     const [statusData, setStatusData] = useState<StatusType[]>([]);
     const [priorityData, setPriorityData] = useState<PriorityType[]>([]);
     const [taskTypeData, setTaskTypeData] = useState<TaskType[]>([]);
     const [assigners, setAssigners] = useState<MemberTask[]>([]);
-    const [projectId, setProjectId] = useState<number | undefined>(undefined);
-
-    const fetchDataProject = async () => {
-        try {
-            const res = await projectApi.getAllProject();
-            setDataProject(res.content);
-        } catch (error) {
-            console.error(error);
-        }
-    };
+    const [nameProject, setNameProject] = useState<string>();
 
     const fetchStatus = async () => {
         try {
@@ -105,6 +95,7 @@ export const CreateTask: React.FC<CreateTaskProps> = ({
     const fetchDataProjectDetail = async (idProject: number) => {
         try {
             const res = await projectApi.getProjectDetail(idProject);
+            setNameProject(res.content.alias);
             setAssigners(res.content.members);
         } catch (error) {
             console.error(error);
@@ -112,14 +103,16 @@ export const CreateTask: React.FC<CreateTaskProps> = ({
     };
 
     useEffect(() => {
-        fetchDataProject();
         fetchStatus();
         fetchPriority();
         fetchTaskType();
-        if (projectId) {
-            fetchDataProjectDetail(projectId);
+    }, []);
+
+    useEffect(() => {
+        if (idProject) {
+            fetchDataProjectDetail(+idProject);
         }
-    }, [projectId]);
+    }, [idProject, open]);
 
     const onSubmit = async (data: TaskTypeModel) => {
         try {
@@ -165,79 +158,64 @@ export const CreateTask: React.FC<CreateTaskProps> = ({
         >
             <div>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <Controller
-                        name="projectId"
-                        control={control}
-                        render={({ field }) => (
-                            <ProjectSelect
-                                value={field.value ?? undefined}
-                                onChange={(value) => {
-                                    if (value !== undefined) {
-                                        field.onChange(value);
-                                        setProjectId(value);
-                                    }
-                                }}
-                                projectOptions={dataProject.map((item) => ({
-                                    value: item.id,
-                                    label: item.alias,
-                                }))}
-                                onSelectProject={(projectId) => {
-                                    if (projectId !== undefined) {
-                                        field.onChange(projectId);
-                                        setProjectId(projectId);
-                                    }
-                                }}
-                            />
-                        )}
-                    />
-
-                    <Controller
-                        name="taskName"
-                        control={control}
-                        render={({ field }) => (
-                            <TaskNameInput
-                                value={field.value}
-                                onChange={(value) => {
-                                    field.onChange(value);
-                                }}
-                            />
-                        )}
-                    />
-                    {errors?.taskName && (
-                        <p className="text-red-500 text-xs mt-1 text-[16px]">
-                            {errors.taskName.message}
-                        </p>
-                    )}
+                    <div>
+                        <label className="text-[18px] font-bold">Project</label>
+                        <div className="mt-2">
+                            <Input value={nameProject} disabled={true} />
+                        </div>
+                    </div>
 
                     <div className="mt-3">
-                        <label className="text-[18px] font-bold">Status</label>
                         <Controller
-                            name="statusId"
+                            name="taskName"
                             control={control}
                             render={({ field }) => (
-                                <Select
-                                    {...field}
-                                    style={{ width: "100%" }}
-                                    defaultValue={
-                                        statusData.length > 0
-                                            ? statusData[0].statusId.toString()
-                                            : undefined
-                                    }
+                                <TaskNameInput
+                                    value={field.value}
                                     onChange={(value) => {
                                         field.onChange(value);
                                     }}
-                                >
-                                    {statusData.map((item) => (
-                                        <Select.Option
-                                            key={item.statusId}
-                                            value={item.statusId.toString()}
-                                        >
-                                            {item.statusName}
-                                        </Select.Option>
-                                    ))}
-                                </Select>
+                                />
                             )}
                         />
+                        {errors?.taskName && (
+                            <p className="text-red-500 text-xs mt-1 text-[16px]">
+                                {errors.taskName.message}
+                            </p>
+                        )}
+                    </div>
+
+                    <div className="mt-3">
+                        <label className="text-[18px] font-bold">Status</label>
+                        <div className="mt-2">
+                            <Controller
+                                name="statusId"
+                                control={control}
+                                render={({ field }) => (
+                                    <Select
+                                        {...field}
+                                        style={{ width: "100%" }}
+                                        defaultValue={
+                                            statusData.length > 0
+                                                ? statusData[0].statusId.toString()
+                                                : undefined
+                                        }
+                                        onChange={(value) => {
+                                            field.onChange(value);
+                                        }}
+                                    >
+                                        {statusData.map((item) => (
+                                            <Select.Option
+                                                key={item.statusId}
+                                                value={item.statusId.toString()}
+                                            >
+                                                {item.statusName}
+                                            </Select.Option>
+                                        ))}
+                                    </Select>
+                                )}
+                            />
+                        </div>
                     </div>
 
                     <Controller

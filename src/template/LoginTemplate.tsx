@@ -36,7 +36,6 @@ export const LoginTemplate = () => {
             ).unwrap();
 
             if (res && res.statusCode === 200) {
-                toast.success("Đăng nhập thành công.");
                 reset();
                 navigate("/project");
             }
