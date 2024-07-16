@@ -27,7 +27,7 @@ export const TimeTrackingInputs: React.FC<TimeTrackingInputsProps> = ({
                         <InputNumber
                             style={{ width: "100%" }}
                             min={0}
-                            step={0.1}
+                            step={1}
                             value={totalEstimatedHours}
                             onChange={(value) =>
                                 onTotalEstimatedHoursChange(value ?? 0)
@@ -41,7 +41,7 @@ export const TimeTrackingInputs: React.FC<TimeTrackingInputsProps> = ({
                         <InputNumber
                             style={{ width: "100%" }}
                             min={0}
-                            step={0.1}
+                            step={1}
                             value={hoursSpent}
                             onChange={(value) => onHoursSpentChange(value ?? 0)}
                         />
