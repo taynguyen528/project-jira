@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 
 import { useAppDispatch, useAppSelector } from "store";
+import { drawerActions } from "drawerSlice";
 import { useNavigate } from "react-router-dom";
 
 // import custom Hooks
@@ -13,6 +14,7 @@ import { ContentProject } from "types";
 import { SectionWrapper } from "components";
 import { ProjMgmtActionBtnsTemplate } from "./ProjMgmtActionBtnsTemplate.tsx";
 import { ProjMgmtMembersTemplate } from "./ProjMgmtMembersTemplate.tsx";
+import { ProjMgmtCreateTemplate } from "./ProjMgmtCreateTemplate.tsx";
 import { ButtonLocal } from "components";
 
 // import antd type
@@ -32,14 +34,15 @@ import clsx from "clsx";
 
 export default function ProjMgmtTemplate() {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
 
   const projectList = useAppSelector((state) => state.projectSlice.projectList);
 
   projectHooks.useFetchProjectList(dispatch, null);
 
   const handleOpenCreateProject = () => {
-    navigate("create-project");
+    dispatch(
+      drawerActions.handleDrawerOpen(<ProjMgmtCreateTemplate  />)
+    );
   };
 
   //antd control
@@ -228,7 +231,7 @@ export default function ProjMgmtTemplate() {
           <Table
             columns={columns}
             dataSource={projectList}
-            rowKey={(project) => project.id.toString()}
+            rowKey="id"
           />
         </>
       }
