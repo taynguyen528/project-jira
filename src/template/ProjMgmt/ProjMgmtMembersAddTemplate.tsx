@@ -32,6 +32,7 @@ export function ProjMgmtMembersAddTemplate({
 
   useEffect(() => {
     setTimeout(() => {
+      getUserList('');
       inputRef.current!.focus();
     }, 100);
   }, []);
@@ -140,6 +141,7 @@ export function ProjMgmtMembersAddTemplate({
       {!title ? null : (
         <h4 className="flex-shrink-0 pb-2 text-base">{title}</h4>
       )}
+
       <input
         type="search"
         placeholder="Search users"
@@ -154,6 +156,7 @@ export function ProjMgmtMembersAddTemplate({
           }, 300);
         }}
       />
+
       {isLoading ? (
         <div className="flex-grow w-full">
           <InnerSpinner

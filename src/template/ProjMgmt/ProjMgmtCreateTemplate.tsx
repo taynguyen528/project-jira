@@ -1,9 +1,8 @@
-import { useNavigate } from "react-router-dom";
-
 // import redux
 import { useAppDispatch } from "store";
 import { projectActions } from "projSlice";
 import { spinnerActions } from "spinnerSlice";
+import { drawerActions } from "drawerSlice";
 
 // import local Interface
 import { IProject } from "types";
@@ -19,7 +18,6 @@ import { toast } from "react-toastify";
 
 export const ProjMgmtCreateTemplate = () => {
     const dispatch = useAppDispatch();
-    const navigate = useNavigate();
 
     const handleOnFinish = (values: IProject) => {
         dispatch(spinnerActions.setLoadingOn());
@@ -31,10 +29,12 @@ export const ProjMgmtCreateTemplate = () => {
             .createProject(newProject)
             .then((res) => {
                 dispatch(projectActions.putProjectDetail(res.content));
+
+                toast.success("Created project successfully!");
+                dispatch(drawerActions.closeDrawer());
                 setTimeout(() => {
-                    navigate("/project", { replace: true });
+                    dispatch(projectApi.getAllAndDispatch(null));
                     dispatch(spinnerActions.setLoadingOff());
-                    toast.success("Create project successfully!");
                 }, 2500);
             })
             .catch((err) => {

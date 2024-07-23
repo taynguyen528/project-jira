@@ -9,7 +9,7 @@ export function Spinner() {
   let isLoading = useAppSelector((state) => state.spinnerSlice.isLoading);
 
   const loadingClass = isLoading
-    ? "opacity-90 visible "
+    ? "opacity-100 visible "
     : "opacity-0 invisible";
   return (
     <div
