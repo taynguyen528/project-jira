@@ -1,5 +1,3 @@
-import { useNavigate } from "react-router-dom";
-
 // import redux
 import { useAppDispatch } from "store";
 import { projectActions } from "projSlice";

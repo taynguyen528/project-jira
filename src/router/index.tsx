@@ -1,7 +1,6 @@
 import { PATH } from "constant";
 import { AuthLayout, MainLayout } from "layouts";
 import { Board, Login, NotFound, Profile, Register } from "pages";
-import { ProjMgmtCreate } from "projMgmt";
 import { ProjMgmt } from "pages/ProjMgmt/ProjMgmt";
 import { UserMgmt } from "pages/UserMgmt/UserMgmt";
 import { RouteObject, useRoutes } from "react-router-dom";
@@ -21,10 +20,6 @@ const router: RouteObject[] = [
             {
                 path: PATH.project,
                 element: <ProjMgmt />,
-            },
-            {
-                path: PATH.projectCreate,
-                element: <ProjMgmtCreate />,
             },
             {
                 path: PATH.user,

@@ -2,7 +2,6 @@ import { useState, useRef } from "react";
 
 import { useAppDispatch, useAppSelector } from "store";
 import { drawerActions } from "drawerSlice";
-import { useNavigate } from "react-router-dom";
 
 // import custom Hooks
 import { projectHooks } from "projectHooks";
